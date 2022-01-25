@@ -3,33 +3,74 @@
 class cube extends THREE.Mesh {
     speed_x = 0;
     speed_y = 0;
+    speed_z = 0;
+
+    key_L = false;
+    key_R = false;
+    key_U = false;
 
     constructor() {
-        const geometry = new THREE.ConeGeometry(0.5, 1, 5);
-        const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+        const geometry = new THREE.ConeGeometry( 0.5, 1, 4 );
+        const material = new THREE.MeshLambertMaterial( { color: 0x00ff00 } );
         super( geometry, material );
-        console.log(this);
         this.animate();
 
         window.onkeydown = (e) => {
-            console.log(e);
-            if (e.key == 'ArrowLeft')
-                this.speed_x -= 0.01;
-            if (e.key == 'ArrowRight')
-                this.speed_x += 0.01;
-            if (e.key == 'ArrowUp')
-                this.speed_y += 0.01;
-            if (e.key == 'ArrowDown')
-                this.speed_y -= 0.01;
+            if ( e.repeat === false ) {
+                if ( e.key == 'ArrowLeft' ) {
+                    this.key_L = true;
+                    this.rotate_left();
+                } else if ( e.key == 'ArrowRight' ) {
+                    this.key_R = true;
+                    this.rotate_right();
+                } else if ( e.key == 'ArrowUp' ) {
+                    this.key_U = true;
+                    this.speed_up();
+                }
+            }
             
         };
+
+        window.onkeyup = ( e ) => {
+            if ( e.key === "ArrowLeft" ) {
+                this.key_L = false;
+            }
+            if ( e.key === "ArrowRight" ) {
+                this.key_R = false;
+            }
+            if ( e.key === "ArrowUp" ) {
+                this.key_U = false;
+            }
+            
+        };
+    }
+
+    rotate_left() {
+        if ( this.key_L )
+            requestAnimationFrame( this.rotate_left.bind( this ) );
+        this.rotation.z = (this.rotation.z + Math.PI * 1/70) % (2 * Math.PI);
+
+    }
+
+    rotate_right() {
+        if ( this.key_R )
+            requestAnimationFrame( this.rotate_right.bind( this ) );
+        this.rotation.z = (this.rotation.z - Math.PI * 1/70) % (2 * Math.PI);
+
+    }
+
+    speed_up() {
+        if ( this.key_U )
+            requestAnimationFrame( this.speed_up.bind( this ) );
+        this.speed_x -= 0.01 * Math.sin( this.rotation.z );
+        this.speed_y += 0.01 * Math.cos( this.rotation.z );
+
     }
 
     animate() {
         requestAnimationFrame( this.animate.bind( this ) );
 
-        /*this.rotation.x += 0.01;
-        this.rotation.y += 0.01;*/
+        //this.rotation.y += 0.01;
 
         this.position.x += this.speed_x;
         this.position.y += this.speed_y;

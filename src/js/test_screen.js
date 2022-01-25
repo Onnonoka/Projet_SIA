@@ -23,7 +23,10 @@ class testScreen extends screen {
     display() {
         this.cube = new cube();
         this.scene.add( this.cube );
-        this.set_camera_position( 0, 0, 5 );
+        this.light = new THREE.DirectionalLight( 0xffffff, 1 );
+        this.light.position.z = 5;
+        this.scene.add( this.light );
+        this.set_camera_position( 0, 0, 30 );
         this.animate();
 
     }

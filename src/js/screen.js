@@ -21,7 +21,7 @@ class screen {
     
         // create the camera
         this.camera = new THREE.PerspectiveCamera( 75, this.screenManager.w / this.screenManager.h, 0.1, 1000 );  
-        this.set_camera_position(0, 0, 30);
+        this.set_camera_position(0, 0, 0);
 
         // Save the screen for links
         screen.screens[title] = this;
