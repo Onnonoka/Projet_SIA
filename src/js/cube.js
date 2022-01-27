@@ -1,6 +1,5 @@
 
-
-class cube extends THREE.Mesh {
+class cube extends THREE.Group {
     speed_x = 0;
     speed_y = 0;
     speed_z = 0;
@@ -10,10 +9,26 @@ class cube extends THREE.Mesh {
     key_U = false;
 
     constructor() {
-        const geometry = new THREE.ConeGeometry( 0.5, 1, 4 );
-        const material = new THREE.MeshLambertMaterial( { color: 0x00ff00 } );
-        super( geometry, material );
-        this.animate();
+        super();
+
+        let mtlLoader = new THREE.MTLLoader();
+        mtlLoader.setPath("src/medias/models/");
+        mtlLoader.load( 'Intergalactic_Spaceship-(Wavefront).mtl', ( materials ) => {
+            materials.preload();
+
+            let objLoader = new THREE.OBJLoader();
+            objLoader.setMaterials( materials );
+            objLoader.setPath("src/medias/models/");
+            objLoader.load( 'Intergalactic_Spaceship-(Wavefront).obj', ( object ) => {
+                this.mesh = object.children[0];
+                this.add( this.mesh );
+                this.mesh.rotation.x = Math.PI / 180 * 90;
+                this.mesh.rotation.y = Math.PI / 180 * 180;
+                this.animate();
+
+            });
+
+        });
 
         window.onkeydown = (e) => {
             if ( e.repeat === false ) {
@@ -32,15 +47,12 @@ class cube extends THREE.Mesh {
         };
 
         window.onkeyup = ( e ) => {
-            if ( e.key === "ArrowLeft" ) {
+            if ( e.key === "ArrowLeft" )
                 this.key_L = false;
-            }
-            if ( e.key === "ArrowRight" ) {
+            if ( e.key === "ArrowRight" )
                 this.key_R = false;
-            }
-            if ( e.key === "ArrowUp" ) {
+            if ( e.key === "ArrowUp" )
                 this.key_U = false;
-            }
             
         };
     }
