@@ -1,3 +1,4 @@
+import bullet from "./bullet.js";
 
 class cube extends THREE.Group {
     speed_x = 0;
@@ -10,6 +11,7 @@ class cube extends THREE.Group {
 
     constructor() {
         super();
+        //console.log(this);
 
         let mtlLoader = new THREE.MTLLoader();
         mtlLoader.setPath("src/medias/models/");
@@ -32,13 +34,13 @@ class cube extends THREE.Group {
 
         window.onkeydown = (e) => {
             if ( e.repeat === false ) {
-                if ( e.key == 'ArrowLeft' ) {
+                if ( e.key === 'ArrowLeft' ) {
                     this.key_L = true;
                     this.rotate_left();
-                } else if ( e.key == 'ArrowRight' ) {
+                } else if ( e.key === 'ArrowRight' ) {
                     this.key_R = true;
                     this.rotate_right();
-                } else if ( e.key == 'ArrowUp' ) {
+                } else if ( e.key === 'ArrowUp' ) {
                     this.key_U = true;
                     this.speed_up();
                 }
@@ -53,6 +55,8 @@ class cube extends THREE.Group {
                 this.key_R = false;
             if ( e.key === "ArrowUp" )
                 this.key_U = false;
+            if (e.key === " ") 
+                this.shoot();
             
         };
     }
@@ -77,6 +81,11 @@ class cube extends THREE.Group {
         this.speed_x -= 0.01 * Math.sin( this.rotation.z );
         this.speed_y += 0.01 * Math.cos( this.rotation.z );
 
+    }
+
+    shoot() {
+        let ammo = new bullet(this.rotation.z, this.position.x, this.position.y );
+        this.parent.add( ammo );
     }
 
     animate() {

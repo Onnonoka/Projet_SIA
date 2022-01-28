@@ -3,15 +3,13 @@
 class movable_mesh extends THREE.Group {
 
     speed = {
-        x = 0,
-        y = 0,
-        z = 0
+        x : 0,
+        y : 0,
+        z : 0
     };
 
-    constructor( geometry, material ) {
+    constructor() {
         super();
-        this.mesh = new THREE.Mesh( geometry, material );
-        this.add( this.mesh );
 
     }
 
