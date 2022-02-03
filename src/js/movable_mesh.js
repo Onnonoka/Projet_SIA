@@ -4,11 +4,7 @@
  */
  class movable_mesh extends THREE.Group {
 
-    speed = {
-        x : 0,
-        y : 0,
-        z : 0
-    };
+    speed = new THREE.Vector3( 0, 0,0 );
 
     /**
      * 
@@ -27,8 +23,8 @@
      * @param {number} z the z rotation
      */
     rotate_mesh( x, y, z) {
-        this.mesh.rotation.x = (this.mesh.rotation.z + Math.PI / 180 * x) % (2 * Math.PI);
-        this.mesh.rotation.y = (this.mesh.rotation.z + Math.PI / 180 * y) % (2 * Math.PI);
+        this.mesh.rotation.x = (this.mesh.rotation.x + Math.PI / 180 * x) % (2 * Math.PI);
+        this.mesh.rotation.y = (this.mesh.rotation.y + Math.PI / 180 * y) % (2 * Math.PI);
         this.mesh.rotation.z = (this.mesh.rotation.z + Math.PI / 180 * z) % (2 * Math.PI);
 
     }
@@ -53,8 +49,8 @@
      * @param {number} z the z rotation
      */
     rotate_axies( x, y, z) {
-        this.rotation.x = (this.rotation.z + Math.PI / 180 * x) % (2 * Math.PI);
-        this.rotation.y = (this.rotation.z + Math.PI / 180 * y) % (2 * Math.PI);
+        this.rotation.x = (this.rotation.x + Math.PI / 180 * x) % (2 * Math.PI);
+        this.rotation.y = (this.rotation.y + Math.PI / 180 * y) % (2 * Math.PI);
         this.rotation.z = (this.rotation.z + Math.PI / 180 * z) % (2 * Math.PI);
 
     }
@@ -82,7 +78,7 @@
         this.speed.x = x;
         this.speed.y = y;
         this.speed.z = z;
-        
+
     }
 
 }
