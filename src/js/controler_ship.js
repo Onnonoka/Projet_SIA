@@ -74,8 +74,8 @@ class controler_ship extends movable_mesh {
         if ( !this.fire_on_cooldown ) {
             let ammo = new bullet(this.rotation.z, this.position.x, this.position.y, this );
             this.parent.add( ammo );
-            const helperBB = new THREE.Box3Helper( ammo.BB, 0xffff00 );
-            this.parent.add( helperBB );
+            //const helperBB = new THREE.Box3Helper( ammo.BB, 0xffff00 );
+            //this.parent.add( helperBB );
             this.fire_on_cooldown = true;
             setTimeout( () => {
                 this.fire_on_cooldown = false;
@@ -130,6 +130,10 @@ class controler_ship extends movable_mesh {
 
         // mesh animation
         this.rotate_mesh( 0, THREE.Math.radToDeg(0.05), 0 );
+    }
+
+    handle_collision( target ) {
+        console.log( "handle_ship_collision" ); 
     }
 
 }

@@ -16,9 +16,7 @@ class meteor extends movable_mesh {
         this.speed.y = 0;
         this.mouve_axies( 20, 20, 0 );
 
-        this.BB = new THREE.Box3().setFromObject( this );
-        this.BS = new THREE.Sphere();
-        this.BB.getBoundingSphere( this.BS );
+        //this.BB = new THREE.Box3().setFromObject( this );
 
 
         // animate the meteor
@@ -26,11 +24,19 @@ class meteor extends movable_mesh {
 
     }
 
-    animate() {
-        this.BB.setFromObject( this );
-        requestAnimationFrame( this.animate.bind( this ) );
-
+    update() {
         this.rotate_axies( THREE.Math.radToDeg(0.01), THREE.Math.radToDeg(0.01), 0 );
+        this.BB.setFromObject( this );
+
+    }
+
+    animate() {
+        requestAnimationFrame( this.animate.bind( this ) );
+        this.update();
+    }
+
+    handle_collision( target ) {
+        console.log( "handle_meteor_collision" );
     }
 }
 

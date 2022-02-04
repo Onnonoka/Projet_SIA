@@ -30,63 +30,47 @@ class bullet extends movable_mesh {
         this.set_speed( -1 * Math.sin( this.rotation.z ), 1 * Math.cos( this.rotation.z ), 0 );
         this.hp = 100;
 
-        // create a ray to detect colision
-        this.BB = new THREE.Box3().setFromObject( this );
+        this.mesh.geometry.computeBoundingBox();
+        this.BB = new THREE.Box3().copy( this.mesh.geometry.boundingBox ).applyMatrix4( this.mesh.matrixWorld );
+        console.log(this.mesh.geometry.boundingBox);
 
         // animate the bullet
         this.animate();
 
     }
 
-    detect_colision() {
-        if ( this.parent ) {
-            //console.log(this);
-            //let thisBS = new THREE.Sphere();
-            //this.BB.getBoundingSphere( thisBS );
-            for ( let i = 0; i < this.parent.children.length; i++ ) {
-                if ( this.parent.children[i].type === "meteor" ) {
-                    let otherBB = this.parent.children[i].BB;
-                    //let otherBS = new THREE.Sphere();
-                    //otherBB.getBoundingSphere( otherBS );
-                    //console.log(otherBS);
-                    
-                    //let otherBS = new THREE.Box3().setFromObject( this.parent.children[i] );
-                    let collisionB = this.BB.intersectsBox( otherBB );
-                    //let collisionS = thisBS.intersectsSphere( otherBS );
-                    if (collisionB) {
-                        this.visible = false;
-                        console.log(collisionB); // if collision true
-                    }
-
-                }
-            }
+    handle_collision( target ) {
+        if ( target !== this.source ) {
+            this.hp = 0;
         }
     }
 
     destroy() {
-        console.log(this.type, "is destroyed");
         this.parent.remove(this);
+        this.BB.makeEmpty();
         delete(this);
 
+    }
+
+    update() {
+        this.BB.setFromObject( this );
+        this.detect_collision();
+
+        this.position.x += this.speed.x;
+        this.position.y += this.speed.y;
+        this.hp--;
     }
 
     /**
      * Animate the bullet
      */
     animate() {
-        this.BB.setFromObject( this )
-        // kill the bullet if hp = 0
-        if (this.hp > 0) {
-            requestAnimationFrame( this.animate.bind( this ) );
-            this.detect_colision();
+        if (this.hp <= 0) {
+            this.destroy();
         } else {
-            this.parent.remove( this );
-            delete( this );
+            this.update();
+            requestAnimationFrame( this.animate.bind( this ) );
         }
-
-        this.position.x += this.speed.x;
-        this.position.y += this.speed.y;
-        this.hp--;
 
     }
 }

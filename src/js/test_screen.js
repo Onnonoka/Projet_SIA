@@ -25,7 +25,6 @@ class testScreen extends screen {
      * Redefining the display function of the inherited class
      */
     display() {
-        console.log(THREE);
         this.controler_ship = new controler_ship();
         this.scene.add( this.controler_ship );
         const helper = new THREE.Box3Helper( this.controler_ship.BB, 0xffff00 );
@@ -33,7 +32,6 @@ class testScreen extends screen {
         this.light = new THREE.DirectionalLight( 0xffffff, 1 );
         this.light.position.z = 5;
         this.light.castShadow = true;
-        console.log(this.light);
         this.scene.add( this.light );
         this.meteors.push( new meteor() );
         this.scene.add(this.meteors[0]);

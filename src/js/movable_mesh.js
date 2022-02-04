@@ -13,6 +13,7 @@
     constructor( type ) {
         super();
         this.type = type;
+        this.BB = new THREE.Box3().setFromObject( this );
 
     }
 
@@ -79,6 +80,38 @@
         this.speed.y = y;
         this.speed.z = z;
 
+    }
+
+    /**
+     * detect a collision between 2 object in the scene
+     */
+    detect_collision() {
+        let i = 0;
+        while ( this.parent && this.parent.children[i] ) {
+            if ( this.parent.children[i] !== this && this.parent.children[i].BB ) {
+                let otherBB = this.parent.children[i].BB;
+            
+                let collisionB = this.BB.intersectsBox( otherBB );
+                
+                if (collisionB) {
+                    this.parent.children[i].handle_collision( this );
+                    this.handle_collision( this.parent.children[i] );
+                }
+            }
+            i++;
+        }
+    }
+
+    /**
+     * 
+     */
+    animate() {
+        throw new Error('You have to implement the method animate!');
+    }
+    
+    handle_collision( target ) {
+        throw new Error('You have to implement the method handle_collision!');
+        
     }
 
 }
