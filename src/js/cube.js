@@ -26,7 +26,9 @@ class cube extends THREE.Group {
                 this.add( this.mesh );
                 this.mesh.rotation.x = Math.PI / 180 * 90;
                 this.mesh.rotation.y = Math.PI / 180 * 180;
+                this.compute_hit_box();
                 this.animate();
+                console.log(this);
 
             });
 
@@ -61,6 +63,18 @@ class cube extends THREE.Group {
         };
     }
 
+        /**
+     * compute the hit box of this object
+     */
+         compute_hit_box() {
+            this.mesh.geometry.computeBoundingBox();
+            this.mesh.geometry.computeBoundingSphere();
+            
+            this.BB = new THREE.Box3().copy( this.mesh.geometry.boundingBox );
+            this.BS = new THREE.Sphere().copy( this.mesh.geometry.boundingSphere );
+    
+        }
+
     rotate_left() {
         if ( this.key_L )
             requestAnimationFrame( this.rotate_left.bind( this ) );
@@ -84,7 +98,7 @@ class cube extends THREE.Group {
     }
 
     shoot() {
-        let ammo = new bullet(this.rotation.z, this.position.x, this.position.y );
+        let ammo = new bullet(this.rotation.z, this.position.x, this.position.y, this );
         this.parent.add( ammo );
     }
 
@@ -96,6 +110,9 @@ class cube extends THREE.Group {
         this.position.x += this.speed_x;
         this.position.y += this.speed_y;
 
+    }
+    handle_collision( target ) {
+        console.log( "handle_big_ship_collision" );
     }
 
 }

@@ -10,8 +10,6 @@ import meteor from "./meteor.js";
  */
 class testScreen extends screen {
 
-    meteors = [];
-
     /**
      * Construtor
      * @param {Object} screenManager the screenManager to use send to the upper class
@@ -25,19 +23,20 @@ class testScreen extends screen {
      * Redefining the display function of the inherited class
      */
     display() {
+        //this.cube = new cube();
+        //this.scene.add(this.cube);
         this.controler_ship = new controler_ship();
         this.scene.add( this.controler_ship );
-        const helper = new THREE.Box3Helper( this.controler_ship.BB, 0xffff00 );
-        this.scene.add( helper );
         this.light = new THREE.DirectionalLight( 0xffffff, 1 );
         this.light.position.z = 5;
         this.light.castShadow = true;
         this.scene.add( this.light );
-        this.meteors.push( new meteor() );
-        this.scene.add(this.meteors[0]);
-        const helperBB = new THREE.Box3Helper( this.meteors[0].BB, 0xffff00 );
-        this.scene.add( helperBB );
+        this.metor = new meteor(0, 0, 20, 20, 3 );
+        this.scene.add( this.metor );
+        console.log(this.metor.position);
+        //this.scene.add(  new meteor(0, 0, -20, 20, 3 ) );
         this.set_camera_position( 0, 0, 90 );
+        console.log( this.scene.children );
         this.animate();
 
     }
@@ -47,6 +46,12 @@ class testScreen extends screen {
      */
     animate() {
         requestAnimationFrame( this.animate.bind( this ) );
+        this.detect_collision();
+        this.scene.children.forEach( e => {
+            if (e.animate) {
+                e.animate();
+            }
+        });
 
         this.render();
 

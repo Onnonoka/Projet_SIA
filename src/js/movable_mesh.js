@@ -4,16 +4,29 @@
  */
  class movable_mesh extends THREE.Group {
 
-    speed = new THREE.Vector3( 0, 0,0 );
+    speed = new THREE.Vector3( 0, 0, 0 );
+
+    is_alive = true;
 
     /**
      * 
-     * @param {strings} type the type of the mesh
+     * @param {string} type the type of the mesh
      */
     constructor( type ) {
         super();
         this.type = type;
-        this.BB = new THREE.Box3().setFromObject( this );
+
+    }
+
+    /**
+     * compute the hit box of this object
+     */
+    compute_hit_box() {
+        this.mesh.geometry.computeBoundingBox();
+        this.mesh.geometry.computeBoundingSphere();
+        
+        this.BB = this.mesh.geometry.boundingBox.clone();
+        this.BS = this.mesh.geometry.boundingSphere.clone();
 
     }
 
@@ -81,36 +94,47 @@
         this.speed.z = z;
 
     }
-
+    
     /**
-     * detect a collision between 2 object in the scene
+     * Normalizes the speed of the ship according to its maximum speed
      */
-    detect_collision() {
-        let i = 0;
-        while ( this.parent && this.parent.children[i] ) {
-            if ( this.parent.children[i] !== this && this.parent.children[i].BB ) {
-                let otherBB = this.parent.children[i].BB;
-            
-                let collisionB = this.BB.intersectsBox( otherBB );
-                
-                if (collisionB) {
-                    this.parent.children[i].handle_collision( this );
-                    this.handle_collision( this.parent.children[i] );
-                }
-            }
-            i++;
+     normalize_speed( max_speed) {
+        if ( this.speed.length() > max_speed ) {
+            this.speed.setLength( max_speed );
         }
     }
 
     /**
-     * 
+     * clear the class and delete the instance
+     */
+    clear() {
+        // clear the hit box
+        delete( this.BB );
+        delete( this.BS );
+        delete( this.speed );
+        this.remove( this.mesh );
+        delete( this.mesh );
+        this.parent.remove( this );
+        this.is_alive = false;
+        delete( this );
+    }
+
+    /**
+     * Animate the object
      */
     animate() {
-        throw new Error('You have to implement the method animate!');
+        if ( this.is_alive ) {
+            this.update();
+        }
     }
     
     handle_collision( target ) {
-        throw new Error('You have to implement the method handle_collision!');
+        throw new Error('You have to implement the method handle_collision before using the class!');
+        
+    }
+
+    update() {
+        throw new Error('You have to implement the method update before using the class!');
         
     }
 

@@ -10,7 +10,8 @@ class screen {
 
     /**
      * Construtor
-     * @param {Object} screenManager the screenManager to use
+     * @param {string} title the title of the screen
+     * @param {screenManager} screenManager the screenManager to use
      */
     constructor( title, screenManager ) {
         this.title = title;
@@ -30,8 +31,8 @@ class screen {
 
     /**
      * set the camera size
-     * @param {Number} w width of the container
-     * @param {Number} h height of the container
+     * @param {number} w width of the container
+     * @param {number} h height of the container
      */
     set_camera_size( w, h ) {
         this.camera.aspect = w / h;
@@ -41,9 +42,9 @@ class screen {
 
     /**
      * set the camera position
-     * @param {Number} x the x translation of the camera
-     * @param {Number} y the y translation of the camera
-     * @param {Number} z the z translation of the camera
+     * @param {number} x the x translation of the camera
+     * @param {number} y the y translation of the camera
+     * @param {number} z the z translation of the camera
      */
     set_camera_position(x, y, z) {
         this.camera.position.set(x, y, z);
@@ -60,10 +61,49 @@ class screen {
     }
 
     /**
+     * Detect a collision between 2 object in the scene
+     */
+     detect_collision() {
+        this.scene.children.forEach( obj1 => {
+            if ( obj1.BB && obj1.BS ) {
+                this.scene.children.forEach( obj2 => {
+                    if ( obj2.BB && obj2.BS && obj1 !== obj2 ) {
+                        // Compute bounding box
+                        let obj1_BB = obj1.BB.clone().applyMatrix4( obj1.mesh.matrixWorld );
+                        let obj2_BB = obj2.BB.clone().applyMatrix4( obj2.mesh.matrixWorld );
+                        
+                        // Compute bounding Sphere
+                        let obj1_BS = obj1.BS.clone().applyMatrix4( obj1.mesh.matrixWorld );
+                        let obj2_BS = obj2.BS.clone().applyMatrix4( obj2.mesh.matrixWorld );
+                        
+                        // Compute collisions
+                        let collisionB = obj1_BB.intersectsBox( obj2_BB );
+                        let collisionS = obj1_BS.intersectsSphere( obj2_BS );
+
+                        if ( collisionB && collisionS ) {
+                            console.log( obj1.type, obj2.type );
+                            obj1.handle_collision( obj2 );
+                            obj2.handle_collision( obj1 );
+                        }
+                    }
+                } );
+            }
+        } );
+    }
+
+    /**
      * abstract function. Must be defined before use
      */
     display() {
-        throw new Error('You have to implement the method display!');
+        throw new Error('You have to implement the method display before using this class!');
+
+    }
+
+    /**
+     * abstract function. Must be defined before use
+     */
+    animate() {
+        throw new Error('You have to implement the method animate before using this class!');
 
     }
 

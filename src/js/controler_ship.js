@@ -31,7 +31,7 @@ class controler_ship extends movable_mesh {
         this.add( this.mesh );
 
         // add the bounding box
-        this.BB = new THREE.Box3().setFromObject( this );
+        this.compute_hit_box();
 
         // add controle to the ship
         window.onkeydown = (e) => {
@@ -63,8 +63,11 @@ class controler_ship extends movable_mesh {
             
         };
 
+        //console.log(this.position);
+
         // animate the ship
         this.animate();
+
     }
 
     /**
@@ -74,8 +77,6 @@ class controler_ship extends movable_mesh {
         if ( !this.fire_on_cooldown ) {
             let ammo = new bullet(this.rotation.z, this.position.x, this.position.y, this );
             this.parent.add( ammo );
-            //const helperBB = new THREE.Box3Helper( ammo.BB, 0xffff00 );
-            //this.parent.add( helperBB );
             this.fire_on_cooldown = true;
             setTimeout( () => {
                 this.fire_on_cooldown = false;
@@ -93,47 +94,36 @@ class controler_ship extends movable_mesh {
 
     }
 
-    /**
-     * Normalizes the speed of the ship according to its maximum speed
-     */
-    normalize_speed() {
-        if ( this.speed.length() > this.max_speed ) {
-            this.speed.normalize();
-            this.speed.x *= this.max_speed;
-            this.speed.y *= this.max_speed;
-            this.speed.z *= this.max_speed;
-        }
-    }
-
     update() {
-        this.BB.setFromObject( this );
         // object animation
         if ( this.key_Arrow_Left )
-        this.rotate_axies( 0, 0, THREE.Math.radToDeg( 0.05 ) );
+            this.rotate_axies( 0, 0, THREE.Math.radToDeg( 0.05 ) );
         if ( this.key_Arrow_Right )
-        this.rotate_axies( 0, 0, THREE.Math.radToDeg( -0.05 ) );
+            this.rotate_axies( 0, 0, THREE.Math.radToDeg( -0.05 ) );
         if ( this.key_Arrow_Up )
-        this.speed_up();
+            this.speed_up();
         if ( this.key_Space )
-        this.shoot();
-        this.normalize_speed();
+            this.shoot();
+        this.normalize_speed( this.max_speed );
         this.mouve_axies( this.speed.x, this.speed.y, this.speed.z );
-
-    }
-
-    /**
-     * Animate the ship
-     */
-    animate() {
-        requestAnimationFrame( this.animate.bind( this ) );
-        this.update();
 
         // mesh animation
         this.rotate_mesh( 0, THREE.Math.radToDeg(0.05), 0 );
+
     }
 
     handle_collision( target ) {
-        console.log( "handle_ship_collision" ); 
+        if ( target.type === "bullet" ) {
+            if ( target.source !== this ) {
+                console.log( "handle_ship_collision_with_bullet" ); 
+
+            }
+        } else if ( target.type === "meteor" ) {
+            //console.log(target);
+            //this.clear();
+            console.log( "handle_ship_collision_with_meteor" ); 
+
+        }
     }
 
 }

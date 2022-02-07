@@ -44,8 +44,8 @@ class screenManager {
 
     /**
      * Render the scene
-     * @param {Object} scene the scene to render
-     * @param {Object} camera the camera to render
+     * @param {THREE.Scene} scene the scene to render
+     * @param {THREE.PerspectiveCamera} camera the camera to render
      */
     render(scene, camera) {
         this.renderer.render(scene, camera);
@@ -54,7 +54,7 @@ class screenManager {
 
     /**
      * Change the screen to display
-     * @param {Object} s the new screen to display
+     * @param {screen} s the new screen to display
      */
     set_screen( s ) {
         this.current_screen = s;
@@ -81,7 +81,7 @@ class screenManager {
     
     /**
      * Change the display state of the fps window
-     * @param {Boolean} v the value to display or not the fps
+     * @param {boolean} v the value to display or not the fps
      */
     set_fps( v ) {
         this.option.show_fps = v;
@@ -90,7 +90,7 @@ class screenManager {
     
     /**
      * Change background music volume
-     * @param {Number} v the new volume in range [0 - 100]
+     * @param {number} v the new volume in range [0 - 100]
      */
     set_bgm_volume( v ) {
         this.option.bgm_volume = v;
@@ -99,7 +99,7 @@ class screenManager {
 
     /**
      * Change the volume of sound effects
-     * @param {Number} v the new volume in range [0 - 100]
+     * @param {number} v the new volume in range [0 - 100]
      */
     set_bge_volume( v ) {
         this.option.bge_volume = v;
