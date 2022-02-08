@@ -29,10 +29,6 @@ class meteor extends movable_mesh {
         this.normalize_speed( 0.3 / size );
         this.mouve_axies( pos_x, pos_y, 0 );
 
-        //console.log(this.position);
-        // animate the meteor
-        this.animate();
-
     }
 
     update() {

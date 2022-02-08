@@ -33,10 +33,9 @@ class testScreen extends screen {
         this.scene.add( this.light );
         this.metor = new meteor(0, 0, 20, 20, 3 );
         this.scene.add( this.metor );
-        console.log(this.metor.position);
-        //this.scene.add(  new meteor(0, 0, -20, 20, 3 ) );
         this.set_camera_position( 0, 0, 90 );
-        console.log( this.scene.children );
+        this.call = true;
+
         this.animate();
 
     }
@@ -46,7 +45,6 @@ class testScreen extends screen {
      */
     animate() {
         requestAnimationFrame( this.animate.bind( this ) );
-        this.detect_collision();
         this.scene.children.forEach( e => {
             if (e.animate) {
                 e.animate();
@@ -54,7 +52,13 @@ class testScreen extends screen {
         });
 
         this.render();
+        this.detect_collision();
 
+    }
+
+    log_all( msg ) {
+        console.log(msg, "controler_ship", this.controler_ship.BS.clone());
+        console.log(msg, "meteor", this.metor.BS.clone() );
     }
     
 }

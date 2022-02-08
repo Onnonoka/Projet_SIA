@@ -63,11 +63,12 @@ class screen {
     /**
      * Detect a collision between 2 object in the scene
      */
-     detect_collision() {
-        this.scene.children.forEach( obj1 => {
+    detect_collision() {
+        let collisions = [];
+        this.scene.children.forEach( (obj1, index) => {
             if ( obj1.BB && obj1.BS ) {
-                this.scene.children.forEach( obj2 => {
-                    if ( obj2.BB && obj2.BS && obj1 !== obj2 ) {
+                this.scene.children.slice( index + 1, this.scene.children.length ).forEach( obj2 => {
+                    if ( obj2.BB && obj2.BS ) {
                         // Compute bounding box
                         let obj1_BB = obj1.BB.clone().applyMatrix4( obj1.mesh.matrixWorld );
                         let obj2_BB = obj2.BB.clone().applyMatrix4( obj2.mesh.matrixWorld );
@@ -81,14 +82,16 @@ class screen {
                         let collisionS = obj1_BS.intersectsSphere( obj2_BS );
 
                         if ( collisionB && collisionS ) {
-                            console.log( obj1.type, obj2.type );
-                            obj1.handle_collision( obj2 );
-                            obj2.handle_collision( obj1 );
+                            collisions.push( [ obj1, obj2 ] );
                         }
                     }
                 } );
             }
         } );
+        for ( let i = 0; i < collisions.length; i++ ) {
+            collisions[i][0].handle_collision( collisions[i][1] );
+            collisions[i][1].handle_collision( collisions[i][0] );
+        }
     }
 
     /**

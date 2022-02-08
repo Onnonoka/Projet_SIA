@@ -32,9 +32,6 @@ class bullet extends movable_mesh {
         this.mouve_axies( position_x, position_y, 0 );
         this.set_speed( -1 * Math.sin( this.rotation.z ), 1 * Math.cos( this.rotation.z ), 0 );
         this.hp = 100;
-        
-        // animate the bullet
-        this.animate();
 
     }
 

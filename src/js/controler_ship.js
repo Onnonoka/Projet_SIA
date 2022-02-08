@@ -13,6 +13,8 @@ class controler_ship extends movable_mesh {
 
     fire_on_cooldown = false;
 
+    immune = true;
+
     max_speed = 0.35;
 
     
@@ -62,11 +64,6 @@ class controler_ship extends movable_mesh {
                 this.key_Space = false;
             
         };
-
-        //console.log(this.position);
-
-        // animate the ship
-        this.animate();
 
     }
 
@@ -119,8 +116,7 @@ class controler_ship extends movable_mesh {
 
             }
         } else if ( target.type === "meteor" ) {
-            //console.log(target);
-            //this.clear();
+            this.clear();
             console.log( "handle_ship_collision_with_meteor" ); 
 
         }
