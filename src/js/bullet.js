@@ -10,23 +10,19 @@ class bullet extends movable_mesh {
      * @param {movable_mesh} source the class who create the bullet
      */
     constructor( rotate_z, position_x, position_y, source ) {
-        super( "bullet" );
-        this.source = source;
 
         // Creating the mesh and the texture
         const geometry = new THREE.CylinderGeometry( 5, 5, 20, 32 );
         const material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
-        this.mesh = new THREE.Mesh( geometry, material );
+        const mesh = new THREE.Mesh( geometry, material );
 
-        // add the mesh too the groupe
-        this.add( this.mesh );
+        super( "bullet", mesh );
+        this.source = source;
 
         // set the basic parameter of the bullet
         this.scale.x = 0.05;
         this.scale.y = 0.05;
         this.scale.z = 0.05;
-
-        this.compute_hit_box();
 
         this.rotate_axies(0, 0, THREE.Math.radToDeg( rotate_z ));
         this.mouve_axies( position_x, position_y, 0 );
@@ -42,7 +38,6 @@ class bullet extends movable_mesh {
     handle_collision( target ) {
         if ( target !== this.source ) {
             this.hp = 0;
-            this.clear();
         }
     }
 
@@ -52,6 +47,8 @@ class bullet extends movable_mesh {
     update() {
         this.mouve_axies( this.speed.x, this.speed.y, this.speed.z );
         this.hp--;
+        if ( this.hp === 0 )
+            this.is_dead = true;
         
     }
 

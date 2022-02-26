@@ -7,6 +7,10 @@
 class screen {
 
     static screens = {};
+    // meshs
+    mesh = {};
+    // texture
+    texture = {};
 
     /**
      * Construtor
@@ -21,7 +25,7 @@ class screen {
         this.scene = new THREE.Scene();
     
         // create the camera
-        this.camera = new THREE.PerspectiveCamera( 75, this.screenManager.w / this.screenManager.h, 0.1, 1000 );  
+        this.camera = new THREE.PerspectiveCamera( 90, this.screenManager.w / this.screenManager.h, 1, 10000 );  
         this.set_camera_position(0, 0, 0);
 
         // Save the screen for links
@@ -88,10 +92,81 @@ class screen {
                 } );
             }
         } );
-        for ( let i = 0; i < collisions.length; i++ ) {
-            collisions[i][0].handle_collision( collisions[i][1] );
-            collisions[i][1].handle_collision( collisions[i][0] );
-        }
+        collisions.forEach( e => {
+            e[0].handle_collision( e[1] );
+            e[1].handle_collision( e[0] );
+        } );
+    }
+
+    /**
+     * 
+     */
+    make_in_screen() {
+        // compute the horizontal field of view
+        const horinzontal_fov = 2 * THREE.Math.radToDeg( Math.atan( Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.aspect ) );
+        // compute the width and the height at z = 0
+        const width = Math.tan( THREE.Math.degToRad( horinzontal_fov ) / 2 ) * this.camera.position.z * 2;
+        const height = Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.position.z * 2;
+        this.scene.children.forEach( e => {
+            // teleporte on the other side if the object is not in the camera frustum view
+            // x axies
+            if ( e.position.x > this.camera.position.x + width / 2 ) {
+                e.position.x -= width;
+            } else if ( e.position.x < this.camera.position.x + -width / 2 ) {
+                e.position.x += width;
+            }
+            // y axis
+            if ( e.position.y > this.camera.position.y + height / 2 ) {
+                e.position.y -= height;
+            } else if ( e.position.y < this.camera.position.y + -height / 2 ) {
+                e.position.y += height;
+            }
+        } );
+    }
+
+    /**
+     * Async load of 3D .obj model
+     * @param {*} name 
+     * @param {*} path 
+     * @returns 
+     */
+    load_model( name, path ) {
+        let mtlLoader = new THREE.MTLLoader();
+        let objLoader = new THREE.OBJLoader();
+        return new Promise( (resolve) => {
+            mtlLoader.setPath("src/medias/models/");
+            mtlLoader.load( path + ".mtl", ( materials ) => {
+                materials.preload();
+
+                objLoader.setMaterials( materials );
+                objLoader.setPath("src/medias/models/");
+                objLoader.load( path + ".obj", ( object ) => {
+                    this.mesh[name] = object.children[0];
+                    resolve();
+                });
+            });
+        })
+    }
+
+    load_skybox( name, path ) {
+        return new Promise( (resolve) => {
+            const basePath = "../src/medias/images/";
+            const fileType = ".png";
+            const sides = ["Front", "Back", "Up", "Down", "Right", "Left"];
+            const pathStings = sides.map(side => {
+                return basePath + path + "/" + side + fileType;
+            });
+            const TextureArray = pathStings.map(image => {
+                return new THREE.TextureLoader().load(image);
+            });
+            const materialArray = TextureArray.map(texture => {
+                return new THREE.MeshBasicMaterial({ map: texture, side: THREE.BackSide });
+            });
+            console.log(materialArray);
+            this.texture[name] = materialArray;
+            resolve();
+        } );
+        
     }
 
     /**
@@ -110,6 +185,7 @@ class screen {
 
     }
 
-}
+
+} 
 
 export default screen;

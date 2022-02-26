@@ -29,6 +29,8 @@ class screenManager {
         this.container.appendChild(this.renderer.domElement);
 
         window.addEventListener( 'resize', this.resize.bind( this ) );
+
+        
         
     }
 
@@ -59,7 +61,7 @@ class screenManager {
     set_screen( s ) {
         this.current_screen = s;
         this.current_screen.set_camera_size(this.w, this.h);
-        this.current_screen.display();
+        //this.current_screen.display();
 
     }
 

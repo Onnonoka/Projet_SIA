@@ -6,15 +6,18 @@
 
     speed = new THREE.Vector3( 0, 0, 0 );
 
-    is_alive = true;
+    is_dead = false;
 
     /**
-     * 
+     * Constructor
      * @param {string} type the type of the mesh
      */
-    constructor( type ) {
+    constructor( type, mesh ) {
         super();
         this.type = type;
+        this.mesh = mesh;
+        this.add( mesh );
+        this.compute_hit_box();
 
     }
 
@@ -115,7 +118,7 @@
         this.remove( this.mesh );
         delete( this.mesh );
         this.parent.remove( this );
-        this.is_alive = false;
+        this.is_dead = true;
         delete( this );
     }
 
@@ -123,9 +126,7 @@
      * Animate the object
      */
     animate() {
-        if ( this.is_alive ) {
-            this.update();
-        }
+        this.update();
     }
     
     handle_collision( target ) {

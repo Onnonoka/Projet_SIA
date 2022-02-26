@@ -1,0 +1,93 @@
+# Blender MTL File: 'None'
+# Material Count: 7
+
+newmtl mat_cannonrail
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump ..\\images\\textures\\ship_8\\mat_cannonrail_normal.png
+map_Kd ..\\images\\textures\\ship_8\\mat_cannonrail_baseColor.png
+map_Ke ..\\images\\textures\\ship_8\\mat_cannonrail_emissive.png
+
+newmtl mat_deck
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump ..\\images\\textures\\ship_8\\mat_deck_normal.png
+map_Kd ..\\images\\textures\\ship_8\\mat_deck_baseColor.png
+map_Ke ..\\images\\textures\\ship_8\\mat_deck_emissive.png
+
+newmtl mat_engine
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump ..\\images\\textures\\ship_8\\mat_engine_normal.png
+map_Kd ..\\images\\textures\\ship_8\\mat_engine_baseColor.png
+map_Ke ..\\images\\textures\\ship_8\\mat_engine_emissive.png
+
+newmtl mat_hull
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump ..\\images\\textures\\ship_8\\mat_hull_normal.png
+map_Kd ..\\images\\textures\\ship_8\\mat_hull_baseColor.png
+map_Ke ..\\images\\textures\\ship_8\\mat_hull_emissive.png
+
+newmtl mat_miraclecannon
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump ..\\images\\textures\\ship_8\\mat_miraclecannon_normal.png
+map_Kd ..\\images\\textures\\ship_8\\mat_miraclecannon_baseColor.png
+map_Ke ..\\images\\textures\\ship_8\\mat_miraclecannon_emissive.png
+
+newmtl mat_sexybeam
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump ..\\images\\textures\\ship_8\\mat_sexybeam_normal.png
+map_Kd ..\\images\\textures\\ship_8\\mat_sexybeam_baseColor.png
+map_Ke ..\\images\\textures\\ship_8\\mat_sexybeam_emissive.png
+
+newmtl mat_superstructure
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump ..\\images\\textures\\ship_8\\mat_superstructure_normal.png
+map_Kd ..\\images\\textures\\ship_8\\mat_superstructure_baseColor.png
+map_Ke ..\\images\\textures\\ship_8\\mat_superstructure_emissive.png

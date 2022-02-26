@@ -9,11 +9,19 @@
 <body>
 
 	<div id="app"><!-- La 3D insérée ici --></div>
+	<div id="hud">
+		<div id="score"></div>
+		<div id="weapon"></div>
+		<div id="life"></div>
+		<div id="message"></div>
+		<div id="action_request"></div>
+	</div>
 
     <!-- bibliothèques Three.js -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r124/three.js"></script>
 	<script src="http://threejs.org/examples/js/loaders/MTLLoader.js"></script>
 	<script src="http://threejs.org/examples/js/loaders/OBJLoader.js"></script>
+	<script src="http://threejs.org/examples/js/controls/TrackballControls.js"></script>
 
     <!-- Code personnel -->
     <script type="module" src="src/js/index.js"></script>
