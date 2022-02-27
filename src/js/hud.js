@@ -16,20 +16,28 @@ class hud {
         this.message_container.innerHTML = message;
     }
 
-    set_score( score = "0 0 0 0" ) {
+    set_score( score = "" ) {
         this.score_container.innerHTML = score;
     }
 
-    set_life( life = "0" ) {
+    set_life( life = "" ) {
         this.life_container.innerHTML = life;
     }
 
-    set_weapon( weapon = "00" ) {
+    set_weapon( weapon = "" ) {
         this.weapon_container.innerHTML = weapon;
     }
 
     set_action_request( message = "" ) {
         this.action_request_container.innerHTML = message;
+    }
+
+    clear() {
+        this.set_message();
+        this.set_score();
+        this.set_life();
+        this.set_weapon();
+        this.set_action_request();
     }
 
 }

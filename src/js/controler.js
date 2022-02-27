@@ -19,10 +19,10 @@ class controler {
 
         // going to be deleted
         //-------------------------------------------------------------------------------------------------
-        this.controls = new THREE.TrackballControls( this.vue.camera, this.model.render_config.container );
+        /*this.controls = new THREE.TrackballControls( this.vue.camera, this.model.render_config.container );
         this.controls.target = new THREE.Vector3(0, 0, 0);
         this.controls.panSpeed = 1;
-        this.controls.autoRotate = true;
+        this.controls.autoRotate = true;*/
         //-------------------------------------------------------------------------------------------------
 
         // Creating the render area container
@@ -65,17 +65,18 @@ class controler {
     animate() {
         requestAnimationFrame( this.animate.bind( this ) );
         console.log("rendered");
-        this.vue.update();
-        this.handle_key();
         // Going to be deleted
         //--------------------------------------------------
-        this.controls.update();
+        //this.controls.update();
         //--------------------------------------------------
         this.vue.render();
+        this.vue.update();
+        this.handle_key();
 
     }
 
     handle_key() {
+        // Handle key press in the menu
         if ( this.model.game_status.in_start_menu ) {
             if ( this.model.key_press[" "] ) {
                 this.model.game_status.in_start_menu = false;
@@ -83,10 +84,13 @@ class controler {
                 this.vue.generate_lvl_1();
                 this.model.game_status.in_lvl = true;
                 this.model.current_lvl = 1;
+                this.model.game_status.detect_exit_screen = true;
+                this.model.game_status.detect_collision = true;
                 setTimeout( () => {
                     this.model.player_data.on_cooldown = false
                 }, 500 );
             }
+        // Handle key press in game
         } else if ( this.model.game_status.in_lvl ) {
             if ( this.model.key_press[" "] ) {
                 if ( !this.model.player_data.on_cooldown ) {

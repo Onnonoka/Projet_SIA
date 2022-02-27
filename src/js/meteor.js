@@ -11,8 +11,9 @@ class meteor extends movable_mesh {
      * @param {number} size The number of times it can decay
      */
     constructor( speed_x = 0, speed_y = 0, pos_x = 0, pos_y = 0, size = 1, mesh) {
-        
-        super( "meteor", mesh );
+        const geometrie = new THREE.DodecahedronGeometry( 3, 0);
+        const material = new THREE.MeshPhongMaterial( {color: 0x00ff00} );
+        super( "meteor", new THREE.Mesh( geometrie, material ) );
         this.size = size;
 
         // meteor placement and speed

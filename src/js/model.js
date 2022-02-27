@@ -14,7 +14,7 @@ class model {
     };
 
     render_config = {
-        container: ""
+        container: {}
     };
 
     scene_object = {
@@ -37,7 +37,11 @@ class model {
         in_start_menu: false,
         in_lvl: false,
         current_lvl: 0,
-        in_animation: false
+        in_animation: false,
+
+        detect_exit_screen: false,
+        detect_collision: false,
+        camera_follow_player: true
     }
 
     /**
@@ -77,8 +81,8 @@ class model {
      * @returns Promise, resolve when the load is complete
      */
      load_mesh( name, path ) {
-        let mtlLoader = new THREE.MTLLoader();
-        let objLoader = new THREE.OBJLoader();
+        const mtlLoader = new THREE.MTLLoader();
+        const objLoader = new THREE.OBJLoader();
         return new Promise( (resolve) => {
             // Load mtl file
             mtlLoader.setPath("src/medias/models/");
@@ -120,19 +124,6 @@ class model {
             resolve();
         } );
         
-    }
-
-    load_material( name, path ) {
-        const basePath = "../src/medias/images/textures/" + path + "/";
-        const fileType = ".png";
-        const mat = new THREE.MeshPhongMaterial();
-        const mat_2 = new THREE.MeshPhongMaterial();
-        const emissive_texture = new THREE.TextureLoader().load( basePath + "emissive" + fileType );
-        const base_color_texture = new THREE.TextureLoader().load( basePath + "base_color_1" + fileType );
-        const base_color_texture_2 = new THREE.TextureLoader().load( basePath + "base_color_2" + fileType );
-        mat.emissiveMap = emissive_texture;
-        mat.map = base_color_texture;
-        this.preloaded_materials[name] = mat;
     }
 
     /**
