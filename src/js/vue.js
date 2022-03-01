@@ -1,8 +1,8 @@
 
 import hud from "./hud.js";
-import ship from "./ship.js";
-import bullet from "./bullet.js";
-import meteor from "./meteor.js"
+import ship from "./object3D/ship.js";
+import bullet from "./object3D/bullet.js";
+import meteor from "./object3D/meteor.js"
 
 class vue {
     type = "vue";
@@ -36,14 +36,14 @@ class vue {
         this.model.render_config.h = this.model.render_config.container.clientHeight;
         this.camera.aspect = this.model.render_config.w / this.model.render_config.h;
         this.camera.updateProjectionMatrix();
-        this.model.renderer.setSize(this.model.render_config.w, this.model.render_config.h);
+        this.model.renderer.setSize( this.model.render_config.w, this.model.render_config.h );
     }
 
     /**
      * Renders the scene and the camera
      */
     render() {
-        this.model.renderer.render(this.scene, this.camera);
+        this.model.renderer.render( this.scene, this.camera );
     }
 
     /**
@@ -80,24 +80,30 @@ class vue {
 
         // Added stage lights
         //this.scene_object.lights.ambiant_light = new THREE.AmbientLight( 0xffffff, 7 );
-        const directional_light = new THREE.DirectionalLight( 0xffffff, 7 );
+        const directional_light = new THREE.DirectionalLight( 0xffffff, 5 );
         directional_light.position.z = 10;
         directional_light.position.x = -40; 
         directional_light.position.y = 15;       
-        directional_light.position.multiplyScalar(5.0);
+        directional_light.position.multiplyScalar( 5.0 );
         directional_light.shadow.mapSize.width = 512;
         directional_light.shadow.mapSize.width = 512;
         directional_light.castShadow = true;
         //this.scene.add( this.scene_object.lights.ambiant_light );
         this.model.scene_object.lights.directional_light = directional_light;
         this.scene.add( this.model.scene_object.lights.directional_light );
+        const dir_helper = new THREE.DirectionalLightHelper( directional_light, 1 );
+        this.scene.add( dir_helper );
 
         // Added the player
         const player_mesh = this.model.preloaded_mesh.ship_14.clone();
         player_mesh.rotation.x = THREE.Math.degToRad( 90 );
-        player_mesh.rotation.y = THREE.Math.degToRad(180);
+        player_mesh.rotation.y = THREE.Math.degToRad( 180 );
+        console.log(player_mesh.material);
+        //player_mesh.material = new THREE.MeshStandardMaterial().copy( player_mesh.material );
         this.model.scene_object.foreground.player = new ship( player_mesh );
         this.scene.add( this.model.scene_object.foreground.player );
+
+        console.log(player_mesh);
 
         // Set the hud
         this.hud.set_action_request( "Press start" );
@@ -132,7 +138,7 @@ class vue {
 
         // Added stage lights
         //this.scene_object.lights.ambiant_light = new THREE.AmbientLight( 0xffffff, 7 );
-        const directional_light = new THREE.DirectionalLight( 0xffffff, 7 );
+        const directional_light = new THREE.DirectionalLight( 0xffffff, 1 );
         directional_light.position.z = 10;
         directional_light.position.x = -40; 
         directional_light.position.y = 15;       
@@ -148,6 +154,7 @@ class vue {
         const player_mesh = this.model.preloaded_mesh.ship_14.clone();
         player_mesh.rotation.x = THREE.Math.degToRad( 90 );
         player_mesh.rotation.y = THREE.Math.degToRad( 180 );
+        player_mesh.geometry.normalizeNormals();
         this.model.scene_object.foreground.player = new ship( player_mesh );
         this.scene.add( this.model.scene_object.foreground.player );
 
@@ -175,12 +182,12 @@ class vue {
     update() {
         this.clear_dead_bullet();
         Object.keys( this.model.scene_object.foreground ).forEach( ( key ) => {
-            if ( Array.isArray( this.model.scene_object.foreground[key] ) ) {
+            if ( Array.isArray( this.model.scene_object.foreground[ key ] ) ) {
                 this.model.scene_object.foreground[key].forEach( ( object ) => {
                     object.update();
                 });
             } else {
-                this.model.scene_object.foreground[key].update();
+                this.model.scene_object.foreground[ key ].update();
             }
         });
         if ( this.model.game_status.detect_exit_screen )
@@ -197,14 +204,14 @@ class vue {
             this.camera.position.x = this.model.scene_object.foreground.player.position.x;
             this.camera.position.y = this.model.scene_object.foreground.player.position.y;
             Object.keys( this.model.scene_object.foreground ).forEach( ( key ) => {
-                if ( Array.isArray( this.model.scene_object.foreground[key] ) ) {
-                    this.model.scene_object.foreground[key].forEach( ( object ) => {
+                if ( Array.isArray( this.model.scene_object.foreground[ key ] ) ) {
+                    this.model.scene_object.foreground[ key ].forEach( ( object ) => {
                         object.position.x -= this.camera.position.x;
                         object.position.y -= this.camera.position.y;
                     });
                 } else {
-                    this.model.scene_object.foreground[key].position.x -= this.camera.position.x;
-                    this.model.scene_object.foreground[key].position.y -= this.camera.position.y;
+                    this.model.scene_object.foreground[ key ].position.x -= this.camera.position.x;
+                    this.model.scene_object.foreground[ key ].position.y -= this.camera.position.y;
                 }
             });
             this.camera.position.x = 0;
@@ -216,14 +223,14 @@ class vue {
      * Rotate the player ship on the left
      */
     rotate_player_left() {
-        this.model.scene_object.foreground.player.rotate_axies( 0, 0, THREE.Math.radToDeg(0.05) );
+        this.model.scene_object.foreground.player.rotate_axies( 0, 0, THREE.Math.radToDeg( 0.05 ) );
     }
 
     /**
      * Rotate the player ship on the right
      */
     rotate_player_right() {
-        this.model.scene_object.foreground.player.rotate_axies( 0, 0, THREE.Math.radToDeg(-0.05) );
+        this.model.scene_object.foreground.player.rotate_axies( 0, 0, THREE.Math.radToDeg( -0.05 ) );
     }
 
     /**
@@ -253,8 +260,12 @@ class vue {
         this.model.scene_object.foreground.player.speed_up();
     }
 
-    set_toon_materials() {
-
+    set_phong_materials() {
+        const player_mat = this.model.scene_object.foreground.player.mesh.material;
+        console.log(player_mat);
+        const phong_mat = new THREE.MeshStandardMaterial().copy(player_mat);
+        //THREE.MeshStandardMaterial.prototype.copy.call( phong_mat, player_mat );
+        this.model.scene_object.foreground.player.mesh.material = phong_mat;
     }
 
     /**
@@ -270,8 +281,8 @@ class vue {
             });
             dead_bullet.forEach( (bullet) => {
                 const index = this.model.scene_object.foreground.bullet.indexOf( bullet );
-                if (index > -1) {
-                    this.model.scene_object.foreground.bullet.splice(index, 1);
+                if ( index > -1 ) {
+                    this.model.scene_object.foreground.bullet.splice( index, 1 );
                     this.scene.remove( bullet );
                 }
             });
@@ -288,7 +299,7 @@ class vue {
         const width = Math.tan( THREE.Math.degToRad( horinzontal_fov ) / 2 ) * this.camera.position.z * 2;
         const height = Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.position.z * 2;
         Object.keys( this.model.scene_object.foreground ).forEach( key => {
-            const e = this.model.scene_object.foreground[key];
+            const e = this.model.scene_object.foreground[ key ];
             const replace_object = ( object ) => {
                 // x axies
                 if ( object.position.x > this.camera.position.x + width / 2 ) {
@@ -314,6 +325,7 @@ class vue {
         } );
     }
 
+    
     /**
      * Detect a collision between 2 object in the scene
      */
@@ -353,35 +365,36 @@ class vue {
             }
         } );
         collisions.forEach( e => {
-            e[0].handle_collision( e[1] );
-            e[1].handle_collision( e[0] );
+            e[ 0 ].handle_collision( e[ 1 ] );
+            e[ 1 ].handle_collision( e[ 0 ] );
         } );
     }
+
 
     /**
      * Clear the scene
      */
     clear_scene() {
         // Remove all background object
-        Object.keys( this.model.scene_object.background ).forEach( (key) => {
-            this.scene.remove( this.model.scene_object.background[key] );
-            delete( this.model.scene_object.background[key] );
+        Object.keys( this.model.scene_object.background ).forEach( key => {
+            this.scene.remove( this.model.scene_object.background[ key ] );
+            delete( this.model.scene_object.background[ key ] );
         });
         // Remove all foreground object
-        Object.keys( this.model.scene_object.foreground ).forEach( (key) => {
-            if ( Array.isArray( this.model.scene_object.foreground[key] ) ) {
-                this.model.scene_object.foreground[key].forEach( e => {
+        Object.keys( this.model.scene_object.foreground ).forEach( key => {
+            if ( Array.isArray( this.model.scene_object.foreground[ key ] ) ) {
+                this.model.scene_object.foreground[ key ].forEach( e => {
                     this.scene.remove( e );
                 } );
             } else {
-                this.scene.remove( this.model.scene_object.foreground[key] );
+                this.scene.remove( this.model.scene_object.foreground[ key ] );
             }
-            delete( this.model.scene_object.foreground[key] )
+            delete( this.model.scene_object.foreground[ key ] )
         });
         // Remove all light
-        Object.keys( this.model.scene_object.lights ).forEach( (key) => {
-            this.scene.remove( this.model.scene_object.lights[key] );
-            delete( this.model.scene_object.lights[key] )
+        Object.keys( this.model.scene_object.lights ).forEach( key => {
+            this.scene.remove( this.model.scene_object.lights[ key ] );
+            delete( this.model.scene_object.lights[ key ] )
         });
         // reset the hud
         this.hud.clear();

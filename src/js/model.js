@@ -41,7 +41,8 @@ class model {
 
         detect_exit_screen: false,
         detect_collision: false,
-        camera_follow_player: true
+        camera_follow_player: false,
+        everything_mouve: false
     }
 
     /**
@@ -85,15 +86,15 @@ class model {
         const objLoader = new THREE.OBJLoader();
         return new Promise( (resolve) => {
             // Load mtl file
-            mtlLoader.setPath("src/medias/models/");
+            mtlLoader.setPath( "src/medias/models/" );
             mtlLoader.load( path + ".mtl", ( materials ) => {
                 materials.preload();
 
                 // Load obj file
                 objLoader.setMaterials( materials );
-                objLoader.setPath("src/medias/models/");
+                objLoader.setPath( "src/medias/models/" );
                 objLoader.load( path + ".obj", ( object ) => {
-                    this.preloaded_mesh[name] = object.children[0];
+                    this.preloaded_mesh[ name ] = object.children[ 0 ];
                     resolve();
                 });
             });
@@ -110,17 +111,17 @@ class model {
         return new Promise( (resolve) => {
             const basePath = "../src/medias/images/";
             const fileType = ".png";
-            const sides = ["Front", "Back", "Up", "Down", "Right", "Left"];
+            const sides = [ "Front", "Back", "Up", "Down", "Right", "Left" ];
             const pathStings = sides.map(side => {
                 return basePath + path + "/" + side + fileType;
             });
-            const TextureArray = pathStings.map(image => {
-                return new THREE.TextureLoader().load(image);
+            const TextureArray = pathStings.map( image => {
+                return new THREE.TextureLoader().load( image );
             });
-            const materialArray = TextureArray.map(texture => {
-                return new THREE.MeshBasicMaterial({ map: texture, side: THREE.BackSide });
+            const materialArray = TextureArray.map( texture => {
+                return new THREE.MeshBasicMaterial( { map: texture, side: THREE.BackSide } );
             });
-            this.preloaded_materials[name] = materialArray;
+            this.preloaded_materials[ name ] = materialArray;
             resolve();
         } );
         

@@ -10,19 +10,19 @@ class controler {
      */
     constructor( model, vue ) {
         if ( model.type !== "model" )
-            throw ("The model is not and model object!");
+            throw ( "The model is not and model object!" );
         if ( vue.type !== "vue" )
-            throw ("The vue is not and vue object!");
+            throw ( "The vue is not and vue object!" );
 
         this.model = model;
         this.vue = vue;
 
         // going to be deleted
         //-------------------------------------------------------------------------------------------------
-        /*this.controls = new THREE.TrackballControls( this.vue.camera, this.model.render_config.container );
+        this.controls = new THREE.TrackballControls( this.vue.camera, this.model.render_config.container );
         this.controls.target = new THREE.Vector3(0, 0, 0);
         this.controls.panSpeed = 1;
-        this.controls.autoRotate = true;*/
+        this.controls.autoRotate = true;
         //-------------------------------------------------------------------------------------------------
 
         // Creating the render area container
@@ -34,18 +34,19 @@ class controler {
         const renderer = new THREE.WebGLRenderer( renderConfig );
         renderer.setPixelRatio( window.devicePixelRatio );
         renderer.setSize( w, h );
+        renderer.toneMapping = THREE.ReinhardToneMapping;
         this.model.render_config.container.appendChild( renderer.domElement );
 
         // Store the render
         this.model.set_renderer( renderer );
 
         // Key controle
-        window.onkeydown = (e) => {
+        window.onkeydown = e => {
             if ( e.repeat === false )
-                this.model.key_press[e.key] = true;
+                this.model.key_press[ e.key ] = true;
         };
-        window.onkeyup = (e) => {
-            this.model.key_press[e.key] = false;
+        window.onkeyup = e => {
+            this.model.key_press[ e.key ] = false;
         };
 
         // On resize
@@ -64,10 +65,10 @@ class controler {
 
     animate() {
         requestAnimationFrame( this.animate.bind( this ) );
-        console.log("rendered");
+        console.log( "rendered" );
         // Going to be deleted
         //--------------------------------------------------
-        //this.controls.update();
+        this.controls.update();
         //--------------------------------------------------
         this.vue.render();
         this.vue.update();
@@ -78,7 +79,7 @@ class controler {
     handle_key() {
         // Handle key press in the menu
         if ( this.model.game_status.in_start_menu ) {
-            if ( this.model.key_press[" "] ) {
+            if ( this.model.key_press[ " " ] ) {
                 this.model.game_status.in_start_menu = false;
                 this.vue.clear_scene();
                 this.vue.generate_lvl_1();
@@ -92,7 +93,7 @@ class controler {
             }
         // Handle key press in game
         } else if ( this.model.game_status.in_lvl ) {
-            if ( this.model.key_press[" "] ) {
+            if ( this.model.key_press[ " " ] ) {
                 if ( !this.model.player_data.on_cooldown ) {
                     this.vue.shoot();
                     this.model.player_data.on_cooldown = true;
@@ -101,18 +102,21 @@ class controler {
                     }, 500 );
                 }
             }
-            if ( this.model.key_press["ArrowLeft"] ) {
+            if ( this.model.key_press[ "ArrowLeft" ] ) {
                 this.vue.rotate_player_left();
             }
-            if ( this.model.key_press["ArrowRight"] ) {
+            if ( this.model.key_press[ "ArrowRight" ] ) {
                 this.vue.rotate_player_right();
             }
-            if ( this.model.key_press["ArrowUp"] ) {
+            if ( this.model.key_press[ "ArrowUp" ] ) {
                 this.vue.set_player_max_speed( 0.6 );
                 this.vue.speed_up_player();
             } else {
                 this.vue.set_player_max_speed( 0.35 );
             }
+        }
+        if ( this.model.key_press[ "m" ] ) {
+            this.vue.set_phong_materials();
         }
     }
 }

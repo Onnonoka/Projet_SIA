@@ -1,10 +1,9 @@
-import movable_mesh from "./movable_mesh.js";
-import bullet from "./bullet.js";
+import ship from "./ship.js";
 
 /**
  * 
  */
-class enemie_ship extends movable_mesh {
+class enemie_ship extends ship {
 
     fire_on_cooldown = false;
 
@@ -15,46 +14,12 @@ class enemie_ship extends movable_mesh {
      * Constructor
      */
     constructor() {
-        super( "enemie_ship" );
-
-        // Creating the mesh and the texture
+        
         const geometry = new THREE.ConeGeometry( 1, 2, 4 );
         const material = new THREE.MeshPhongMaterial( { color: 0xff0000 } );
-        this.mesh = new THREE.Mesh( geometry, material );
-
-        // add the mesh too the groupe
-        this.add( this.mesh );
-        //this.set_speed(-1, -1, 0);
-        //this.normalize_speed( this.max_speed );
-        
-        // add the bounding box
-        this.compute_hit_box();
-
+        super( "enemie_ship", new THREE.Mesh( geometry, material ) );
     }
 
-    /**
-     * shoot a bullet
-     */
-    shoot() {
-        if ( !this.fire_on_cooldown ) {
-            let ammo = new bullet(this.rotation.z, this.position.x, this.position.y, this );
-            this.parent.add( ammo );
-            this.fire_on_cooldown = true;
-            setTimeout( () => {
-                this.fire_on_cooldown = false;
-            }, 500 );
-        }
-        
-    }
-
-    /**
-     * Accelerate
-     */
-    speed_up() {
-        this.speed.x -= 0.01 * Math.sin( this.rotation.z );
-        this.speed.y += 0.01 * Math.cos( this.rotation.z );
-
-    }
 
     update() {
         // object animation

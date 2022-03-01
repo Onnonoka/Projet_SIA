@@ -10,7 +10,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Bump ..\\images\\textures\\ship_5\\base_normal.jpeg
+norm ..\\images\\textures\\ship_5\\base_normal.jpeg
 map_Kd ..\\images\\textures\\ship_5\\base_baseColor.png
 
 newmtl wings
@@ -22,5 +22,5 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Bump ..\\images\\textures\\ship_5\\wings_normal.jpeg
+norm ..\\images\\textures\\ship_5\\wings_normal.jpeg
 map_Kd ..\\images\\textures\\ship_5\\wings_baseColor.png

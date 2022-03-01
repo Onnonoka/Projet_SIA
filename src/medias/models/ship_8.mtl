@@ -10,7 +10,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Bump ..\\images\\textures\\ship_8\\mat_cannonrail_normal.png
+norm ..\\images\\textures\\ship_8\\mat_cannonrail_normal.png
 map_Kd ..\\images\\textures\\ship_8\\mat_cannonrail_baseColor.png
 map_Ke ..\\images\\textures\\ship_8\\mat_cannonrail_emissive.png
 
@@ -23,7 +23,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Bump ..\\images\\textures\\ship_8\\mat_deck_normal.png
+norm ..\\images\\textures\\ship_8\\mat_deck_normal.png
 map_Kd ..\\images\\textures\\ship_8\\mat_deck_baseColor.png
 map_Ke ..\\images\\textures\\ship_8\\mat_deck_emissive.png
 
@@ -36,7 +36,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Bump ..\\images\\textures\\ship_8\\mat_engine_normal.png
+norm ..\\images\\textures\\ship_8\\mat_engine_normal.png
 map_Kd ..\\images\\textures\\ship_8\\mat_engine_baseColor.png
 map_Ke ..\\images\\textures\\ship_8\\mat_engine_emissive.png
 
@@ -49,7 +49,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Bump ..\\images\\textures\\ship_8\\mat_hull_normal.png
+norm ..\\images\\textures\\ship_8\\mat_hull_normal.png
 map_Kd ..\\images\\textures\\ship_8\\mat_hull_baseColor.png
 map_Ke ..\\images\\textures\\ship_8\\mat_hull_emissive.png
 
@@ -62,7 +62,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Bump ..\\images\\textures\\ship_8\\mat_miraclecannon_normal.png
+norm ..\\images\\textures\\ship_8\\mat_miraclecannon_normal.png
 map_Kd ..\\images\\textures\\ship_8\\mat_miraclecannon_baseColor.png
 map_Ke ..\\images\\textures\\ship_8\\mat_miraclecannon_emissive.png
 
@@ -75,7 +75,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Bump ..\\images\\textures\\ship_8\\mat_sexybeam_normal.png
+norm ..\\images\\textures\\ship_8\\mat_sexybeam_normal.png
 map_Kd ..\\images\\textures\\ship_8\\mat_sexybeam_baseColor.png
 map_Ke ..\\images\\textures\\ship_8\\mat_sexybeam_emissive.png
 
@@ -88,6 +88,6 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Bump ..\\images\\textures\\ship_8\\mat_superstructure_normal.png
+norm ..\\images\\textures\\ship_8\\mat_superstructure_normal.png
 map_Kd ..\\images\\textures\\ship_8\\mat_superstructure_baseColor.png
 map_Ke ..\\images\\textures\\ship_8\\mat_superstructure_emissive.png

@@ -10,7 +10,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Bump ..\\images\\textures\\ship_2\\SETS1_normal.png
+norm ..\\images\\textures\\ship_2\\SETS1_normal.png
 map_Kd ..\\images\\textures\\ship_2\\SETS1_baseColor.png
 map_Ke ..\\images\\textures\\ship_2\\SETS1_emissive.png
 
@@ -23,5 +23,5 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Bump ..\\images\\textures\\ship_2\\SETS2_normal.png
+norm ..\\images\\textures\\ship_2\\SETS2_normal.png
 map_Kd ..\\images\\textures\\ship_2\\SETS2_baseColor.png

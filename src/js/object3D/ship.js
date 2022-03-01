@@ -1,5 +1,4 @@
 import movable_mesh from "./movable_mesh.js";
-import bullet from "./bullet.js";
 
 /**
  * 
@@ -8,7 +7,7 @@ class ship extends movable_mesh {
 
     fire_on_cooldown = false;
 
-    immune = true;
+    is_affected_by_gravity = false;
 
     max_speed = 0.35;
 
@@ -18,7 +17,6 @@ class ship extends movable_mesh {
      */
     constructor( ship ) {
         super( "ship", ship );
-
     }
 
     /**

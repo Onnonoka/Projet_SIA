@@ -1,8 +1,5 @@
 "uses strict";
 
-import screenManager from "./screenManager.js";
-import test_screen from "./test_screen.js";
-import game_screen from "./game_screen.js";
 import model from "./model.js";
 import vue from "./vue.js";
 import controler from "./controler.js";

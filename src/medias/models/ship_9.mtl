@@ -10,6 +10,6 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.500000
 d 1.000000
 illum 2
-map_Bump -bm 0.750000 ..\\images\\textures\\ship_9\\Map__6_Normal_Bump.tga
+norm -bm 0.750000 ..\\images\\textures\\ship_9\\Map__6_Normal_Bump.tga
 map_Kd ..\\images\\textures\\ship_9\\SF_Fighter-Albedo.jpg
 map_Ke ..\\images\\textures\\ship_9\\SF_Fighter-Glow.jpg
