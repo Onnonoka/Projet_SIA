@@ -37,7 +37,7 @@ class bullet extends movable_mesh {
      */
     handle_collision( target ) {
         if ( target !== this.source ) {
-            this.hp = 0;
+            this.is_dead = true;
         }
     }
 
@@ -47,7 +47,7 @@ class bullet extends movable_mesh {
     update() {
         this.mouve_axies( this.speed.x, this.speed.y, this.speed.z );
         this.hp--;
-        if ( this.hp === 0 )
+        if ( this.hp <= 0 )
             this.is_dead = true;
         
     }

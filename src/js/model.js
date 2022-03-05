@@ -17,21 +17,11 @@ class model {
         container: {}
     };
 
-    scene_object = {
-        background: {},
-        foreground: {},
-        lights: {}
-    };
-
     game_data = {
         score: 0,
         level: 1,
         life: 3
     };
-
-    player_data = {
-        on_cooldown: true
-    }
 
     game_status = {
         in_start_menu: false,
@@ -39,7 +29,6 @@ class model {
         current_lvl: 0,
         in_animation: false,
 
-        detect_exit_screen: false,
         detect_collision: false,
         camera_follow_player: false,
         everything_mouve: false
@@ -52,6 +41,21 @@ class model {
         this.render_config.container = document.querySelector( '#app' );
         this.render_config.w = this.render_config.container.clientWidth;
         this.render_config.h = this.render_config.container.clientHeight;
+
+        // Render settings
+        const renderConfig = { antialias: true, alpha: true };
+        const renderer = new THREE.WebGLRenderer( renderConfig );
+        renderer.setPixelRatio( window.devicePixelRatio );
+        renderer.setSize( this.render_config.w, this.render_config.h );
+        renderer.toneMapping = THREE.ReinhardToneMapping;
+        this.render_config.container.appendChild( renderer.domElement );
+        this.renderer = renderer;
+
+        // Create the scene
+        this.scene = new THREE.Scene();
+
+        // Create the camera
+        this.camera = new THREE.PerspectiveCamera( 90, this.render_config.w / this.render_config.h, 1, 10000 );
 
         // Preload all 3d model for the game
         Promise.all([
@@ -81,7 +85,7 @@ class model {
      * @param {string} path the mesh path
      * @returns Promise, resolve when the load is complete
      */
-     load_mesh( name, path ) {
+    load_mesh( name, path ) {
         const mtlLoader = new THREE.MTLLoader();
         const objLoader = new THREE.OBJLoader();
         return new Promise( (resolve) => {
@@ -125,14 +129,6 @@ class model {
             resolve();
         } );
         
-    }
-
-    /**
-     * Store render data and config
-     * @param {object} renderer the renderer
-     */
-    set_renderer( renderer ) {
-        this.renderer = renderer;
     }
 }
 

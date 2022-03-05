@@ -8,6 +8,9 @@
 
     is_dead = false;
 
+    is_collidable_object = true;
+
+
     /**
      * Constructor
      * @param {string} type the type of the mesh
@@ -101,7 +104,7 @@
     /**
      * Normalizes the speed of the ship according to its maximum speed
      */
-     normalize_speed( max_speed) {
+    normalize_speed( max_speed) {
         if ( this.speed.length() > max_speed ) {
             this.speed.setLength( max_speed );
         }
@@ -117,9 +120,6 @@
         delete( this.speed );
         this.remove( this.mesh );
         delete( this.mesh );
-        this.parent.remove( this );
-        this.is_dead = true;
-        delete( this );
     }
 
     /**

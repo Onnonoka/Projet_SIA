@@ -25,21 +25,6 @@ class controler {
         this.controls.autoRotate = true;
         //-------------------------------------------------------------------------------------------------
 
-        // Creating the render area container
-        const w = this.model.render_config.w;
-        const h = this.model.render_config.h;
-        
-        // Render settings
-        const renderConfig = { antialias: true, alpha: true };
-        const renderer = new THREE.WebGLRenderer( renderConfig );
-        renderer.setPixelRatio( window.devicePixelRatio );
-        renderer.setSize( w, h );
-        renderer.toneMapping = THREE.ReinhardToneMapping;
-        this.model.render_config.container.appendChild( renderer.domElement );
-
-        // Store the render
-        this.model.set_renderer( renderer );
-
         // Key controle
         window.onkeydown = e => {
             if ( e.repeat === false )
@@ -73,48 +58,49 @@ class controler {
         this.vue.render();
         this.vue.update();
         this.handle_key();
-
     }
 
     handle_key() {
         // Handle key press in the menu
         if ( this.model.game_status.in_start_menu ) {
             if ( this.model.key_press[ " " ] ) {
-                this.model.game_status.in_start_menu = false;
                 this.vue.clear_scene();
                 this.vue.generate_lvl_1();
-                this.model.game_status.in_lvl = true;
-                this.model.current_lvl = 1;
-                this.model.game_status.detect_exit_screen = true;
                 this.model.game_status.detect_collision = true;
+                this.model.player.on_cooldown = true;
                 setTimeout( () => {
-                    this.model.player_data.on_cooldown = false
+                    this.model.player.on_cooldown = false;
                 }, 500 );
             }
         // Handle key press in game
         } else if ( this.model.game_status.in_lvl ) {
+            // key space
             if ( this.model.key_press[ " " ] ) {
-                if ( !this.model.player_data.on_cooldown ) {
-                    this.vue.shoot();
-                    this.model.player_data.on_cooldown = true;
-                    setTimeout( () => {
-                        this.model.player_data.on_cooldown = false;
-                    }, 500 );
-                }
+                this.model.player.shoot();
             }
+            // key left
             if ( this.model.key_press[ "ArrowLeft" ] ) {
-                this.vue.rotate_player_left();
+                this.model.player.rotate_axies( 0, 0, THREE.Math.radToDeg( 0.05 ) );
             }
+            // key right
             if ( this.model.key_press[ "ArrowRight" ] ) {
-                this.vue.rotate_player_right();
+                this.model.player.rotate_axies( 0, 0, THREE.Math.radToDeg( -0.05 ) );
             }
+            // key up
             if ( this.model.key_press[ "ArrowUp" ] ) {
-                this.vue.set_player_max_speed( 0.6 );
-                this.vue.speed_up_player();
+                this.model.player.max_speed = 0.6;
+                this.model.player.speed_up();
             } else {
-                this.vue.set_player_max_speed( 0.35 );
+                this.model.player.max_speed = 0.35;
+            }
+            // key down
+            if ( this.model.key_press[ "ArrowDown" ] ) {
+                this.model.player.max_speed = 0.6;
+                this.model.player.speed_down();
             }
         }
+        // handle key all the time
+        // key m
         if ( this.model.key_press[ "m" ] ) {
             this.vue.set_phong_materials();
         }
