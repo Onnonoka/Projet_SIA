@@ -23,10 +23,7 @@ class power_up extends mouvable_mesh {
     }
 
     action() {
-        this.fire_rate /= 2;
-        setTimeout( () => {
-            this.fire_rate *= 2;
-        }, 5000 );
+        throw new Error('You have to implement the method action before using the class!');
     }
 }
 

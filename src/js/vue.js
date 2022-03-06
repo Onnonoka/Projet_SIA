@@ -2,7 +2,10 @@
 import hud from "./hud.js";
 import ship from "./object3D/ship.js";
 import meteor from "./object3D/meteor.js"
-import power_up from "./object3D/power_up.js";
+import rapide_fire from "./object3D/rapide_fire.js";
+import shield from "./object3D/shield.js";
+import extra_life from "./object3D/extra_life.js";
+import dematerialize from "./object3D/dematerialize.js";
 
 class vue {
     type = "vue";
@@ -138,7 +141,7 @@ class vue {
         this.model.player = player;
         this.scene.add( player );
 
-        const horinzontal_fov = 2 * THREE.Math.radToDeg( Math.atan( Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.aspect ) );
+        /*const horinzontal_fov = 2 * THREE.Math.radToDeg( Math.atan( Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.aspect ) );
         // compute the width and the height at z = 0
         const width = Math.tan( THREE.Math.degToRad( horinzontal_fov ) / 2 ) * this.camera.position.z * 2;
         const height = Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.position.z * 2;
@@ -146,10 +149,16 @@ class vue {
             const meteor_object = new meteor( Math.random() * 2 - 1, Math.random() * 2 - 1, Math.floor( Math.random() * width ) - width / 2, 
                                         Math.floor( Math.random() * height ) - height / 2, 3 );
             this.scene.add( meteor_object );
-        }
+        }*/
 
-        /*const upgrade = new power_up();
-        this.scene.add( upgrade );*/
+        /*const upgrade = new rapide_fire();
+        this.scene.add( upgrade );
+        const upgrade2 = new shield();
+        this.scene.add( upgrade2 );
+        const upgrade3 = new extra_life();
+        this.scene.add( upgrade3 );*/
+        const upgrade4 = new dematerialize();
+        this.scene.add( upgrade4 );
 
         // Place the camera
         this.camera.position.set( 0, 0, 90 );
