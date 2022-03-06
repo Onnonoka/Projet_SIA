@@ -128,7 +128,10 @@ class model {
             this.preloaded_materials[ name ] = materialArray;
             resolve();
         } );
-        
+    }
+
+    get_meteor_number() {
+        return this.scene.children.filter( element => { element.is_collidable_object && element.type === "meteor" }).length;
     }
 }
 

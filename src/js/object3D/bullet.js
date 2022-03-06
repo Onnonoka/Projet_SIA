@@ -9,26 +9,27 @@ class bullet extends movable_mesh {
      * @param {number} position_y the y position at spawn
      * @param {movable_mesh} source the class who create the bullet
      */
-    constructor( rotate_z, position_x, position_y, source ) {
-
-        // Creating the mesh and the texture
+    constructor() {
         const geometry = new THREE.CylinderGeometry( 5, 5, 20, 32 );
-        const material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
+        const material = new THREE.MeshStandardMaterial( {
+            color: 0x00ff00,
+            emissive: 0x00ff00,
+            emissiveIntensity: 100
+        } );
         const mesh = new THREE.Mesh( geometry, material );
 
+        // Creating the mesh and the texture
+        const light = new THREE.PointLight( 0x00ff00, 5, 10 );
+
         super( "bullet", mesh );
-        this.source = source;
+        this.add( light );
 
         // set the basic parameter of the bullet
-        this.scale.x = 0.05;
-        this.scale.y = 0.05;
-        this.scale.z = 0.05;
+        this.scale.set( 0.075, 0.1, 0.075 );
 
-        this.rotate_axies(0, 0, THREE.Math.radToDeg( rotate_z ));
-        this.mouve_axies( position_x, position_y, 0 );
-        this.set_speed( -1 * Math.sin( this.rotation.z ), 1 * Math.cos( this.rotation.z ), 0 );
-        this.hp = 100;
-
+        setTimeout( () => {
+            this.is_dead = true;
+        }, 1000 );
     }
 
     /**
@@ -46,10 +47,6 @@ class bullet extends movable_mesh {
      */
     update() {
         this.mouve_axies( this.speed.x, this.speed.y, this.speed.z );
-        this.hp--;
-        if ( this.hp <= 0 )
-            this.is_dead = true;
-        
     }
 
 }

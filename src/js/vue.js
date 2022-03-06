@@ -1,8 +1,8 @@
 
 import hud from "./hud.js";
 import ship from "./object3D/ship.js";
-import bullet from "./object3D/bullet.js";
 import meteor from "./object3D/meteor.js"
+import power_up from "./object3D/power_up.js";
 
 class vue {
     type = "vue";
@@ -60,8 +60,8 @@ class vue {
 
         // Added earth
         const earth = new THREE.Group();
-        const earth_ground = this.model.preloaded_mesh.earth_ground.clone();
-        const earth_cloud = this.model.preloaded_mesh.earth_cloud.clone();
+        const earth_ground = this.model.preloaded_mesh.earth_ground.clone( false );
+        const earth_cloud = this.model.preloaded_mesh.earth_cloud.clone( false );
         earth.add( earth_ground );
         earth.add( earth_cloud );
         earth_cloud.scale.set( 1.01, 1.01, 1.01 );
@@ -125,8 +125,8 @@ class vue {
         this.scene.add( ambiant_light );
         const directional_light = new THREE.DirectionalLight( 0xffffff, 1.0 );
         directional_light.position.z = 10;
-        //directional_light.position.x = -4; 
-        //directional_light.position.y = 15;
+        directional_light.position.x = -40; 
+        directional_light.position.y = 15;
         this.scene.add( directional_light );
         this.scene.add( directional_light.target );
 
@@ -138,7 +138,7 @@ class vue {
         this.model.player = player;
         this.scene.add( player );
 
-        /*const horinzontal_fov = 2 * THREE.Math.radToDeg( Math.atan( Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.aspect ) );
+        const horinzontal_fov = 2 * THREE.Math.radToDeg( Math.atan( Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.aspect ) );
         // compute the width and the height at z = 0
         const width = Math.tan( THREE.Math.degToRad( horinzontal_fov ) / 2 ) * this.camera.position.z * 2;
         const height = Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.position.z * 2;
@@ -146,7 +146,10 @@ class vue {
             const meteor_object = new meteor( Math.random() * 2 - 1, Math.random() * 2 - 1, Math.floor( Math.random() * width ) - width / 2, 
                                         Math.floor( Math.random() * height ) - height / 2, 3 );
             this.scene.add( meteor_object );
-        }*/
+        }
+
+        /*const upgrade = new power_up();
+        this.scene.add( upgrade );*/
 
         // Place the camera
         this.camera.position.set( 0, 0, 90 );
@@ -165,15 +168,14 @@ class vue {
     update() {
         // Update scene object
         this.scene.children.forEach( ( obj ) => {
-            if ( obj.is_collidable_object ) {
+            if ( obj.is_collidable_object && !obj.is_dead ) {
                 obj.update();
             }
         });
-        //this.screen_exit_detection();
+        this.screen_exit_detection();
         this.update_camera();
         if ( this.model.game_status.detect_collision )
             this.detect_collision();
-
         this.remove_dead_object();
     }
 
@@ -218,9 +220,12 @@ class vue {
         dead_object.forEach( obj => {
             if ( obj.type === "meteor" ) {
                 this.model.game_data.score += 100;
-                console.log( this.model.game_data.score );
+                //console.log( this.model.game_data.score );
+                console.log( obj.type, "removed" );
+            } else if ( obj.type === "ship" ) {
+                //this.vue.generate_game_over();
             }
-            this.scene.remove( obj );
+            this.dispose( obj );
         });
     }
 
@@ -233,7 +238,7 @@ class vue {
         // compute the width and the height at z = 0
         const width = Math.tan( THREE.Math.degToRad( horinzontal_fov ) / 2 ) * this.camera.position.z * 2;
         const height = Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.position.z * 2;
-        this.scene.children.forEach( obj => {
+        for ( let obj of this.scene.children ) {
             if ( obj.is_collidable_object ) {
                 // x axies
                 if ( obj.position.x > this.camera.position.x + width / 2 ) {
@@ -248,16 +253,19 @@ class vue {
                     obj.position.y += height;
                 }
             }
-        } );
+        }
     }
 
     /**
      * Detect a collision between 2 object in the scene
      */
     detect_collision() {
-        this.scene.children.forEach( ( obj1, index ) => {
+        const collisions = [];
+        for ( let index = 0; index < this.scene.children.length; index++ ) {
+            const obj1 = this.scene.children[index];
             if ( obj1.is_collidable_object && !obj1.is_dead ) {
-                this.scene.children.slice( index + 1, this.scene.children.length ).forEach( obj2 => {
+                for ( let i = index + 1; i < this.scene.children.length; i++ ) {
+                    const obj2 = this.scene.children[i];
                     if ( obj2.is_collidable_object && !obj2.is_dead ) {
                         // Compute bounding box
                         const obj1_BB = obj1.BB.clone().applyMatrix4( obj1.mesh.matrixWorld );
@@ -272,14 +280,16 @@ class vue {
                         const collisionS = obj1_BS.intersectsSphere( obj2_BS );
 
                         if ( collisionB && collisionS ) {
-                            console.log( "collision ", obj1.type, obj2.type );
-                            obj1.handle_collision( obj2 );
-                            obj2.handle_collision( obj1 );
+                            collisions.push( {obj1: obj1, obj2, obj2} );
                         }
                     }
-                } );
+                }
             }
-        } );
+        }
+        collisions.forEach( objects => {
+            objects.obj1.handle_collision( objects.obj2 );
+            objects.obj2.handle_collision( objects.obj1 );
+        })
     }
 
     /**
@@ -288,14 +298,33 @@ class vue {
     clear_scene() {
         this.model.game_status.in_start_menu = false;
         this.model.game_status.in_lvl = false;
-        const scene_obj = [ ...this.scene.children ];
+        const scene_object = [ ...this.scene.children ];
         // Remove all background object
-        scene_obj.forEach( obj => {
-            this.scene.remove( obj );
-            if ( obj.is_collidable_object )
-                obj.clear();
+        scene_object.forEach( obj => {
+            this.dispose( obj );
         });
         this.hud.clear();
+    }
+
+    dispose( object ) {
+        if ( object.geometry ) {
+            object.geometry.dispose();
+        }
+        if ( object.material ) {
+            if ( object.material instanceof Array ) {
+                // for better memory management and performance
+                object.material.forEach( material => material.dispose() );
+            } else {
+                // for better memory management and performance
+                object.material.dispose();
+            }
+        }
+        if ( object.parent ) {
+            object.parent.remove( object );
+        }
+        if ( object.children.length > 0 ) {
+            object.children.forEach( child => this.dispose( child ) );
+        }
     }
 }
 

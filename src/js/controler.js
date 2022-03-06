@@ -50,7 +50,6 @@ class controler {
 
     animate() {
         requestAnimationFrame( this.animate.bind( this ) );
-        console.log( "rendered" );
         // Going to be deleted
         //--------------------------------------------------
         this.controls.update();

@@ -10,7 +10,6 @@
 
     is_collidable_object = true;
 
-
     /**
      * Constructor
      * @param {string} type the type of the mesh
@@ -85,20 +84,6 @@
         this.position.x += x;
         this.position.y += y;
         this.position.z += z;
-
-    }
-
-    /**
-     * Set the speed of the group
-     * @param {number} x the x speed
-     * @param {number} y the y speed
-     * @param {number} z the z speed
-     */
-    set_speed( x, y, z ) {
-        this.speed.x = x;
-        this.speed.y = y;
-        this.speed.z = z;
-
     }
     
     /**
@@ -119,14 +104,10 @@
         delete( this.BS );
         delete( this.speed );
         this.remove( this.mesh );
+        this.mesh.geometry.dispose();
+        this.mesh.material.dispose();
         delete( this.mesh );
-    }
-
-    /**
-     * Animate the object
-     */
-    animate() {
-        this.update();
+        delete( this ); 
     }
     
     handle_collision( target ) {
@@ -138,7 +119,6 @@
         throw new Error('You have to implement the method update before using the class!');
         
     }
-
 }
 
 export default movable_mesh;
