@@ -152,13 +152,13 @@ class vue {
         }*/
 
         /*const upgrade = new rapide_fire();
-        this.scene.add( upgrade );
+        this.scene.add( upgrade );*/
         const upgrade2 = new shield();
         this.scene.add( upgrade2 );
-        const upgrade3 = new extra_life();
-        this.scene.add( upgrade3 );*/
+        /*const upgrade3 = new extra_life();
+        this.scene.add( upgrade3 );
         const upgrade4 = new dematerialize();
-        this.scene.add( upgrade4 );
+        this.scene.add( upgrade4 );*/
 
         // Place the camera
         this.camera.position.set( 0, 0, 90 );
