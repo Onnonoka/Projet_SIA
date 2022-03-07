@@ -9,6 +9,9 @@ class shield extends power_up {
     action() {
         this.shield.visible = true;
         this.shield_light.visible = true;
+        this.shield.active = true;
+        this.BB = this.shield.geometry.boundingBox;
+        this.BS = this.shield.geometry.boundingSphere;
         setTimeout( () => {
             const interval = setInterval( () => {
                 if (  this.shield.visible === true ) {
@@ -24,6 +27,9 @@ class shield extends power_up {
                 clearInterval( interval );
                 this.shield.visible = false;
                 this.shield_light.visible = false;
+                this.shield.active = false;
+                this.BB = this.mesh.geometry.boundingBox;
+                this.BS = this.mesh.geometry.boundingSphere;
             }, 2000);
         }, 8000 );
     }

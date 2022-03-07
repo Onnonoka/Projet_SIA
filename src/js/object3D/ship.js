@@ -39,6 +39,7 @@ class ship extends movable_mesh {
         this.shield_light = new THREE.PointLight( 0x2ba0ff, 5, 15 );
         this.shield.geometry.computeBoundingBox();
         this.shield.geometry.computeBoundingSphere();
+        this.shield.active = false;
         this.shield.visible = false;
         this.shield_light.visible = false;
         this.add( this.shield );
@@ -98,8 +99,7 @@ class ship extends movable_mesh {
     }
 
     handle_collision( target ) {
-        if ( ( target.type === "bullet" && target.source !== this /*|| target.type === "meteor"*/ ) && this.visible && !this.is_immune ) {
-            console.log( this );
+        if ( ( target.type === "bullet" && target.source !== this || target.type === "meteor" ) && this.visible && !this.is_immune && !this.shield.active ) {
             this.visible = false;
             this.life--;
             this.speed.set( 0, 0, 0 );
@@ -112,8 +112,15 @@ class ship extends movable_mesh {
                     this.rotation.set( 0, 0, 0 );
                 }, 500 );
             }
-        } else if ( target.type === "power_up" ) {
+        } else if ( target.type === "power_up" && this.visible ) {
             target.action.bind( this )();
+        } else if ( target.type === "meteor" && this.visible ) {
+            if ( this.shield.active ) {
+                const vec_dist = new THREE.Vector3( target.position.x - this.position.x, target.position.y - this.position.y, 0 ).multiplyScalar( target.size );
+                const vec_speed = this.speed.clone().multiplyScalar( 4 ).add( vec_dist );
+                this.speed.set( -vec_speed.x, -vec_speed.y, -vec_speed.z );
+                this.speed.setLength( target.speed.length() );
+            }
         }
     }
 }

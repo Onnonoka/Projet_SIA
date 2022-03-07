@@ -125,8 +125,12 @@ class vue {
 
         // Added stage lights
         const ambiant_light = new THREE.AmbientLight( 0xffffff, 1.0 );
-        this.scene.add( ambiant_light );
         const directional_light = new THREE.DirectionalLight( 0xffffff, 1.0 );
+        /*const spot_light = new THREE.SpotLight( 0xffffff, 1, 0, THREE.degToRad( 20 ), 1 );
+        spot_light.position.set( this.camera.position.x, this.camera.position.y, this.camera.position.z );
+        this.scene.add( spot_light );
+        console.log( spot_light );*/
+        this.scene.add( ambiant_light );
         directional_light.position.z = 10;
         directional_light.position.x = -40; 
         directional_light.position.y = 15;
@@ -141,7 +145,7 @@ class vue {
         this.model.player = player;
         this.scene.add( player );
 
-        /*const horinzontal_fov = 2 * THREE.Math.radToDeg( Math.atan( Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.aspect ) );
+        const horinzontal_fov = 2 * THREE.Math.radToDeg( Math.atan( Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.aspect ) );
         // compute the width and the height at z = 0
         const width = Math.tan( THREE.Math.degToRad( horinzontal_fov ) / 2 ) * this.camera.position.z * 2;
         const height = Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.position.z * 2;
@@ -149,7 +153,7 @@ class vue {
             const meteor_object = new meteor( Math.random() * 2 - 1, Math.random() * 2 - 1, Math.floor( Math.random() * width ) - width / 2, 
                                         Math.floor( Math.random() * height ) - height / 2, 3 );
             this.scene.add( meteor_object );
-        }*/
+        }
 
         /*const upgrade = new rapide_fire();
         this.scene.add( upgrade );*/
@@ -176,11 +180,12 @@ class vue {
      */
     update() {
         // Update scene object
-        this.scene.children.forEach( ( obj ) => {
+        this.scene.children.forEach( obj => {
             if ( obj.is_collidable_object && !obj.is_dead ) {
                 obj.update();
             }
         });
+        this.hud.set_score( this.model.game_data.score );
         this.screen_exit_detection();
         this.update_camera();
         if ( this.model.game_status.detect_collision )

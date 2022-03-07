@@ -26,7 +26,7 @@ class meteor extends movable_mesh {
     }
 
     update() {
-        this.rotate_mesh( THREE.Math.radToDeg( 0.001 ), THREE.Math.radToDeg( 0.001 ), 0 );
+        this.rotate_mesh( THREE.Math.radToDeg( 0.001 ) * this.size, THREE.Math.radToDeg( 0.001 ) * this.size, 0 );
         this.mouve_axies( this.speed.x, this.speed.y, this.speed.z);
     }
 
@@ -41,10 +41,17 @@ class meteor extends movable_mesh {
             }
             this.is_dead = true;
         } else if ( target.type === "meteor" ) {
-            /*this.speed.set( -this.speed.x, -this.speed.y, -this.speed.z );
+            const vec_dist = new THREE.Vector3( target.position.x - this.position.x, target.position.y - this.position.y, 0 ).multiplyScalar( target.size );
+            const vec_speed = this.speed.clone().multiplyScalar( this.size ).add( vec_dist );
+            this.speed.set( -vec_speed.x, -vec_speed.y, -vec_speed.z );
             this.speed.setLength( 0.3 / this.size );
-            this.mouve_axies( this.speed.x, this.speed.y, this.speed.z );*/
-        }
+            this.mouve_axies( this.speed.x, this.speed.y, this.speed.z );
+        } else if ( target.type === "ship" && target.shield.active ) {
+            const vec_dist = new THREE.Vector3( target.position.x - this.position.x, target.position.y - this.position.y, 0 ).setLength( 4 );
+            const vec_speed = this.speed.clone().multiplyScalar( this.size ).add( vec_dist );
+            this.speed.set( -vec_speed.x, -vec_speed.y, -vec_speed.z );
+            this.speed.setLength( 0.3 / this.size );
+        } 
     }
 }
 
