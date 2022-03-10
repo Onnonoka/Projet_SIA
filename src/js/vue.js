@@ -303,7 +303,7 @@ class vue {
         collisions.forEach( objects => {
             objects.obj1.handle_collision( objects.obj2 );
             objects.obj2.handle_collision( objects.obj1 );
-        })
+        });
     }
 
     /**

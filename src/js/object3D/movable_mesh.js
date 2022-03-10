@@ -112,13 +112,12 @@
     
     handle_collision( target ) {
         throw new Error('You have to implement the method handle_collision before using the class!');
-        
     }
 
     update() {
         throw new Error('You have to implement the method update before using the class!');
-        
     }
+
 }
 
 export default movable_mesh;
