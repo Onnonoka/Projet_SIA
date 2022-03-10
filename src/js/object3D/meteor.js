@@ -26,7 +26,7 @@ class meteor extends movable_mesh {
     }
 
     update() {
-        this.rotate_mesh( THREE.Math.radToDeg( 0.001 ) * this.size, THREE.Math.radToDeg( 0.001 ) * this.size, 0 );
+        this.rotate_mesh( THREE.Math.radToDeg( Math.random() / 100 ) * (4 - this.size), THREE.Math.radToDeg(  Math.random() / 100 ) * (4 - this.size), 0 );
         this.mouve_axies( this.speed.x, this.speed.y, this.speed.z);
     }
 
