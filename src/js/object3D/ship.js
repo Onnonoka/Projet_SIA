@@ -92,7 +92,7 @@ class ship extends movable_mesh {
             ammo.rotation.set( 0, 0, this.rotation.z );
             ammo.source = this;
             ammo.speed.set( -2 * Math.sin( this.rotation.z ), 2 * Math.cos( this.rotation.z ), 0 );
-            this.shoot_left = ! this.shoot_left;
+            this.shoot_left = !this.shoot_left;
             this.parent.add( ammo );
             this.on_cooldown = true;
             setTimeout( () => {
@@ -106,13 +106,14 @@ class ship extends movable_mesh {
             this.visible = false;
             this.life--;
             this.speed.set( 0, 0, 0 );
-            if ( this.life < 0 ) {
+            if ( this.life < 1 ) {
                 this.is_dead = true;
             } else {
                 setTimeout( () => {
                     this.visible = true;
                     this.position.set( 0, 0, 0 );
                     this.rotation.set( 0, 0, 0 );
+                    this.speed.set( 0, 0, 0 );
                 }, 500 );
             }
         } else if ( target.type === "power_up" && this.visible ) {

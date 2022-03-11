@@ -63,9 +63,7 @@ class controler {
         // Handle key press in the menu
         if ( this.model.game_status.in_start_menu ) {
             if ( this.model.key_press[ " " ] ) {
-                this.vue.clear_scene();
-                this.vue.generate_lvl_1();
-                this.model.game_status.detect_collision = true;
+                this.vue.generate_lvl_2();
                 this.model.player.on_cooldown = true;
                 setTimeout( () => {
                     this.model.player.on_cooldown = false;
@@ -97,21 +95,6 @@ class controler {
                 this.model.player.max_speed = 0.6;
                 this.model.player.speed_down();
             }
-            /*if ( this.model.scene.children.filter( e => e.type === "meteor" ).length === 0 ) {
-                this.vue.clear_scene();
-                switch (this.model.game_status.current_lvl) {
-                    case 1: this.vue.generate_lvl_2();
-                        break;
-                    case 2: this.vue.generate_lvl_3();
-                        break;
-                    case 3: this.vue.generate_score_board();
-                        break;
-                }
-                this.vue.generate_menu();
-                this.model.game_status.in_start_menu = true;
-            } else if ( this.model.player.is_dead )
-                this.vue.generate_game_over();
-            */
         }
         // handle key all the time
         // key m
