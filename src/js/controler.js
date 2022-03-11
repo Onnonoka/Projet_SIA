@@ -19,10 +19,10 @@ class controler {
 
         // going to be deleted
         //-------------------------------------------------------------------------------------------------
-        this.controls = new THREE.TrackballControls( this.vue.camera, this.model.render_config.container );
+        /*this.controls = new THREE.TrackballControls( this.vue.camera, this.model.render_config.container );
         this.controls.target = new THREE.Vector3(0, 0, 0);
         this.controls.panSpeed = 1;
-        this.controls.autoRotate = true;
+        this.controls.autoRotate = true;*/
         //-------------------------------------------------------------------------------------------------
 
         // Key controle
@@ -52,7 +52,7 @@ class controler {
         requestAnimationFrame( this.animate.bind( this ) );
         // Going to be deleted
         //--------------------------------------------------
-        this.controls.update();
+        //this.controls.update();
         //--------------------------------------------------
         this.vue.render();
         this.vue.update();
@@ -97,6 +97,21 @@ class controler {
                 this.model.player.max_speed = 0.6;
                 this.model.player.speed_down();
             }
+            /*if ( this.model.scene.children.filter( e => e.type === "meteor" ).length === 0 ) {
+                this.vue.clear_scene();
+                switch (this.model.game_status.current_lvl) {
+                    case 1: this.vue.generate_lvl_2();
+                        break;
+                    case 2: this.vue.generate_lvl_3();
+                        break;
+                    case 3: this.vue.generate_score_board();
+                        break;
+                }
+                this.vue.generate_menu();
+                this.model.game_status.in_start_menu = true;
+            } else if ( this.model.player.is_dead )
+                this.vue.generate_game_over();
+            */
         }
         // handle key all the time
         // key m

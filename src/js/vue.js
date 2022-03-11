@@ -6,6 +6,7 @@ import rapide_fire from "./object3D/rapide_fire.js";
 import shield from "./object3D/shield.js";
 import extra_life from "./object3D/extra_life.js";
 import dematerialize from "./object3D/dematerialize.js";
+import spot_light from "./object3D/spot_light.js";
 
 class vue {
     type = "vue";
@@ -103,7 +104,7 @@ class vue {
     /**
      * Generate the first level of the game
      */
-    generate_lvl_1() {
+    generate_lvl_2() {
         // Creation of the skybox
         const skybox_material = [ ...this.model.preloaded_materials.skybox_2 ];
         const skybox = new THREE.Mesh( new THREE.BoxGeometry( 10000, 10000, 10000 ), skybox_material );
@@ -149,7 +150,7 @@ class vue {
         // compute the width and the height at z = 0
         const width = Math.tan( THREE.Math.degToRad( horinzontal_fov ) / 2 ) * this.camera.position.z * 2;
         const height = Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.position.z * 2;
-        for ( let i = 0; i < 8; i++ ) {
+        for ( let i = 0; i < 1; i++ ) {
             const meteor_object = new meteor( Math.random() * 2 - 1, Math.random() * 2 - 1, Math.floor( Math.random() * width ) - width / 2, 
                                         Math.floor( Math.random() * height ) - height / 2, 3 );
             this.scene.add( meteor_object );
@@ -163,6 +164,38 @@ class vue {
         this.scene.add( upgrade3 );
         const upgrade4 = new dematerialize();
         this.scene.add( upgrade4 );*/
+
+        // Place the camera
+        this.camera.position.set( 0, 0, 90 );
+
+        this.model.game_status.in_lvl = true;
+        this.model.current_lvl = 1;
+
+        const gridHelper = new THREE.GridHelper( 10000, 1000 );
+        gridHelper.rotation.x = THREE.Math.degToRad( 90 );
+        this.scene.add( gridHelper );
+    }
+
+    generate_lvl_1() {
+        // Adding the skybox
+        const skybox_material = [ ...this.model.preloaded_materials.skybox_2 ]/*.map( e => {
+            const phong_mat = new THREE.MeshPhongMaterial();
+            THREE.MeshBasicMaterial.prototype.copy.call( phong_mat, e );
+            return phong_mat;
+        });*/
+        const skybox = new THREE.Mesh( new THREE.BoxGeometry( 10000, 10000, 10000 ), skybox_material );
+        this.scene.add( skybox );
+
+        // Added the player
+        const player_mesh = this.model.preloaded_mesh.ship_14.clone();
+        player_mesh.rotation.x = THREE.Math.degToRad( 90 );
+        player_mesh.rotation.y = THREE.Math.degToRad( 180 );
+        const player = new ship( player_mesh );
+        this.model.player = player;
+        this.scene.add( player );
+        
+        const lights = new spot_light();
+        this.scene.add( lights );
 
         // Place the camera
         this.camera.position.set( 0, 0, 90 );

@@ -44,6 +44,7 @@ class ship extends movable_mesh {
         this.shield_light.visible = false;
         this.add( this.shield );
         this.add( this.shield_light );
+
     }
 
     /**
@@ -63,6 +64,8 @@ class ship extends movable_mesh {
     }
 
     update() {
+        //console.log("spot_light", this.spot_light);
+        //console.log("this", this.position);
         this.normalize_speed( this.max_speed );
         this.mouve_axies(this.speed.x, this.speed.y, this.speed.z);
     }
