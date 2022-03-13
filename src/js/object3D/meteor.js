@@ -2,6 +2,8 @@ import movable_mesh from "./movable_mesh.js";
 
 class meteor extends movable_mesh {
 
+    size = 0;
+
     /**
      * Constructor
      * @param {number} speed_x the initial speed on x cord
@@ -25,7 +27,7 @@ class meteor extends movable_mesh {
         this.mouve_axies( pos_x, pos_y, 0 );
     }
 
-    update() {
+    update( time ) {
         this.rotate_mesh( THREE.Math.radToDeg( Math.random() / 100 ) * (4 - this.size), THREE.Math.radToDeg(  Math.random() / 100 ) * (4 - this.size), 0 );
         this.mouve_axies( this.speed.x, this.speed.y, this.speed.z);
     }

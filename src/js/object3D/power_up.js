@@ -12,7 +12,7 @@ class power_up extends mouvable_mesh {
         }, 10000 );
     }
 
-    update() {
+    update( time ) {
         this.rotate_mesh( 0, THREE.Math.radToDeg( 0.05 ), 0 );
     }
 

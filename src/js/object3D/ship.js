@@ -21,11 +21,13 @@ class ship extends movable_mesh {
      */
     constructor( ship ) {
         super( "ship", ship );
-
+        
+        // mesh parameter
         const size = new THREE.Vector3();
         this.BB.getSize(size);
         this.position.z = size.y / 2;
 
+        // shield paramter
         const shield_geometry = new THREE.SphereGeometry( this.BS.radius, 32, 16 );
         const shield_material = new THREE.MeshStandardMaterial( {
             color: 0x2ba0ff,
@@ -63,7 +65,7 @@ class ship extends movable_mesh {
         this.speed.y -= 0.01 * Math.cos( this.rotation.z );
     }
 
-    update() {
+    update( time ) {
         //console.log("spot_light", this.spot_light);
         //console.log("this", this.position);
         this.normalize_speed( this.max_speed );
@@ -79,7 +81,7 @@ class ship extends movable_mesh {
             this.BB.getSize( mesh_size );
             let bullet_x = Math.sin( THREE.Math.degToRad( 90 - THREE.Math.radToDeg(this.rotation.z) )  ) *  (mesh_size.x / 2 - 0.4);
             let bullet_y = Math.cos( THREE.Math.degToRad( 90 - THREE.Math.radToDeg(this.rotation.z) )  ) *  (mesh_size.x / 2 - 0.4);
-            const ammo = new bullet();
+            const ammo = new bullet( 0x00ff00 );
             if ( this.shoot_left ) {
                 bullet_x -= Math.cos( THREE.Math.degToRad( 90 - THREE.Math.radToDeg(this.rotation.z) )  ) * -2.5;
                 bullet_y += Math.sin( THREE.Math.degToRad( 90 - THREE.Math.radToDeg(this.rotation.z) )  ) * -2.5;
@@ -110,8 +112,10 @@ class ship extends movable_mesh {
                 this.is_dead = true;
             } else {
                 setTimeout( () => {
+                    const mesh_size = new THREE.Vector3();
+                    this.BB.getSize( mesh_size );
                     this.visible = true;
-                    this.position.set( 0, 0, 0 );
+                    this.position.set( 0, 0, mesh_size.y / 2 );
                     this.rotation.set( 0, 0, 0 );
                     this.speed.set( 0, 0, 0 );
                 }, 500 );

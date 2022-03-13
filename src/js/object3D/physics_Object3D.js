@@ -2,8 +2,8 @@
 
 class physics_Object3D extends THREE.Group {
 
-    max_linear_speed = 0.65;
-    max_rotation_speed = 0.05;
+    max_linear_speed = 0;
+    max_rotation_speed = 0;
 
     // Linear and rotation speed of the object
     linear_magnitude = 0;
@@ -20,7 +20,7 @@ class physics_Object3D extends THREE.Group {
     linear_force = new THREE.Vector2();
     rotation_force = new THREE.Vector3();
 
-    // physics properties
+    // physic properties
     mass = 0;
 
     constructor() {

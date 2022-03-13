@@ -7,6 +7,7 @@ import shield from "./object3D/shield.js";
 import extra_life from "./object3D/extra_life.js";
 import dematerialize from "./object3D/dematerialize.js";
 import spot_light from "./object3D/spot_light.js";
+import game_level from "./game_level.js";
 import level_1 from "./level_1.js";
 import level_2 from "./level_2.js";
 
@@ -125,8 +126,9 @@ class vue {
      * Update the scene
      */
     update() {
-        this.lvl_1.update();
-        this.lvl_2.update();
+        const current_level = game_level.current_lvl;
+        if (current_level >= 0)
+            game_level.lvls[current_level].update();
     }
 
     set_phong_materials() {

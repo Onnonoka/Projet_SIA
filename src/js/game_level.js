@@ -31,7 +31,7 @@ class game_level {
             // Update scene object
             this.scene.children.forEach( obj => {
                 if ( obj.is_collidable_object && !obj.is_dead ) {
-                    obj.update();
+                    obj.update( this.time );
                 }
             });
             this.screen_exit_detection();
@@ -88,6 +88,10 @@ class game_level {
         });
     }
 
+    resolve_collision(objec1, object2) {
+
+    }
+
     /**
      * Update the camera
      * Do nothing if no parameter is given
@@ -116,7 +120,7 @@ class game_level {
     remove_dead_object() {
         const dead_object = [];
         this.scene.children.forEach( obj => {
-            if ( obj.is_collidable_object && obj.is_dead ) 
+            if ( obj.is_dead ) 
                 dead_object.push( obj );
         });
         dead_object.forEach( obj => {

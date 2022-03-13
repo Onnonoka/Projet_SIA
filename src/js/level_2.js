@@ -1,6 +1,7 @@
 import game_level from "./game_level.js";
 import ship from "./object3D/ship.js";
 import meteor from "./object3D/meteor.js";
+import scan from "./object3D/scan.js";
 import rapide_fire from "./object3D/rapide_fire.js";
 import shield from "./object3D/shield.js";
 import extra_life from "./object3D/extra_life.js";
@@ -21,8 +22,8 @@ class level_2 extends game_level {
             THREE.MeshBasicMaterial.prototype.copy.call( phong_mat, e );
             return phong_mat;
         });
-        const skybox = new THREE.Mesh( new THREE.BoxGeometry( 300, 300, 300 ), skybox_material );
-        skybox.position.set( 0, 0, 150 );
+        const skybox = new THREE.Mesh( new THREE.BoxGeometry( 1000, 1000, 1000 ), skybox_material );
+        skybox.position.set( 0, 0, 500 );
         this.scene.add( skybox );
 
         // Added the player
@@ -67,6 +68,51 @@ class level_2 extends game_level {
         this.player = player;
 
         return player;
+    }
+
+    update() {
+        super.update();
+        if ( game_level.current_lvl === this.index && this.status !== "pause" ) {
+            const dead_target_light = new Array();
+            this.lights.forEach( light => {
+                if ( light.target && !light.target.is_dead ) {
+                    light.position.set( light.target.position.x, light.target.position.y, light.position.z );
+                } else {
+                    dead_target_light.push( light );
+                }
+            });
+            dead_target_light.forEach( dead_light => {
+                const index = this.lights.indexOf( dead_light );
+                if ( index > -1 ) {
+                    this.lights.splice( index, 1 );
+                    this.scene.remove( dead_light );
+                }
+            });
+            this.scene.children.forEach( e => {
+                if ( e.is_collidable_object && e.type === "ship") {
+                    if ( this.lights.find( light => light.target === e ) === undefined ) {
+                        const light = new THREE.SpotLight( e.mesh.material.color, 1, 0, THREE.Math.degToRad(10), 0.3, 0 );
+                        light.target = e;
+                        light.position.set( e.position.x, e.position.y, this.camera.position.z );
+                        this.lights.push( light );
+                        this.scene.add( light );
+                    }
+                }
+            });
+        }
+    }
+
+    step() {
+        super.step();
+        if (this.time % 300 === 0) {
+            this.lunch_scan();
+        }
+    }
+
+    lunch_scan() {
+        const player_position = this.player.position.clone();
+        this.scene.add(new scan(player_position));
+        console.log("Scan ajouter");
     }
 
     is_win() {
