@@ -11,6 +11,7 @@
     is_dead = false;
 
     is_collidable_object = true;
+    is_affected_by_physics = true;
 
     time = 0;
 
@@ -123,7 +124,7 @@
         throw new Error('You have to implement the method handle_collision before using the class!');
     }
 
-    update( time ) {
+    update() {
 
         throw new Error('You have to implement the method update before using the class!');
     }

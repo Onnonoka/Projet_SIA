@@ -42,18 +42,6 @@ class meteor extends movable_mesh {
                 this.parent.add( new meteor( speed.y, -speed.x, pos.x, pos.y, this.size - 1 ) );
             }
             this.is_dead = true;
-        } else if ( target.type === "meteor" ) {
-            const vec_dist = new THREE.Vector3( target.position.x - this.position.x, target.position.y - this.position.y, 0 ).multiplyScalar( target.size );
-            const vec_speed = this.speed.clone().multiplyScalar( this.size ).add( vec_dist );
-            this.speed.set( -vec_speed.x, -vec_speed.y, -vec_speed.z );
-            this.speed.setLength( 0.3 );
-            this.mouve_axies( this.speed.x, this.speed.y, this.speed.z );
-            this.speed.setLength( 0.3 / this.size );
-        } else if ( target.type === "ship" && target.shield.active ) {
-            const vec_dist = new THREE.Vector3( target.position.x - this.position.x, target.position.y - this.position.y, 0 ).setLength( 4 );
-            const vec_speed = this.speed.clone().multiplyScalar( this.size ).add( vec_dist );
-            this.speed.set( -vec_speed.x, -vec_speed.y, -vec_speed.z );
-            this.speed.setLength( 0.3 / this.size );
         } 
     }
 }

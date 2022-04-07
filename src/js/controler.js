@@ -41,7 +41,6 @@ class controler {
     start() {
         if ( this.model.preloaded_mesh.is_loaded && this.model.preloaded_materials.is_loaded ) {
             this.vue.generate_menu();
-            this.model.game_status.in_start_menu = true;
             this.animate();
         } else {
             setTimeout( this.start.bind( this ), 0 );

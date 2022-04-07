@@ -1,10 +1,6 @@
 import game_level from "./game_level.js";
 import ship from "./object3D/ship.js";
-import meteor from "./object3D/meteor.js";
-import rapide_fire from "./object3D/rapide_fire.js";
 import shield from "./object3D/shield.js";
-import extra_life from "./object3D/extra_life.js";
-import dematerialize from "./object3D/dematerialize.js";
 
 class level_1 extends game_level {
 
@@ -34,14 +30,9 @@ class level_1 extends game_level {
         player_mesh.rotation.y = THREE.Math.degToRad( 180 );
         const player = new ship( player_mesh );
         this.scene.add( player );
-
-        const horinzontal_fov = 2 * THREE.Math.radToDeg( Math.atan( Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.aspect ) );
-        // compute the width and the height at z = 0
-        const width = Math.tan( THREE.Math.degToRad( horinzontal_fov ) / 2 ) * this.camera.position.z * 2;
-        const height = Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.position.z * 2;
+        
         for ( let i = 0; i < 8; i++ ) {
-            const meteor_object = new meteor( Math.random() * 2 - 1, Math.random() * 2 - 1, Math.floor( Math.random() * width ) - width / 2, 
-                                        Math.floor( Math.random() * height ) - height / 2, 3 );
+            const meteor_object = this.spawn_meteor();
             this.scene.add( meteor_object );
         }
 
@@ -69,6 +60,15 @@ class level_1 extends game_level {
     is_loose() {
         return this.player.is_dead;
     }
+
+    step() {
+        super.step();
+        if (this.time % (60*60) === 0) {
+            const bonus = this.spawn_power_up();
+            this.scene.add(bonus);
+        }
+    }
+
 }
 
 export default level_1;

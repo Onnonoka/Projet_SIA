@@ -1,4 +1,8 @@
-
+import dematerialize from "./object3D/dematerialize.js";
+import extra_file from "./object3D/extra_life.js";
+import meteor from "./object3D/meteor.js";
+import rapide_fire from "./object3D/rapide_fire.js";
+import shield from "./object3D/shield.js";
 
 class game_level {
 
@@ -26,26 +30,23 @@ class game_level {
      * Update the scene
      */
     update() {
-        // Update if the lvl not pause
-        if ( game_level.current_lvl === this.index && this.status !== "pause" ) {
-            // Update scene object
-            this.scene.children.forEach( obj => {
-                if ( obj.is_collidable_object && !obj.is_dead ) {
-                    obj.update( this.time );
-                }
-            });
-            this.screen_exit_detection();
-            this.update_camera();
-            this.detect_collision();
-            this.remove_dead_object();
-            this.hud.set_score( this.score );
-            if ( this.is_win() ) {
-                this.status = "win";
-            } else if ( this.is_loose() ) {
-                this.status = "loose";
+        // Update scene object
+        this.scene.children.forEach( obj => {
+            if ( obj.is_collidable_object && !obj.is_dead || obj.is_collidable_object === false) {
+                obj.update( this.time );
             }
-            this.step();
+        });
+        this.screen_exit_detection();
+        this.update_camera();
+        this.detect_collision();
+        this.remove_dead_object();
+        this.hud.set_score( this.score );
+        if ( this.is_win() ) {
+            this.handle_win();
+        } else if ( this.is_loose() ) {
+            this.handle_loose();
         }
+        this.step();
     }
     
     step() {
@@ -83,13 +84,10 @@ class game_level {
             }
         }
         collisions.forEach( objects => {
+            this.resolve_collision(objects.obj1, objects.obj2);
             objects.obj1.handle_collision( objects.obj2 );
             objects.obj2.handle_collision( objects.obj1 );
         });
-    }
-
-    resolve_collision(objec1, object2) {
-
     }
 
     /**
@@ -181,6 +179,109 @@ class game_level {
         if ( object.children.length > 0 ) {
             object.children.forEach( child => this.dispose( child ) );
         }
+    }
+
+    resolve_collision(obj1, obj2) {
+        if (obj1.is_affected_by_physics && obj2.is_affected_by_physics) {
+            if (!obj1.is_immune && !obj2.is_immune) {
+                const obj1_direction = obj1.speed.clone().normalize();
+                const obj1_magnitude_speed = obj1.speed.length();
+                const obj2_direction = obj2.speed.clone().normalize();
+                const obj2_magnitude_speed = obj2.speed.length();
+                const collision_normal = new THREE.Vector3(obj1.position.x - obj2.position.x, obj1.position.y - obj2.position.y, 0).normalize();
+                obj1_direction.add(collision_normal);
+                obj1_direction.setLength(obj1_magnitude_speed);
+                obj1.speed.copy(obj1_direction);
+                collision_normal.multiplyScalar(-1);
+                obj2_direction.add(collision_normal);
+                obj2_direction.setLength(obj2_magnitude_speed);
+                obj2.speed.copy(obj2_direction);
+                obj1.update();
+                obj2.update();
+            }
+        }
+    }
+
+    handle_win() {
+        this.status = 'win';
+    }
+
+    handle_loose() {
+        this.status = 'loose';
+    }
+
+    /**
+     * Clear the scene
+     */
+    clear_scene() {
+        const scene_object = [ ...this.scene.children ];
+        // Remove all background object
+        scene_object.forEach( obj => {
+            this.dispose( obj );
+        });
+        this.hud.clear();
+    }
+
+    spawn_meteor() {
+        const horinzontal_fov = 2 * THREE.Math.radToDeg( Math.atan( Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.aspect ) );
+        // compute the width and the height at z = 0
+        const width = Math.tan( THREE.Math.degToRad( horinzontal_fov ) / 2 ) * this.camera.position.z * 2;
+        const height = Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.position.z * 2;
+        let posx, posy;
+        if (Math.round(Math.random()) === 1) {
+            posx = Math.floor( Math.random() * width );
+            posy = height / 2;
+        } else {
+            posx = width / 2;
+            posy = Math.floor( Math.random() * height );
+        }
+        return new meteor( Math.random() * 2 - 1, Math.random() * 2 - 1, posx, posy, 3 );
+    }
+
+    spawn_power_up() {
+        const horinzontal_fov = 2 * THREE.Math.radToDeg( Math.atan( Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.aspect ) );
+        // compute the width and the height at z = 0
+        const width = Math.tan( THREE.Math.degToRad( horinzontal_fov ) / 2 ) * this.camera.position.z * 2;
+        const height = Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.position.z * 2;
+        let bonus;
+        switch(Math.floor(Math.random() * 4)) {
+            case 0 :
+                bonus = new dematerialize();
+                break;
+            case 1 :
+                bonus = new extra_file();
+                break;
+            case 2 :
+                bonus = new rapide_fire();
+                break;
+            case 3 :
+                bonus = new shield();
+                break;
+        }
+        let posx, posy;
+        if (Math.round(Math.random()) === 1) {
+            posx = Math.floor( Math.random() * width );
+            posy = height / 2;
+        } else {
+            posx = width / 2;
+            posy = Math.floor( Math.random() * height );
+        }
+        bonus.position.set(Math.floor( Math.random() * width ), height / 2);
+        bonus.speed.set(0, -0.2, 0);
+        return bonus;
+    }
+
+    cheat_code_clear_meteor() {
+        const meteors = new Array();
+        this.scene.children.forEach( child => {
+            if (child.type === "meteor") {
+                meteors.push(child);
+            }
+        });
+        meteors.forEach( obj => {
+            this.scene.remove(obj);
+            this.dispose(obj);
+        });
     }
 
 }

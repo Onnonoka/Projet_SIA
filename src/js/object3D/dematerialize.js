@@ -10,6 +10,7 @@ class dematerialize extends power_up {
         this.mesh.material.opacity = 0.4;
         this.mesh.material.transparent = true;
         this.is_immune = true;
+        this.is_affected_by_physics = false;
         setTimeout( () => {
             const interval = setInterval( () => {
                 if (  this.mesh.material.transparent === true ) {
@@ -25,6 +26,7 @@ class dematerialize extends power_up {
                 this.mesh.material.opacity = 1;
                 this.mesh.material.transparent = false;
                 this.is_immune = false;
+                this.is_affected_by_physics = true;
             }, 2000);
         }, 8000 );
     }

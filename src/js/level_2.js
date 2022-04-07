@@ -1,11 +1,6 @@
 import game_level from "./game_level.js";
 import ship from "./object3D/ship.js";
-import meteor from "./object3D/meteor.js";
 import scan from "./object3D/scan.js";
-import rapide_fire from "./object3D/rapide_fire.js";
-import shield from "./object3D/shield.js";
-import extra_life from "./object3D/extra_life.js";
-import dematerialize from "./object3D/dematerialize.js";
 
 class level_2 extends game_level {
 
@@ -42,17 +37,9 @@ class level_2 extends game_level {
         player_point_light.target = player;
         this.lights.push( player_point_light );
         this.scene.add( player_point_light );
-        
-        /*const ambiant_light = new THREE.AmbientLight( 0xffffff, 1.0 );
-        this.scene.add( ambiant_light );*/
 
-        const horinzontal_fov = 2 * THREE.Math.radToDeg( Math.atan( Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.aspect ) );
-        // compute the width and the height at z = 0
-        const width = Math.tan( THREE.Math.degToRad( horinzontal_fov ) / 2 ) * this.camera.position.z * 2;
-        const height = Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.position.z * 2;
-        for ( let i = 0; i < 1; i++ ) {
-            const meteor_object = new meteor( Math.random() * 2 - 1, Math.random() * 2 - 1, Math.floor( Math.random() * width ) - width / 2, 
-                                        Math.floor( Math.random() * height ) - height / 2, 3 );
+        for ( let i = 0; i < 8; i++ ) {
+            const meteor_object = this.spawn_meteor();
             this.scene.add( meteor_object );
         }
 
@@ -72,34 +59,33 @@ class level_2 extends game_level {
 
     update() {
         super.update();
-        if ( game_level.current_lvl === this.index && this.status !== "pause" ) {
-            const dead_target_light = new Array();
-            this.lights.forEach( light => {
-                if ( light.target && !light.target.is_dead ) {
-                    light.position.set( light.target.position.x, light.target.position.y, light.position.z );
-                } else {
-                    dead_target_light.push( light );
+        const dead_target_light = new Array();
+        this.lights.forEach( light => {
+            if ( light.target && !light.target.is_dead ) {
+                light.position.set( light.target.position.x, light.target.position.y, light.position.z );
+                //light.lookAt(light.target.position);
+            } else {
+                dead_target_light.push( light );
+            }
+        });
+        dead_target_light.forEach( dead_light => {
+            const index = this.lights.indexOf( dead_light );
+            if ( index > -1 ) {
+                this.lights.splice( index, 1 );
+                this.scene.remove( dead_light );
+            }
+        });
+        this.scene.children.forEach( e => {
+            if ( e.is_collidable_object && e.type === "ship") {
+                if ( this.lights.find( light => light.target === e ) === undefined ) {
+                    const light = new THREE.SpotLight( e.mesh.material.color, 1, 0, THREE.Math.degToRad(10), 0.3, 0 );
+                    light.target = e;
+                    light.position.set( e.position.x, e.position.y, this.camera.position.z );
+                    this.lights.push( light );
+                    this.scene.add( light );
                 }
-            });
-            dead_target_light.forEach( dead_light => {
-                const index = this.lights.indexOf( dead_light );
-                if ( index > -1 ) {
-                    this.lights.splice( index, 1 );
-                    this.scene.remove( dead_light );
-                }
-            });
-            this.scene.children.forEach( e => {
-                if ( e.is_collidable_object && e.type === "ship") {
-                    if ( this.lights.find( light => light.target === e ) === undefined ) {
-                        const light = new THREE.SpotLight( e.mesh.material.color, 1, 0, THREE.Math.degToRad(10), 0.3, 0 );
-                        light.target = e;
-                        light.position.set( e.position.x, e.position.y, this.camera.position.z );
-                        this.lights.push( light );
-                        this.scene.add( light );
-                    }
-                }
-            });
-        }
+            }
+        });
     }
 
     step() {
@@ -107,12 +93,15 @@ class level_2 extends game_level {
         if (this.time % 300 === 0) {
             this.lunch_scan();
         }
+        if (this.time % (60*60) === 0) {
+            const bonus = this.spawn_power_up();
+            this.scene.add(bonus);
+        }
     }
 
     lunch_scan() {
         const player_position = this.player.position.clone();
         this.scene.add(new scan(player_position));
-        console.log("Scan ajouter");
     }
 
     is_win() {

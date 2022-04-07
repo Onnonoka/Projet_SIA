@@ -1,15 +1,9 @@
 
 import hud from "./hud.js";
-import ship from "./object3D/ship.js";
-import meteor from "./object3D/meteor.js"
-import rapide_fire from "./object3D/rapide_fire.js";
-import shield from "./object3D/shield.js";
-import extra_life from "./object3D/extra_life.js";
-import dematerialize from "./object3D/dematerialize.js";
-import spot_light from "./object3D/spot_light.js";
 import game_level from "./game_level.js";
 import level_1 from "./level_1.js";
 import level_2 from "./level_2.js";
+import main_menu from "./main_menu.js";
 
 class vue {
     type = "vue";
@@ -29,6 +23,7 @@ class vue {
         // Create the hud
         this.hud = new hud();
 
+        this.main_menu = new main_menu( this.scene, this.camera, this.hud );
         this.lvl_1 = new level_1( this.scene, this.camera, this.hud );
         this.lvl_2 = new level_2( this.scene, this.camera, this.hud );
 
@@ -56,55 +51,10 @@ class vue {
      * Generates the main menu
      */
     generate_menu() {
-        // Creation of the skybox
-        const skybox_material = [ ...this.model.preloaded_materials.skybox_2 ];
-        const skybox = new THREE.Mesh( new THREE.BoxGeometry( 10000, 10000, 10000 ), skybox_material );
-        this.scene.add( skybox );
-
-        // Added title
-        const title = this.model.preloaded_mesh.title.clone();
-        title.scale.set( 40, 40, 40 );
-        title.position.y = 30;
-        title.rotation.x = THREE.Math.degToRad( 90 );
-        this.scene.add( title );
-
-        // Added earth
-        const earth = new THREE.Group();
-        const earth_ground = this.model.preloaded_mesh.earth_ground.clone( false );
-        const earth_cloud = this.model.preloaded_mesh.earth_cloud.clone( false );
-        earth.add( earth_ground );
-        earth.add( earth_cloud );
-        earth_cloud.scale.set( 1.01, 1.01, 1.01 );
-        earth.scale.set( 160, 160, 160 );
-        earth.rotation.x = THREE.Math.degToRad( -90 );
-        earth.position.z = -1000;
-        //this.scene_object.background.earth.position.x = -500;
-        //this.scene_object.background.earth.position.y = 500;
-        this.scene.add( earth );
-
-        // Added stage lights
-        const ambiant_light = new THREE.AmbientLight( 0xffffff, 1.0 );
-        this.scene.add( ambiant_light );
-        const directional_light = new THREE.DirectionalLight( 0xffffff, 1.0 );
-        directional_light.position.z = 10;
-        directional_light.position.x = -40; 
-        directional_light.position.y = 15;
-        this.scene.add( directional_light );
-        this.scene.add( directional_light.target );
-
-        // Added the player
-        const player_mesh = this.model.preloaded_mesh.ship_14.clone();
-        player_mesh.rotation.x = THREE.Math.degToRad( 90 );
-        player_mesh.rotation.y = THREE.Math.degToRad( 180 );
-        const player = new ship( player_mesh );
-        this.model.player = player;
-        this.scene.add( player );
-
-        // Set the hud
-        this.hud.set_action_request( "Press start" );
-
-        // Place the camera
-        this.camera.position.set( 0, 0, 90 );
+        this.clear_scene();
+        this.main_menu.build( this.model );
+        this.model.game_status.in_lvl = false;
+        this.model.game_status.in_start_menu = true;
     }
 
     /**
@@ -127,8 +77,16 @@ class vue {
      */
     update() {
         const current_level = game_level.current_lvl;
-        if (current_level >= 0)
+        if (current_level >= 0 && game_level.lvls[current_level].status !== 'pause') {
             game_level.lvls[current_level].update();
+            if (game_level.lvls[current_level].status === 'win') {
+                if (game_level.lvls[current_level] === this.lvl_1) {
+                    this.generate_lvl_2();
+                } else if (game_level.lvls[current_level] === this.lvl_2) {
+                    this.generate_lvl_3();
+                }
+            }
+        }
     }
 
     set_phong_materials() {

@@ -1,6 +1,6 @@
 
-import meteor from "./meteor.js";
 import movable_mesh from "./movable_mesh.js";
+import wireframe_object from "./wireframe_object.js";
 
 class scan extends movable_mesh {
 
@@ -19,6 +19,7 @@ class scan extends movable_mesh {
         super("scan", mesh);
         this.scale.set(0, 0, 0);
         this.position.set( intitial_position.x, intitial_position.y, intitial_position.z);
+        this.is_affected_by_physics = false;
     }
 
     update() {
@@ -30,21 +31,9 @@ class scan extends movable_mesh {
 
     handle_collision( target ) {
         if (target.type === "meteor" && target.is_collidable_object && !this.already_scan.find( e => e === target )) {
-            const wireframe_target = new meteor(0, 0, target.position.x, target.position.y, target.size);
-            wireframe_target.mesh.material.wireframe = true;
-            wireframe_target.mesh.material.wireframeLinecap = "butt";
-            wireframe_target.mesh.material.wireframeLineJoin = "butt";
-            wireframe_target.mesh.material.wireframeLineJoin = "butt";
-            wireframe_target.mesh.material.emissive = wireframe_target.mesh.material.color;
-            wireframe_target.mesh.material.emissiveIntensity = 100;
-            wireframe_target.is_collidable_object = false;
-            wireframe_target.prototyope.update = function(time) {
-                this.mesh.material.opacity -= 1/180;
-                if ( this.mesh.material.opacity <= 0 )
-                    this.is_dead = true;
-            }
+            const wireframe_target = new wireframe_object(target);
             this.parent.add(wireframe_target);
-            console.log(wireframe_target);
+            //console.log(wireframe_target);
             this.already_scan.push(target);
         }
     }
