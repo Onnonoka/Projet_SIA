@@ -2,7 +2,7 @@
 /**
  * Abstract class to define element in the scene
  */
- class movable_mesh extends THREE.Group {
+class movable_mesh extends THREE.Group {
 
     mesh = {};
 

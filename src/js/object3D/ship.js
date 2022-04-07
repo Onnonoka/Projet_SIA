@@ -15,6 +15,8 @@ class ship extends movable_mesh {
     is_immune = false;
 
     life = 3
+
+    animations = new Array();
     
     /**
      * Constructor
@@ -69,6 +71,9 @@ class ship extends movable_mesh {
         } );
         this.bullet_mesh = new THREE.Mesh(bullet_geometry, bullet_material);
         this.bullet_light = new THREE.PointLight( 0x00ff00, 5, 10 );
+
+
+
     }
 
     /**

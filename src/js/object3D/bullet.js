@@ -12,8 +12,8 @@ class bullet extends movable_mesh {
     constructor( mesh, light ) {        // bullet parameter
         super( "bullet", mesh );
         
-        this.add(light);
-
+        //this.add(light);
+        
         // set the basic parameter of the bullet
         this.mesh.scale.set( 0.075, 0.1, 0.075 );
         this.is_affected_by_physics = false;

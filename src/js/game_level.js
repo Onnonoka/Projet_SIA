@@ -9,7 +9,7 @@ class game_level {
     static lvls = new Array();
     static current_lvl = -1;
 
-    camera_follow_player = false;
+    camera_follow_player = true;
     camera_stay_center = true;
 
     status = "running"; // can be running | win | loose | pause
@@ -97,12 +97,12 @@ class game_level {
     update_camera() {
         // Update the camera
         if ( this.camera_follow_player ) {
-            this.camera.position.x = this.model.player.position.x;
-            this.camera.position.y = this.model.player.position.y;
+            this.camera.position.x = this.player.position.x;
+            this.camera.position.y = this.player.position.y;
         }
         if ( this.camera_stay_center ) {
             this.scene.children.forEach( obj => {
-                if ( obj.is_collidable_object ) {
+                if (obj != this.camera) {
                     obj.position.x -= this.camera.position.x;
                     obj.position.y -= this.camera.position.y;
                 }
@@ -283,7 +283,6 @@ class game_level {
             this.dispose(obj);
         });
     }
-
 }
 
 export default game_level;
