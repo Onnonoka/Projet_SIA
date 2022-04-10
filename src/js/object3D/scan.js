@@ -24,7 +24,7 @@ class scan extends movable_mesh {
 
     update() {
         this.scale.set( this.scale.x + 0.005, this.scale.y + 0.005, 1);
-        this.mesh.material.opacity -= 1/360;
+        this.mesh.material.opacity -= 1/360;    
         if ( this.mesh.material.opacity <= 0 )
             this.is_dead = true;
     }

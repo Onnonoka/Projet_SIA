@@ -9,6 +9,7 @@ class vue {
     type = "vue";
 
     pause = false;
+    is_fullscreen = false;
 
     post_process_render = true;
 
@@ -158,6 +159,33 @@ class vue {
             obj.material = this.stored_mat[ obj.uuid ];
             delete this.stored_mat[ obj.uuid ];
         }
+    }
+
+    fullscreen() {
+        var elem = document.getElementById("game");
+        console.log(elem.requestFullscreen);
+        if (this.is_fullscreen) {
+            if (elem.exitFullscreen) {
+                elem.exitFullscreen();
+            } else if (elem.webkitExitFullscreen) {
+                elem.webkitExitFullscreen();
+            } else if (elem.mozCancelFullScreen) {
+                elem.mozCancelFullScreen();
+            } else if (elem.msExitFullscreen) {
+                elem.msExitFullscreen();
+            }
+        } else {
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.mozRequestFullScreen) {
+                elem.mozRequestFullScreen();
+            } else if (elem.webkitRequestFullScreen) {
+                elem.webkitRequestFullScreen();
+            } else if (elem.msRequestFullscreen) {
+                elem.msRequestFullscreen();
+            }
+        }
+        this.resize();
     }
 }
 

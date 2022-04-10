@@ -6,14 +6,76 @@
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 		<link href="./src/css/index.css" rel="stylesheet" type="text/css" />
 	</head>
-<body>
+<body id="game">
 
 	<div id="app"><!-- La 3D insérée ici --></div>
 	<div id="fade_screen"></div>
+	<div id="help_screen">
+		<div id="content">
+			<table>
+				<tr>
+					<td>&larr;</td><td>Tourner à gauche</td>
+				</tr>
+				<tr>
+					<td>&rarr;</td><td>Tourner à droite</td>
+				</tr>
+				<tr>
+					<td>&darr;</td><td>Freiner / reculer</td>
+				</tr>
+				<tr>
+					<td>&uarr;</td><td>Accelerer</td>
+				</tr>
+				<tr>
+					<td>ESPACE</td><td>Tirer</td>
+				</tr>
+				<tr>
+					<td>H</td><td>Afficher / masquer cette aide</td>
+				</tr>
+				<tr>
+					<td>ECHAP</td><td>Pause / reprendre</td>
+				</tr>
+				<tr>
+					<td>Pav.Num 0</td><td>Camera fixe</td>
+				</tr>
+				<tr>
+					<td>Pav.Num 1</td><td>Camera suiveuse</td>
+				</tr>
+				<tr>
+					<td>Pav.Num 2</td><td>Camera fixe et suiveuse</td>
+				</tr>
+				<tr>
+					<td>O</td><td>Afficher / masquer postprocessing</td>
+				</tr>
+				<tr>
+					<td>M</td><td>Changer de texture</td>
+				</tr>
+				<tr class="border-fat">
+					<td>I</td><td>Activer / désactiver mode invinsible</td>
+				</tr>
+				<tr>
+					<td>J</td><td>Faire apparaitre une power up aléartoire</td>
+				</tr>
+				<tr>
+					<td>K</td><td>Terminer le niveau</td>
+				</tr>
+			</table>
+		</div>
+	</div>
 	<div id="hud">
-		<div id="score"></div>
-		<div id="weapon"></div>
-		<div id="life"></div>
+		<div id="top-left">
+			<img id="top-left-bg" src="src/medias/images/border_ui.png">
+			<div id="score"></div>
+		</div>
+		<div id="top-right">
+			<img id="top-right-bg" src="src/medias/images/border_ui.png">
+			<div id="life"></div>
+		</div>
+		<div id="bottom-left">
+			<img id="bottom-left-bg" src="src/medias/images/border_ui.png">
+		</div>
+		<div id="bottom-right">
+			<img id="bottom-right-bg" src="src/medias/images/border_ui.png">
+		</div>
 		<div id="message"></div>
 		<div id="action_request"></div>
 	</div>

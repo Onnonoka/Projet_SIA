@@ -43,6 +43,10 @@ class start_lvl_animation extends animation {
             }
         }
     }
+
+    start() {
+        super.start();
+    }
 }
 
 export default start_lvl_animation;

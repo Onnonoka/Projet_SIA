@@ -20,10 +20,10 @@ class controler {
 
         // going to be deleted
         //-------------------------------------------------------------------------------------------------
-        this.controls = new THREE.TrackballControls( this.vue.camera, this.model.render_config.container );
+        /*this.controls = new THREE.TrackballControls( this.vue.camera, this.model.render_config.container );
         this.controls.target = new THREE.Vector3(0, 0, 0);
         this.controls.panSpeed = 1;
-        this.controls.autoRotate = true;
+        this.controls.autoRotate = true;*/
         //-------------------------------------------------------------------------------------------------
 
         // Key controle
@@ -32,6 +32,11 @@ class controler {
                 this.model.key_press[ e.key ] = true;
                 if (e.key === "Escape") {
                     this.vue.pause = !this.vue.pause;
+                    if (this.vue.pause) {
+                        this.vue.hud.set_message("PAUSE");
+                    } else {
+                        this.vue.hud.set_message("");
+                    }
                 } else if (e.key === "m") {
                     this.vue.set_phong_materials();
                 } else if (e.key === "o") {
@@ -55,17 +60,22 @@ class controler {
                         this.model.player.active_dematerialize(true, 60*3);
                     }
                 } else if (e.key === "j") {
-                    console.log("spawn1");
                     if (game_level.lvls[game_level.current_lvl]?.spawn_power_up) {
-                        console.log("spawn2");
                         this.model.scene.add(game_level.lvls[game_level.current_lvl].spawn_power_up());
                     }
                 } else if (e.key === "k") {
-                    console.log("spawn1");
                     if (game_level.lvls[game_level.current_lvl]?.cheat_code_clear_meteor) {
-                        console.log("spawn2");
                         game_level.lvls[game_level.current_lvl].cheat_code_clear_meteor();
                     }
+                } else if (e.key === "h") {
+                    if (this.vue.hud.help_visible) {
+                        this.vue.pause = false;
+                    } else {
+                        this.vue.pause = true;
+                    }
+                    this.vue.hud.displayHelp();
+                } else if (e.key === 'f') {
+                    this.vue.fullscreen();
                 }
             }
         };
@@ -90,7 +100,7 @@ class controler {
         requestAnimationFrame( this.animate.bind( this ) );
         // Going to be deleted
         //--------------------------------------------------
-        this.controls.update();
+        //this.controls.update();
         //--------------------------------------------------
         this.vue.render();
         this.vue.update();

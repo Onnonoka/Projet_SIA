@@ -105,23 +105,25 @@ class ship extends movable_mesh {
      * Accelerate
      */
     speed_up() {
-        this.speed.x -= 0.01 * Math.sin( this.rotation.z );
-        this.speed.y += 0.01 * Math.cos( this.rotation.z );
+        if (!this.is_lock) {
+            this.speed.x -= 0.01 * Math.sin( this.rotation.z );
+            this.speed.y += 0.01 * Math.cos( this.rotation.z );
+        }
     }
 
     /**
      * Deccelerate
      */
     speed_down() {
-        this.speed.x += 0.01 * Math.sin( this.rotation.z );
-        this.speed.y -= 0.01 * Math.cos( this.rotation.z );
+        if (!this.is_lock) {
+            this.speed.x += 0.01 * Math.sin( this.rotation.z );
+            this.speed.y -= 0.01 * Math.cos( this.rotation.z );
+        }
     }
 
     update() {
         this.normalize_speed( this.max_speed );
-        if (!this.is_lock) {
-            this.mouve_axies(this.speed.x, this.speed.y, this.speed.z);
-        }
+        this.mouve_axies(this.speed.x, this.speed.y, this.speed.z);
         if (this.max_speed === 0.35) {
             this.booster.scale.set(0, 0, 0);
             this.booster_light.intensity = 0;

@@ -51,7 +51,7 @@ class level_2 extends game_level {
         }
 
         // Place the camera
-        this.camera.position.set( 0, 0, 90 );
+        this.camera.position.set( 0, 0, 110 );
 
         const gridHelper = new THREE.GridHelper( 10000, 1000 );
         gridHelper.rotation.x = THREE.Math.degToRad( 90 );
@@ -76,6 +76,10 @@ class level_2 extends game_level {
             this.animations.fade.start();
         }
         this.animations.fade.start();
+
+        this.sound = new Audio("src/medias/sounds/radar_1.mp3");
+        console.log(this.sound);    
+        this.sound.volume = 0.1;
 
         this.player = player;
 
@@ -117,6 +121,8 @@ class level_2 extends game_level {
         super.step();
         if (this.time % 300 === 0) {
             this.lunch_scan();
+            
+            this.sound.play();
         }
         if (this.time % (60*60) === 0) {
             const bonus = this.spawn_power_up();

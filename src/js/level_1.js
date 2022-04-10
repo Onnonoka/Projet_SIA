@@ -42,7 +42,7 @@ class level_1 extends game_level {
         }
 
         // Place the camera
-        this.camera.position.set( 0, 0, 90 );
+        this.camera.position.set( 0, 0, 110 );
 
         const gridHelper = new THREE.GridHelper( 10000, 1000 );
         gridHelper.rotation.x = THREE.Math.degToRad( 90 );
@@ -54,6 +54,7 @@ class level_1 extends game_level {
         this.animations.fade.go_to(this.animations.fade.animation_duration);
         this.animations.fade.callback = () => {
             this.animations.start.start();
+            this.hud.start_hud_anim();
         }
         this.animations.end = new end_lvl_animation(this);
         this.animations.end.callback = () => {

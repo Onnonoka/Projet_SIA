@@ -40,7 +40,7 @@ class game_level {
             }
         });
         this.screen_exit_detection();
-        //this.update_camera();
+        this.update_camera();
         this.detect_collision();
         this.remove_dead_object();
         this.hud.set_score( this.score );

@@ -2,6 +2,7 @@ import {game_level} from "./game_level.js";
 import ship from "./object3D/ship.js";
 import fade_animation from "./animations/fade_animation.js";
 import power_up from "./object3D/power_up.js";
+import neon_animation from "./animations/neon_animation.js";
 
 class main_menu extends game_level {
     
@@ -12,7 +13,7 @@ class main_menu extends game_level {
     build(model) {
         // Creation of the skybox
         const skybox_material = [ ...model.preloaded_materials.skybox_3 ];
-        const skybox = new THREE.Mesh( new THREE.BoxGeometry( 10000, 10000, 10000 ), skybox_material );
+        const skybox = new THREE.Mesh( new THREE.BoxGeometry( 1000, 1000, 1000 ), skybox_material );
         this.skybox = skybox;
         this.scene.add( skybox );
 
@@ -50,7 +51,7 @@ class main_menu extends game_level {
         this.scene.add( player );*/ 
         const planete = model.preloaded_mesh.planete_1.clone();
         planete.scale.set(80, 80, 80);
-        planete.position.set(-200, 0, -1200);
+        planete.position.set(-500, 0, -1200);
         planete.rotation.x = 0.5;
         this.planete = planete;
         this.scene.add(planete);
@@ -60,14 +61,20 @@ class main_menu extends game_level {
 
         // Place the camera
         this.camera.position.set( 0, 0, 90 );
+        
+        this.sound = new Audio("src/medias/sounds/bgm_main_menu.mp3");
+        this.sound.volume = 0.2;
+        this.sound.loop = true;
 
         this.animations.fade = new fade_animation(this);
         this.animations.fade.callback = () => {
             this.handle_win();
+            this.sound.pause();
         }
 
-        /*this.power_up = new power_up("");
-        this.scene.add(this.power_up);*/
+        this.animations.title_neon_effect = new neon_animation(title);
+
+        this.sound.play();
         
         game_level.current_lvl = this.index;
     }

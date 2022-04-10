@@ -55,7 +55,7 @@ class model {
         this.scene = new THREE.Scene();
 
         // Create the camera
-        this.camera = new THREE.PerspectiveCamera( 90, this.render_config.w / this.render_config.h, 1, 10000 );
+        this.camera = new THREE.PerspectiveCamera( 70, this.render_config.w / this.render_config.h, 1, 10000 );
         
         const render_pass = new THREE.RenderPass( this.scene, this.camera );
         const bloom_pass = new THREE.UnrealBloomPass({x: 1024, y: 1024}, 1, 0.0, 0.5);
