@@ -1,12 +1,20 @@
 
 import hud from "./hud.js";
-import game_level from "./game_level.js";
+import {game_level} from "./game_level.js";
 import level_1 from "./level_1.js";
 import level_2 from "./level_2.js";
 import main_menu from "./main_menu.js";
 
 class vue {
     type = "vue";
+
+    pause = false;
+
+    post_process_render = true;
+
+    stored_mat = {};
+
+    darkMat = new THREE.MeshBasicMaterial( { color: 'black' } );
 
     /**
      * Constructor
@@ -24,8 +32,17 @@ class vue {
         this.hud = new hud();
 
         this.main_menu = new main_menu( this.scene, this.camera, this.hud );
+        this.main_menu.win_callback = () => {
+            this.generate_lvl_1();
+        }
         this.lvl_1 = new level_1( this.scene, this.camera, this.hud );
+        this.lvl_1.win_callback = () => {
+            this.generate_lvl_2();
+        }
         this.lvl_2 = new level_2( this.scene, this.camera, this.hud );
+        this.lvl_2.win_callback = () => {
+            this.generate_lvl_3();
+        }
 
     }
 
@@ -44,7 +61,11 @@ class vue {
      * Renders the scene and the camera
      */
     render() {
-        this.model.renderer.render( this.scene, this.camera );
+        if (this.post_process_render) {
+            this.model.bloom_composer.render();
+        } else {
+            this.model.renderer.render( this.scene, this.camera );
+        }
     }
 
     /**
@@ -77,14 +98,9 @@ class vue {
      */
     update() {
         const current_level = game_level.current_lvl;
-        if (current_level >= 0 && game_level.lvls[current_level].status !== 'pause') {
-            game_level.lvls[current_level].update();
-            if (game_level.lvls[current_level].status === 'win') {
-                if (game_level.lvls[current_level] === this.lvl_1) {
-                    this.generate_lvl_2();
-                } else if (game_level.lvls[current_level] === this.lvl_2) {
-                    this.generate_lvl_3();
-                }
+        if (!this.pause) {
+            if (game_level.lvls.length > 0 && current_level >= 0) {
+                game_level.lvls[current_level].update();
             }
         }
     }
@@ -127,6 +143,20 @@ class vue {
         }
         if ( object.children.length > 0 ) {
             object.children.forEach( child => this.dispose( child ) );
+        }
+    }
+
+    store_mat(obj) {
+        if (obj.isMesh && obj.layers.mask !== 3) {
+            this.stored_mat[ obj.uuid ] = obj.material;
+            obj.material = this.darkMat;
+        }
+    }
+
+    restore_mat(obj) {
+        if ( this.stored_mat[ obj.uuid ] ) {
+            obj.material = this.stored_mat[ obj.uuid ];
+            delete this.stored_mat[ obj.uuid ];
         }
     }
 }

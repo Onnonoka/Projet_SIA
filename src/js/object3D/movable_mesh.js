@@ -13,8 +13,6 @@ class movable_mesh extends THREE.Group {
     is_collidable_object = true;
     is_affected_by_physics = true;
 
-    time = 0;
-
     /**
      * Constructor
      * @param {string} type the type of the mesh

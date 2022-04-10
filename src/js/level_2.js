@@ -1,6 +1,11 @@
-import game_level from "./game_level.js";
+import {game_level} from "./game_level.js";
 import ship from "./object3D/ship.js";
 import scan from "./object3D/scan.js";
+import power_up from "./object3D/power_up.js";
+import fade_animation from "./animations/fade_animation.js";
+import light_reduce_animation from "./animations/light_reduce_animation.js";
+import start_lvl_animation from "./animations/start_lvl_animation.js";
+import end_lvl_animation from "./animations/end_lvl_animation.js";
 
 class level_2 extends game_level {
 
@@ -26,11 +31,13 @@ class level_2 extends game_level {
         player_mesh.rotation.x = THREE.Math.degToRad( 90 );
         player_mesh.rotation.y = THREE.Math.degToRad( 180 );
         const player = new ship( player_mesh );
+        player.position.set(0, 10000, player.position.z);
         this.scene.add( player );
 
-        const player_spot_light = new THREE.SpotLight( 0xffffff, 1, 0, THREE.Math.degToRad(20), 0.3, 0 );
+        const player_spot_light = new THREE.SpotLight( 0xffffff, 1, 0, THREE.Math.degToRad(90), 0.3, 0 );
         player_spot_light.position.set( 0, 0, 90 );
         player_spot_light.target = player;
+        this.player_spot_light = player_spot_light;
         this.lights.push( player_spot_light );
         this.scene.add( player_spot_light );
         const player_point_light = new THREE.PointLight( 0xffffff, 5, 30 );
@@ -39,7 +46,7 @@ class level_2 extends game_level {
         this.scene.add( player_point_light );
 
         for ( let i = 0; i < 8; i++ ) {
-            const meteor_object = this.spawn_meteor();
+            const meteor_object = this.spawn_meteor(model);
             this.scene.add( meteor_object );
         }
 
@@ -51,6 +58,24 @@ class level_2 extends game_level {
         this.scene.add( gridHelper );
 
         game_level.current_lvl = this.index;
+
+        this.animations.global_light = new light_reduce_animation(this);
+        this.animations.start = new start_lvl_animation(this);
+        this.animations.start.callback = () => {
+            this.animations.global_light.start();
+        }
+        this.animations.fade = new fade_animation(this);
+        this.animations.fade.reverse = true;
+        this.animations.fade.go_to(this.animations.fade.animation_duration);
+        this.animations.fade.callback = () => {
+            this.animations.start.start();
+        }
+        this.animations.end = new end_lvl_animation(this);
+        this.animations.end.callback = () => {
+            this.animations.fade.reset();
+            this.animations.fade.start();
+        }
+        this.animations.fade.start();
 
         this.player = player;
 
@@ -110,6 +135,41 @@ class level_2 extends game_level {
 
     is_loose() {
         return this.player.is_dead;
+    }
+    
+    spawn_power_up() {
+        const horinzontal_fov = 2 * THREE.Math.radToDeg( Math.atan( Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.aspect ) );
+        // compute the width and the height at z = 0
+        const width = Math.tan( THREE.Math.degToRad( horinzontal_fov ) / 2 ) * this.camera.position.z * 2;
+        const height = Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.position.z * 2;
+        let bonus;
+        switch(Math.floor(Math.random() * 4)) {
+            case 0 :
+                bonus = new power_up("dematerialize", 0xeeeeee);
+                break;
+            case 1 :
+                bonus = new power_up("extra_life", 0xFF2020);
+                break;
+            case 2 :
+                bonus = new power_up("rapide_fire", 0x00ff00);
+                break;
+            case 3 :
+                bonus = new power_up("shield", 0x0074FF);
+                break;
+        }
+        bonus.position.set(Math.floor( Math.random() * width ),  height / 2);
+        bonus.speed.set(0, -0.2, 0);
+        return bonus;
+    }
+
+    handle_win() {
+        if (!this.animations.end.is_started) {
+            this.animations.end.reset();
+            this.animations.fade.callback = () => {
+                super.handle_win();
+            }
+            this.animations.end.start();
+        }
     }
 }
 

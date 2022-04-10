@@ -2,6 +2,8 @@ import movable_mesh from "./movable_mesh.js";
 
 class bullet extends movable_mesh {
 
+    time = 0;
+
     /**
      * Constructor
      * @param {number} rotate_z the z rotation at spawn
@@ -40,8 +42,9 @@ class bullet extends movable_mesh {
 
     step() {
         this.time++;
-        if (this.time === 80)
+        if (this.time >= 80) {
             this.is_dead = true;
+        }
     }
 
 }

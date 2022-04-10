@@ -1,18 +1,21 @@
-import dematerialize from "./object3D/dematerialize.js";
-import extra_file from "./object3D/extra_life.js";
+
 import meteor from "./object3D/meteor.js";
-import rapide_fire from "./object3D/rapide_fire.js";
-import shield from "./object3D/shield.js";
+
+class CAMERA {
+    static CAMERA_FIX = 0;
+    static CAMERA_FOLLOW = 1;
+    static CAMERA_FIX_PLAYER_FIX = 2;
+}
 
 class game_level {
 
     static lvls = new Array();
     static current_lvl = -1;
 
-    camera_follow_player = true;
-    camera_stay_center = true;
+    camera_status = CAMERA.CAMERA_FIX;
 
-    status = "running"; // can be running | win | loose | pause
+    animations = {};
+
     time = 0;
 
     score = 0;
@@ -37,7 +40,7 @@ class game_level {
             }
         });
         this.screen_exit_detection();
-        this.update_camera();
+        //this.update_camera();
         this.detect_collision();
         this.remove_dead_object();
         this.hud.set_score( this.score );
@@ -46,6 +49,9 @@ class game_level {
         } else if ( this.is_loose() ) {
             this.handle_loose();
         }
+        Object.keys(this.animations).forEach(key => {
+            this.animations[key].update();
+        });
         this.step();
     }
     
@@ -96,11 +102,13 @@ class game_level {
      */
     update_camera() {
         // Update the camera
-        if ( this.camera_follow_player ) {
+        if ( this.camera_status === CAMERA.CAMERA_FOLLOW ) {
             this.camera.position.x = this.player.position.x;
             this.camera.position.y = this.player.position.y;
         }
-        if ( this.camera_stay_center ) {
+        if ( this.camera_status === CAMERA.CAMERA_FIX_PLAYER_FIX ) {
+            this.camera.position.x = this.player.position.x;
+            this.camera.position.y = this.player.position.y;
             this.scene.children.forEach( obj => {
                 if (obj != this.camera) {
                     obj.position.x -= this.camera.position.x;
@@ -124,10 +132,7 @@ class game_level {
         dead_object.forEach( obj => {
             if ( obj.type === "meteor" ) {
                 this.score += 100;
-                //console.log( this.model.game_data.score );
                 console.log( obj.type, "removed" );
-            } else if ( obj.type === "ship" ) {
-                //this.vue.generate_game_over();
             }
             this.dispose( obj );
         });
@@ -203,11 +208,15 @@ class game_level {
     }
 
     handle_win() {
-        this.status = 'win';
+        if (this.win_callback) {
+            this.win_callback();
+        }
     }
 
     handle_loose() {
-        this.status = 'loose';
+        if (this.loose_callback) {
+            this.loose_callback();
+        }
     }
 
     /**
@@ -222,40 +231,18 @@ class game_level {
         this.hud.clear();
     }
 
-    spawn_meteor() {
+    spawn_meteor(model) {
         const horinzontal_fov = 2 * THREE.Math.radToDeg( Math.atan( Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.aspect ) );
         // compute the width and the height at z = 0
         const width = Math.tan( THREE.Math.degToRad( horinzontal_fov ) / 2 ) * this.camera.position.z * 2;
         const height = Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.position.z * 2;
-        let posx, posy;
-        if (Math.round(Math.random()) === 1) {
-            posx = Math.floor( Math.random() * width );
-            posy = height / 2;
-        } else {
-            posx = width / 2;
-            posy = Math.floor( Math.random() * height );
-        }
-        return new meteor( Math.random() * 2 - 1, Math.random() * 2 - 1, posx, posy, 3 );
-    }
-
-    spawn_power_up() {
-        const horinzontal_fov = 2 * THREE.Math.radToDeg( Math.atan( Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.aspect ) );
-        // compute the width and the height at z = 0
-        const width = Math.tan( THREE.Math.degToRad( horinzontal_fov ) / 2 ) * this.camera.position.z * 2;
-        const height = Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.position.z * 2;
-        let bonus;
-        switch(Math.floor(Math.random() * 4)) {
+        let mesh;
+        switch(Math.floor(Math.random() * 2)) {
             case 0 :
-                bonus = new dematerialize();
+                mesh = model.preloaded_mesh.rock_1.clone();
                 break;
             case 1 :
-                bonus = new extra_file();
-                break;
-            case 2 :
-                bonus = new rapide_fire();
-                break;
-            case 3 :
-                bonus = new shield();
+                mesh = model.preloaded_mesh.rock_2.clone();
                 break;
         }
         let posx, posy;
@@ -266,9 +253,7 @@ class game_level {
             posx = width / 2;
             posy = Math.floor( Math.random() * height );
         }
-        bonus.position.set(Math.floor( Math.random() * width ), height / 2);
-        bonus.speed.set(0, -0.2, 0);
-        return bonus;
+        return new meteor(mesh, Math.random() * 2 - 1, Math.random() * 2 - 1, posx, posy, 3);
     }
 
     cheat_code_clear_meteor() {
@@ -283,6 +268,7 @@ class game_level {
             this.dispose(obj);
         });
     }
+
 }
 
-export default game_level;
+export {game_level, CAMERA};

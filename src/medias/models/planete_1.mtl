@@ -1,0 +1,15 @@
+# Blender MTL File: 'planete.blend'
+# Material Count: 1
+
+newmtl Matériau.003
+Ns 20.000000
+Ka 1.000000 1.000000 1.000000
+Kd 4.000000 4.000000 4.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 5
+norm ..\\images\\textures\\planete_1\\Tinniuq_Normal.png
+map_Kd ..\\images\\textures\\planete_1\Tinniuq_Albedo.png
+refl ..\\images\\textures\\planete_1\\Tinniuq_MetallicSmoothness.png

@@ -56,14 +56,29 @@ class model {
 
         // Create the camera
         this.camera = new THREE.PerspectiveCamera( 90, this.render_config.w / this.render_config.h, 1, 10000 );
+        
+        const render_pass = new THREE.RenderPass( this.scene, this.camera );
+        const bloom_pass = new THREE.UnrealBloomPass({x: 1024, y: 1024}, 1, 0.0, 0.5);
+
+        const bloom_composer = new THREE.EffectComposer( this.renderer );
+        const final_composer = new THREE.EffectComposer( this.renderer );
+
+        bloom_composer.renderToScreen = true;
+        bloom_composer.addPass(render_pass);
+        bloom_composer.addPass(bloom_pass);
+        final_composer.addPass(render_pass);
+        this.bloom_composer = bloom_composer;
+        this.final_composer = final_composer;
 
         // Preload all 3d model for the game
         Promise.all([
             this.load_mesh( "earth_cloud", "earth_cloud" ),
             this.load_mesh( "earth_ground", "earth_6" ),
-            this.load_mesh( "planete_2", "planete_2" ),
+            this.load_mesh( "planete_1", "planete_1" ),
             this.load_mesh( "title", "title" ),
-            this.load_mesh( "ship_14", "ship_14" )
+            this.load_mesh( "ship_14", "ship_14" ),
+            this.load_mesh( "rock_1", "rock_1" ),
+            this.load_mesh( "rock_2", "rock_2" )
         ]).then( () => {
             this.preloaded_mesh.is_loaded = true;
         } );

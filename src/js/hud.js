@@ -9,6 +9,7 @@ class hud {
         this.weapon_container = document.getElementById( "weapon" );
         this.message_container = document.getElementById( "message" );
         this.action_request_container = document.getElementById( "action_request" );
+        this.fade_screen = document.getElementById( "fade_screen" );
 
     }
 

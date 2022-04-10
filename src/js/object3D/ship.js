@@ -1,5 +1,10 @@
 import movable_mesh from "./movable_mesh.js";
 import bullet from "./bullet.js";
+import dematerialize_animation from "../animations/dematerialize_animation.js";
+import shield_animation from "../animations/shield_animation.js";
+import death_animation from "../animations/death_animation.js";
+import animation from "../animations/animation.js";
+import ship_explosion_animation from "../animations/ship_explosion_animation.js";
 
 /**
  * 
@@ -10,13 +15,17 @@ class ship extends movable_mesh {
 
     on_cooldown = false;
     shoot_left = true;
-    fire_rate = 500;
+    fire_rate = 30;
 
     is_immune = false;
+    is_protected = false;
+
+    is_lock = false;
 
     life = 3
 
-    animations = new Array();
+    animations = {};
+    time = 0;
     
     /**
      * Constructor
@@ -29,25 +38,6 @@ class ship extends movable_mesh {
         this.BB.getSize(size);
         this.position.z = size.y / 2;
 
-        // shield paramter
-        const shield_geometry = new THREE.SphereGeometry( this.BS.radius, 32, 16 );
-        const shield_material = new THREE.MeshStandardMaterial( {
-            color: 0x2ba0ff,
-            emissive: 0x2ba0ff,
-            emissiveIntensity: 5,
-            transparent: true,
-            opacity: 0.2
-        } );
-        this.shield = new THREE.Mesh( shield_geometry, shield_material );
-        this.shield.scale.set( 1, 1.3, 1 );
-        this.shield_light = new THREE.PointLight( 0x2ba0ff, 5, 15 );
-        this.shield.geometry.computeBoundingBox();
-        this.shield.geometry.computeBoundingSphere();
-        this.shield.active = false;
-        this.shield.visible = false;
-        this.shield_light.visible = false;
-        this.add( this.shield );
-        this.add( this.shield_light );
         const booster_geometry = new THREE.ConeGeometry(0.5, 10, 8);
         const booster_material = new THREE.MeshStandardMaterial( {
             color: 0x3d91ff,
@@ -72,7 +62,42 @@ class ship extends movable_mesh {
         this.bullet_mesh = new THREE.Mesh(bullet_geometry, bullet_material);
         this.bullet_light = new THREE.PointLight( 0x00ff00, 5, 10 );
 
-
+        this.animations.dematerialize = new dematerialize_animation(this);
+        this.animations.dematerialize.callback = () => {
+            this.animations.dematerialize.reset();
+            this.animations.dematerialize.go_to(this.animations.dematerialize.animation_duration - 2);
+            this.animations.dematerialize.is_started = true;
+            this.animations.dematerialize.step();
+            this.animations.dematerialize.is_started = false;
+            this.animations.dematerialize.reset();
+            this.is_immune = false;
+            this.is_affected_by_physics = true;
+        }
+        this.animations.dematerialize.breakpoint_callback = this.animations.dematerialize.callback;
+        this.animations.shield = new shield_animation(this);
+        this.animations.shield.callback = () => {
+            this.animations.shield.reset();
+            this.is_protected = false;
+            this.BB = this.mesh.geometry.boundingBox;
+            this.BS = this.mesh.geometry.boundingSphere;
+        }
+        this.animations.death = new death_animation(this);
+        this.animations.death.callback = () => {
+            this.is_collidable_object = true;
+            this.is_affected_by_physics = true;
+            this.is_lock = false;
+            this.animations.death.reset();
+            this.active_dematerialize();    
+        }
+        this.animations.rapide_fire = new animation(60*5);
+        this.animations.rapide_fire.callback = () => {
+            this.animations.rapide_fire.reset();
+            this.fire_rate *= 2;
+        }
+        this.animations.explosion = new ship_explosion_animation(this);
+        this.animations.explosion.callback = () => {
+            this.animations.explosion.reset();
+        }
 
     }
 
@@ -94,11 +119,12 @@ class ship extends movable_mesh {
 
     update() {
         this.normalize_speed( this.max_speed );
-        this.mouve_axies(this.speed.x, this.speed.y, this.speed.z);
+        if (!this.is_lock) {
+            this.mouve_axies(this.speed.x, this.speed.y, this.speed.z);
+        }
         if (this.max_speed === 0.35) {
             this.booster.scale.set(0, 0, 0);
             this.booster_light.intensity = 0;
-            //this.booster_light.visible = false;
         } else {
             let size = new THREE.Vector3();
             this.mesh.geometry.boundingBox.getSize(size);
@@ -107,15 +133,24 @@ class ship extends movable_mesh {
             this.booster.scale.set(1, speed_direction.length() / 0.65, 1);
             this.booster.position.set(0, -size.x / 2 - 6.5 * this.booster.scale.y, 0.7);
             this.booster_light.intensity = 5 * this.booster.scale.y;
-            this.booster_light.visible = true;
         }
+        if (this.on_cooldown) {
+            this.time++;
+            if (this.time === this.fire_rate) {
+                this.on_cooldown = false;
+                this.time = 0;
+            }
+        }
+        Object.keys(this.animations).forEach(key => {
+            this.animations[key].update();
+        });
     }
 
     /**
      * Spawn a bullet on the player ship position and direction
      */
     shoot() {
-        if ( !this.on_cooldown && this.visible ) {
+        if ( !this.on_cooldown && this.visible && !this.is_lock ) {
             const mesh_size = new THREE.Vector3();
             this.BB.getSize( mesh_size );
             let bullet_x = Math.sin( THREE.Math.degToRad( 90 - THREE.Math.radToDeg(this.rotation.z) )  ) *  (mesh_size.x / 2 - 0.4);
@@ -136,33 +171,94 @@ class ship extends movable_mesh {
             this.shoot_left = !this.shoot_left;
             this.parent.add( ammo );
             this.on_cooldown = true;
-            setTimeout( () => {
-                this.on_cooldown = false;
-            }, this.fire_rate );
         }
     }
 
     handle_collision( target ) {
-        if ( ( target.type === "bullet" && target.source !== this || target.type === "meteor" ) && this.visible && !this.is_immune && !this.shield.active ) {
-            this.visible = false;
+        if ( ( target.type === "bullet" && target.source !== this || target.type === "meteor" ) && this.visible && !this.is_immune && !this.is_protected ) {
             this.life--;
             this.speed.set( 0, 0, 0 );
             if ( this.life < 1 ) {
                 this.is_dead = true;
             } else {
-                setTimeout( () => {
-                    const mesh_size = new THREE.Vector3();
-                    this.BB.getSize( mesh_size );
-                    this.visible = true;
-                    this.position.set( 0, 0, mesh_size.y / 2 );
-                    this.rotation.set( 0, 0, 0 );
-                    this.speed.set( 0, 0, 0 );
-                }, 500 );
+                Object.keys(this.animations).forEach(key => {
+                    if (this.animations[key].is_started) {
+                        this.animations[key].reset();
+                        if (this.animations[key].callback) {
+                            this.animations[key].callback();
+                        }
+                    }
+                    
+                });
+                this.is_lock = true;
+                this.is_affected_by_physics = false;
+                this.is_collidable_object = false;
+                this.animations.death.start();
+                this.animations.explosion.start();
             }
         } else if ( target.type === "power_up" && this.visible ) {
-            target.action.bind( this )();
+            console.log(target.action);
+            switch(target.action) {
+                case "dematerialize" : 
+                    this.active_dematerialize();
+                    break;
+                case "shield" :
+                    this.active_shield();
+                    break;
+                case "extra_life" :
+                    this.active_extra_life();
+                    break;
+                case "rapide_fire" : 
+                    this.active_rapide_fire();
+                    break;
+            }
         }
     }
+
+    active_dematerialize(loop, breakpoint) {
+        this.is_immune = true;
+        this.is_affected_by_physics = false;
+        this.animations.dematerialize.reset();
+        if (loop) {
+            this.animations.dematerialize.loop = true;
+        } else if (!loop) {
+            this.animations.dematerialize.loop = false;
+        }
+        if (breakpoint) {
+            this.animations.dematerialize.set_breakpoint(breakpoint);
+        }
+        this.animations.dematerialize.start();
+    }
+
+    active_shield(duration) {
+        this.is_protected = true;
+        this.BB = this.animations.shield.shield.geometry.boundingBox;
+        this.BS = this.animations.shield.shield.geometry.boundingSphere;
+        if (duration !== undefined) {
+            this.animations.shield.set_duration(duration);
+        }
+        this.animations.shield.start();
+    }
+
+    active_extra_life() {
+        this.life++;
+    }
+
+    active_rapide_fire(duration) {
+        this.fire_rate /= 2;
+        this.animations.rapide_fire.reset();
+        if (duration !== undefined) {
+            this.animations.rapide_fire.set_duration(duration);
+        }
+        this.animations.rapide_fire.start();
+    }
+
+    rotate_axies( x, y, z) {
+        if (!this.is_lock) {
+            super.rotate_axies(x, y, z);
+        }
+    }
+
 }
 
 export default ship;

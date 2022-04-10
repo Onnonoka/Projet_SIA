@@ -12,11 +12,11 @@ class meteor extends movable_mesh {
      * @param {number} pos_y the initial y cord
      * @param {number} size The number of times it can decay
      */
-    constructor( speed_x = 0, speed_y = 0, pos_x = 0, pos_y = 0, size = 1 ) {
+    constructor( mesh, speed_x = 0, speed_y = 0, pos_x = 0, pos_y = 0, size = 1 ) {
         
-        const geometrie = new THREE.DodecahedronGeometry( 3, 0);
+        /*const geometrie = new THREE.DodecahedronGeometry( 3, 0);
         const material = new THREE.MeshPhongMaterial( {color: 0x00ff00} );
-        const mesh = new THREE.Mesh( geometrie, material );
+        const mesh = new THREE.Mesh( geometrie, material );*/
         super( "meteor", mesh );
         this.size = size;
 
@@ -37,9 +37,9 @@ class meteor extends movable_mesh {
             if ( this.size > 1 ) {
                 const speed = this.speed.clone().add( target.speed );
                 const pos = this.position;
-                this.parent.add( new meteor( speed.x, speed.y, pos.x, pos.y, this.size - 1 ) );
-                this.parent.add( new meteor( -speed.y, speed.x, pos.x, pos.y, this.size - 1 ) );
-                this.parent.add( new meteor( speed.y, -speed.x, pos.x, pos.y, this.size - 1 ) );
+                this.parent.add( new meteor( this.mesh.clone(), speed.x, speed.y, pos.x, pos.y, this.size - 1 ) );
+                this.parent.add( new meteor( this.mesh.clone(), -speed.y, speed.x, pos.x, pos.y, this.size - 1 ) );
+                this.parent.add( new meteor( this.mesh.clone(), speed.y, -speed.x, pos.x, pos.y, this.size - 1 ) );
             }
             this.is_dead = true;
         } 

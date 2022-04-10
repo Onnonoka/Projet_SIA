@@ -8,6 +8,11 @@ class wireframe_object extends movable_mesh {
         const mat = new THREE.MeshBasicMaterial().copy(this.mesh.material);
         this.mesh.material.dispose();
         this.mesh.material = mat;
+        this.mesh.material.color = new THREE.Color(0x00ff00);
+        this.mesh.material.map = null;
+        this.mesh.material.polygonOffset = true;
+        this.mesh.material.polygonOffsetFactor = 1; // positive value pushes polygon further away
+        this.mesh.material.polygonOffsetUnits = 1;
         this.mesh.material.wireframe = true;
         this.mesh.material.transparent = true;
         this.position.set(object.position.x, object.position.y, object.position.z);

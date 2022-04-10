@@ -7,12 +7,12 @@ class scan extends movable_mesh {
     already_scan = new Array();
 
     constructor( intitial_position ) {
-        const geometry = new THREE.RingGeometry(100, 110, 30);
+        const geometry = new THREE.RingGeometry(109, 110, 60);
         const material = new THREE.MeshStandardMaterial( {
-            color: 0x0000ff,
-            emissive: 0x0000ff,
+            color: 0x00ff00,
+            emissive: 0x00ff00,
             emissiveIntensity: 100,
-            opacity: 1,
+            opacity: 0.5,
             transparent: true
         } );
         const mesh = new THREE.Mesh(geometry, material);
@@ -24,7 +24,7 @@ class scan extends movable_mesh {
 
     update() {
         this.scale.set( this.scale.x + 0.005, this.scale.y + 0.005, 1);
-        this.mesh.material.opacity -= 1/180;
+        this.mesh.material.opacity -= 1/360;
         if ( this.mesh.material.opacity <= 0 )
             this.is_dead = true;
     }
