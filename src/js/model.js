@@ -77,8 +77,8 @@ class model {
             this.load_mesh( "planete_1", "planete_1" ),
             this.load_mesh( "title", "title" ),
             this.load_mesh( "ship_14", "ship_14" ),
-            this.load_mesh( "rock_1", "rock_1" ),
-            this.load_mesh( "rock_2", "rock_2" )
+            this.load_mesh( "rock_3", "rock_3" ),
+            this.load_mesh( "rock_4", "rock_4" )
         ]).then( () => {
             this.preloaded_mesh.is_loaded = true;
         } );

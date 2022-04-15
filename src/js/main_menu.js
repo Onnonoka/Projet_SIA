@@ -62,19 +62,19 @@ class main_menu extends game_level {
         // Place the camera
         this.camera.position.set( 0, 0, 90 );
         
-        this.sound = new Audio("src/medias/sounds/bgm_main_menu.mp3");
-        this.sound.volume = 0.2;
-        this.sound.loop = true;
+        this.sounds.sound = new Audio("src/medias/sounds/bgm_pause.mp3");
+        this.sounds.sound.volume = 0.2;
+        this.sounds.sound.loop = true;
 
         this.animations.fade = new fade_animation(this);
         this.animations.fade.callback = () => {
             this.handle_win();
-            this.sound.pause();
+            this.sounds.sound.pause();
         }
 
         this.animations.title_neon_effect = new neon_animation(title);
 
-        this.sound.play();
+        this.sounds.sound.play();
         
         game_level.current_lvl = this.index;
     }

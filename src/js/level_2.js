@@ -11,6 +11,9 @@ class level_2 extends game_level {
 
     lights = new Array();
 
+    sound_state = 0;
+    soundInterval = null;
+
     constructor( scene, camera, hud ) {
         super( scene, camera, hud );
     }
@@ -77,9 +80,10 @@ class level_2 extends game_level {
         }
         this.animations.fade.start();
 
-        this.sound = new Audio("src/medias/sounds/radar_1.mp3");
-        console.log(this.sound);    
-        this.sound.volume = 0.1;
+        this.sounds.sound1 = new Audio("src/medias/sounds/radar_1.mp3");
+        this.sounds.sound2 = new Audio("src/medias/sounds/bgm_lvl2_1.mp3");
+        this.sounds.sound1.volume = 0.1;  
+        this.sounds.sound2.volume = 0.1;
 
         this.player = player;
 
@@ -121,8 +125,17 @@ class level_2 extends game_level {
         super.step();
         if (this.time % 300 === 0) {
             this.lunch_scan();
-            
-            this.sound.play();
+            if (this.sounds.sound1.currentTime <= 0) {
+                this.sounds.sound1.play();
+            } else if (this.sounds.sound2.paused) {
+                this.sounds.sound2.play();
+                this.soundLoopInterval = setInterval(() => {
+                    if (this.sounds.sound2.currentTime >= this.sounds.sound2.duration - 1) {
+                        console.log("looped");
+                        this.sounds.sound2.currentTime = 13.71;
+                    }
+                }, 0);
+            }
         }
         if (this.time % (60*60) === 0) {
             const bonus = this.spawn_power_up();
@@ -163,8 +176,7 @@ class level_2 extends game_level {
                 bonus = new power_up("shield", 0x0074FF);
                 break;
         }
-        bonus.position.set(Math.floor( Math.random() * width ),  height / 2);
-        bonus.speed.set(0, -0.2, 0);
+        bonus.position.set(Math.floor( Math.random() * width ),  Math.random() * height);
         return bonus;
     }
 
@@ -173,6 +185,8 @@ class level_2 extends game_level {
             this.animations.end.reset();
             this.animations.fade.callback = () => {
                 super.handle_win();
+                clearInterval(this.soundInterval);
+                this.sounds.sound2.pause();
             }
             this.animations.end.start();
         }

@@ -14,6 +14,9 @@ class game_level {
 
     camera_status = CAMERA.CAMERA_FIX;
 
+    muted = false;
+    sounds = {};
+
     animations = {};
 
     time = 0;
@@ -44,6 +47,7 @@ class game_level {
         this.detect_collision();
         this.remove_dead_object();
         this.hud.set_score( this.score );
+        this.hud.set_life( this.player.life );
         if ( this.is_win() ) {
             this.handle_win();
         } else if ( this.is_loose() ) {
@@ -239,10 +243,10 @@ class game_level {
         let mesh;
         switch(Math.floor(Math.random() * 2)) {
             case 0 :
-                mesh = model.preloaded_mesh.rock_1.clone();
+                mesh = model.preloaded_mesh.rock_3.clone();
                 break;
             case 1 :
-                mesh = model.preloaded_mesh.rock_2.clone();
+                mesh = model.preloaded_mesh.rock_4.clone();
                 break;
         }
         let posx, posy;
@@ -266,6 +270,21 @@ class game_level {
         meteors.forEach( obj => {
             this.scene.remove(obj);
             this.dispose(obj);
+        });
+    }
+
+    mute(mute) {
+        this.muted = mute;
+        Object.keys(this.sounds).forEach( key => {
+            this.sounds[key].muted = this.muted;
+        });
+        Object.keys(this.animations).forEach( key => {
+            this.animations[key].mute(this.muted);
+        });
+        this.scene.children.forEach( child => {
+            if (child.mute) {
+                child.mute(this.muted);
+            }
         });
     }
 

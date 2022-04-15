@@ -7,6 +7,8 @@ class start_lvl_animation extends animation {
         super(60*2)
         this.context = context;
         this.camera = context.camera;
+        this.sounds.sound = new Audio("src/medias/sounds/jump_end_1.mp3");
+        this.sounds.sound.volume = 0.1;
     }
 
     step() {
@@ -46,6 +48,7 @@ class start_lvl_animation extends animation {
 
     start() {
         super.start();
+        this.sounds.sound.play();
     }
 }
 

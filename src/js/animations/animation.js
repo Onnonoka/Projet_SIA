@@ -13,6 +13,8 @@ class animation {
 
     loop = false;
 
+    sounds = {};
+
     constructor(duration) {
         this.animation_duration = duration;
     }
@@ -115,6 +117,12 @@ class animation {
             throw("duration can not be more than the animation time");
         }
         this.animation_time = duration;
+    }
+
+    mute(mute) {
+        if (this.sounds.sound) {
+            this.sounds.sound.muted = mute;
+        }
     }
 
     callback = null;

@@ -26,8 +26,17 @@ class hud {
         this.score_container.innerHTML = score;
     }
 
-    set_life( life = "" ) {
-        //this.life_container.innerHTML = life;
+    set_life(life = 3) {
+        this.life_container.innerHTML = "";
+        for (let i = 3 - life; i > 0; i--) {
+            this.life_container.innerHTML += `<img class="heart-empty" src="src/medias/images/heart-regular.svg"/>`;
+        }
+        if (life > 4) {
+            life = 4;
+        }
+        for (let i = life; i > 0; i--) {
+            this.life_container.innerHTML += `<img class="heart-full" src="src/medias/images/heart-solid.svg"/>`;
+        }
     }
 
     set_weapon( weapon = "" ) {
@@ -35,6 +44,11 @@ class hud {
     }
 
     set_action_request( message = "" ) {
+        if (message === "") {
+            this.action_request_container.style.display = "none";
+        } else {
+            this.action_request_container.style.display = "flex";
+        }
         this.action_request_container.innerHTML = message;
     }
 
@@ -66,7 +80,9 @@ class hud {
     start_hud_anim() {
         this.display_hud();
         document.getElementById("top-left-bg").classList.add("top-left-anim");
+        document.getElementById("score").classList.add("top-left-anim");
         document.getElementById("top-right-bg").classList.add("top-right-anim");
+        document.getElementById("life").classList.add("top-right-anim-scaleless");
         document.getElementById("bottom-left-bg").classList.add("bottom-left-anim");
         document.getElementById("bottom-right-bg").classList.add("bottom-right-anim");
     }

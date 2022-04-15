@@ -1,11 +1,14 @@
-import ship from "./ship.js";
+import movable_mesh from "./movable_mesh.js";
+import bullet from "./bullet.js";
 
 /**
  * 
  */
-class enemie_ship extends ship {
+class enemie_ship extends movable_mesh {
 
     fire_on_cooldown = false;
+    fire_rate = 120;
+    time = 0;
 
     max_speed = 0.15;
 
@@ -13,85 +16,77 @@ class enemie_ship extends ship {
     /**
      * Constructor
      */
-    constructor() {
+    constructor(target) {
         
         const geometry = new THREE.ConeGeometry( 1, 2, 4 );
         const material = new THREE.MeshPhongMaterial( { color: 0xff0000 } );
         super( "enemie_ship", new THREE.Mesh( geometry, material ) );
+        this.target = target;
+        const bullet_geometry = new THREE.CylinderGeometry( 5, 5, 20, 32 );
+        const bullet_material = new THREE.MeshStandardMaterial( {
+            color: 0xff0000,
+            emissive: 0xff0000,
+            emissiveIntensity: 100
+        } );
+        this.bullet_mesh = new THREE.Mesh(bullet_geometry, bullet_material);
     }
 
 
     update() {
-        // object animation
-        //console.log(this);
-        let controler_ship_position = this.parent.children.filter( e => e.type === "controler_ship" )[0].position.clone();
-        let distance_to_controler_ships = this.position.distanceTo( controler_ship_position );
-        let x = controler_ship_position.x - this.position.x;
-        let y = controler_ship_position.y - this.position.y;
-        let angle = Math.asin( x / distance_to_controler_ships );
-        if ( isNaN( angle ) )
-            angle = 0;
-        //let angle_2 = this.parent.children.filter( e => e.type === "controler_ship" )[0].position.angleTo( this.position );
-        //console.log( "angle", THREE.Math.radToDeg( angle ) );
-        //console.log( "rotation", THREE.Math.radToDeg( this.rotation.z ) )
-        //console.log(THREE.Math.radToDeg(angle), THREE.Math.radToDeg(this.rotation.z) );
-        //console.log( "angle_dist", THREE.Math.radToDeg( this.rotation.z - angle ) );
-        if ( y > 0 ) {
-            if ( this.rotation.z + angle < 0 ) {
-                console.log("inf y sup");
-                this.rotate_axies( 0, 0, THREE.Math.radToDeg( 0.01 ) );
-            } else if ( this.rotation.z + angle > 0 ) {
-                console.log("sup y sup");
-                this.rotate_axies( 0, 0, THREE.Math.radToDeg( -0.01 ) );
-            }
-
-        } else {
-            if ( this.rotation.z + -angle - Math.PI > 0 || this.rotation.z + -angle - Math.PI > Math.PI ) {
-                console.log("sup y inf");
-                this.rotate_axies( 0, 0, THREE.Math.radToDeg( -0.01 ) );
-            } else if ( this.rotation.z + -angle - Math.PI < 0  ) {
-                console.log("inf y inf");
-                this.rotate_axies( 0, 0, THREE.Math.radToDeg( 0.01 ) );
-            }
-
+        const d_target = this.target.position.clone();
+        if (d_target.length() === 0) {
+            d_target.set(0, 1, 0);
         }
-        
-        //console.log( THREE.Math.radToDeg( angle ) );
-        //this.rotation.z = angle_2;
-        /*if ( y < this.position.y) {
-            this.rotation.z -= Math.PI;
-        }*/
-        //console.log(x);
-        //console.log(distance_between_ships);
-        //if ( distance_between_ships > 10 )
-        //console.log( this.rotation.toVector3(), this.parent.children.filter( e => e.type === "controler_ship" )[0].position );
-        //console.log(this.rotation.toVector3().angleTo( this.parent.children.filter( e => e.type === "controler_ship" )[0].position ) );
-        //console.log(this.rotation.toVector3().angleTo( this.parent.children.filter( e => e.type === "controler_ship" )[0].rotation.toVector3() ))
-
-        /*if ( this.key_Arrow_Right )
-            this.rotate_axies( 0, 0, THREE.Math.radToDeg( -0.05 ) );
-        if ( this.key_Arrow_Up )
-            this.speed_up();
-        if ( this.key_Space )
-            this.shoot();*/
-        //this.normalize_speed( this.max_speed );
-        //this.mouve_axies( this.speed.x, this.speed.y, this.speed.z );
-
-        // mesh animation
-        //this.rotate_mesh( 0, THREE.Math.radToDeg(0.05), 0 );
-
+        d_target.z = 0;
+        d_target.y -= this.position.y;
+        d_target.x -= this.position.x;
+        d_target.normalize();
+        d_target.applyAxisAngle(new THREE.Vector3(0, 0, 1), -this.rotation.z);
+        if (d_target.x > 0) {
+            this.rotation.z = (this.rotation.z - 0.01) % (Math.PI * 2);
+        } else if (d_target.x < 0) {
+            this.rotation.z = (this.rotation.z + 0.01) % (Math.PI * 2);
+        }
+        if (d_target.angleTo(new THREE.Vector3(0, 1, 0)) < THREE.Math.degToRad(5)) {
+            this.shoot();
+        }
+        if (this.position.distanceTo(this.target.position) > 25) {
+            this.speed.x -= 0.01 * Math.sin( this.rotation.z );
+            this.speed.y += 0.01 * Math.cos( this.rotation.z );
+        } else if (this.position.distanceTo(this.target.position) < 20) {
+            this.speed.x += 0.01 * Math.sin( this.rotation.z );
+            this.speed.y -= 0.01 * Math.cos( this.rotation.z );
+        }
+        this.normalize_speed(this.max_speed);
+        this.mouve_axies(this.speed.x, this.speed.y, this.speed.z);
+        if (this.on_cooldown) {
+            this.time++;
+            if (this.time === this.fire_rate) {
+                this.on_cooldown = false;
+                this.time = 0;
+            }
+        }
     }
 
-    handle_collision( target ) {
-        if ( target.type === "bullet" ) {
-            if ( target.source !== this ) {
-                console.log( "handle_ship_collision_with_bullet" ); 
+    shoot() {
+        if ( !this.on_cooldown ) {
+            const ammo = new bullet( this.bullet_mesh.clone());
+            ammo.mute(this.muted);
+            ammo.position.set(this.position.x, this.position.y, this.position.z);
+            ammo.rotation.set( 0, 0, this.rotation.z );
+            ammo.source = this;
+            ammo.speed.set( -2 * Math.sin( this.rotation.z ), 2 * Math.cos( this.rotation.z ), 0 );
+            this.shoot_left = !this.shoot_left;
+            this.parent.add( ammo );
+            this.on_cooldown = true;
+        }
+    }
 
-            }
-        } else if ( target.type === "meteor" ) {
-            this.clear();
-            console.log( "handle_ship_collision_with_meteor" ); 
-
+    handle_collision(target) {
+        if (target.type === "bullet" && target.source !== this) {
+            this.is_dead = true;
+        } else if (target.type === "meteor") {
+            this.is_dead = true;
         }
     }
 

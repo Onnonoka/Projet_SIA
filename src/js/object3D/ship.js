@@ -98,6 +98,14 @@ class ship extends movable_mesh {
         this.animations.explosion.callback = () => {
             this.animations.explosion.reset();
         }
+        this.sounds.sound = new Audio("src/medias/sounds/booster_1.mp3");
+        this.sounds.sound.loop = true;
+        this.sounds.sound.play();
+        setInterval(() => {
+            if (this.sounds.sound.currentTime >= this.sounds.sound.duration - 1) {
+                this.sounds.sound.currentTime = 0; 
+            }
+        }, 0);
 
     }
 
@@ -135,7 +143,9 @@ class ship extends movable_mesh {
             this.booster.scale.set(1, speed_direction.length() / 0.65, 1);
             this.booster.position.set(0, -size.x / 2 - 6.5 * this.booster.scale.y, 0.7);
             this.booster_light.intensity = 5 * this.booster.scale.y;
+            
         }
+        this.sounds.sound.volume = 0.1 * this.booster.scale.y;
         if (this.on_cooldown) {
             this.time++;
             if (this.time === this.fire_rate) {
@@ -158,6 +168,7 @@ class ship extends movable_mesh {
             let bullet_x = Math.sin( THREE.Math.degToRad( 90 - THREE.Math.radToDeg(this.rotation.z) )  ) *  (mesh_size.x / 2 - 0.4);
             let bullet_y = Math.cos( THREE.Math.degToRad( 90 - THREE.Math.radToDeg(this.rotation.z) )  ) *  (mesh_size.x / 2 - 0.4);
             const ammo = new bullet( this.bullet_mesh.clone(), this.bullet_light.clone() );
+            ammo.mute(this.muted);
             if ( this.shoot_left ) {
                 bullet_x -= Math.cos( THREE.Math.degToRad( 90 - THREE.Math.radToDeg(this.rotation.z) )  ) * -2.5;
                 bullet_y += Math.sin( THREE.Math.degToRad( 90 - THREE.Math.radToDeg(this.rotation.z) )  ) * -2.5;
@@ -180,24 +191,25 @@ class ship extends movable_mesh {
         if ( ( target.type === "bullet" && target.source !== this || target.type === "meteor" ) && this.visible && !this.is_immune && !this.is_protected ) {
             this.life--;
             this.speed.set( 0, 0, 0 );
-            if ( this.life < 1 ) {
-                this.is_dead = true;
-            } else {
-                Object.keys(this.animations).forEach(key => {
-                    if (this.animations[key].is_started) {
-                        this.animations[key].reset();
-                        if (this.animations[key].callback) {
-                            this.animations[key].callback();
-                        }
+            Object.keys(this.animations).forEach(key => {
+                if (this.animations[key].is_started) {
+                    this.animations[key].reset();
+                    if (this.animations[key].callback) {
+                        this.animations[key].callback();
                     }
-                    
-                });
-                this.is_lock = true;
-                this.is_affected_by_physics = false;
-                this.is_collidable_object = false;
-                this.animations.death.start();
-                this.animations.explosion.start();
+                }
+                
+            });
+            this.is_lock = true;
+            this.is_affected_by_physics = false;
+            this.is_collidable_object = false;
+            if ( this.life < 1 ) {
+                this.animations.explosion.callback = () => {
+                    this.is_dead = true;
+                }
             }
+            this.animations.death.start();
+            this.animations.explosion.start();
         } else if ( target.type === "power_up" && this.visible ) {
             console.log(target.action);
             switch(target.action) {

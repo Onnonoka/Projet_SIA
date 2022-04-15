@@ -74,8 +74,12 @@ class controler {
                         this.vue.pause = true;
                     }
                     this.vue.hud.displayHelp();
-                } else if (e.key === 'f') {
+                } else if (e.key === "f") {
                     this.vue.fullscreen();
+                } else if (e.key === "s") {
+                    this.vue.mute();
+                } else if (e.key === "p") {
+                    window.print();
                 }
             }
         };

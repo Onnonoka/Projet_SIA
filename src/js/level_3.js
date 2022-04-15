@@ -4,8 +4,9 @@ import power_up from "./object3D/power_up.js";
 import fade_animation from "./animations/fade_animation.js";
 import start_lvl_animation from "./animations/start_lvl_animation.js";
 import end_lvl_animation from "./animations/end_lvl_animation.js";
+import enemie_ship from "./object3D/enemie_ship.js";
 
-class level_1 extends game_level {
+class level_3 extends game_level {
 
     constructor( scene, camera, hud ) {
         super( scene, camera, hud );
@@ -13,7 +14,7 @@ class level_1 extends game_level {
 
     build( model ) {
         // Creation of the skybox
-        const skybox_material = [ ...model.preloaded_materials.skybox_2 ];
+        const skybox_material = [ ...model.preloaded_materials.skybox_1 ];
         const skybox = new THREE.Mesh( new THREE.BoxGeometry( 10000, 10000, 10000 ), skybox_material );
         this.scene.add( skybox );
 
@@ -35,11 +36,15 @@ class level_1 extends game_level {
         player.position.set(0, 10000, player.position.z);
         player.is_lock = true;
         this.scene.add( player );
+        this.player = player;
         
         for ( let i = 0; i < 5; i++ ) {
             const meteor_object = this.spawn_meteor(model);
             this.scene.add( meteor_object );
         }
+
+        const enemie = new enemie_ship(player);
+        this.scene.add(enemie);
 
         // Place the camera
         this.camera.position.set( 0, 0, 110 );
@@ -65,8 +70,6 @@ class level_1 extends game_level {
         this.animations.fade.start();
 
         game_level.current_lvl = this.index;
-
-        this.player = player;
 
         return player;
     }
@@ -123,4 +126,4 @@ class level_1 extends game_level {
 
 }
 
-export default level_1;
+export default level_3;

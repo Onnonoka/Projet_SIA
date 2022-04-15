@@ -32,8 +32,8 @@ class power_up extends mouvable_mesh {
         }, 10000 );
         this.is_affected_by_physics = false;
         this.action = action;
-        this.sound = new Audio("src/medias/sounds/power_up_1.mp3");
-        this.sound.volume = 0.1;
+        this.sounds.sound = new Audio("src/medias/sounds/power_up_1.mp3");
+        this.sounds.sound.volume = 0.1;
     }
 
     update() {
@@ -55,7 +55,7 @@ class power_up extends mouvable_mesh {
     handle_collision( target ) {
         if ( target.type === "ship" ) {
             this.is_dead = true;
-            this.sound.play();
+            this.sounds.sound.play();
         }
     }
 

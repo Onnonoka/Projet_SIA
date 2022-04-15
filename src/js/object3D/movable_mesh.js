@@ -9,6 +9,8 @@ class movable_mesh extends THREE.Group {
     speed = new THREE.Vector3( 0, 0, 0 );
 
     is_dead = false;
+    muted = false;
+    sounds = {};
 
     is_collidable_object = true;
     is_affected_by_physics = true;
@@ -125,6 +127,13 @@ class movable_mesh extends THREE.Group {
     update() {
 
         throw new Error('You have to implement the method update before using the class!');
+    }
+
+    mute(mute) {
+        this.muted = mute;
+        Object.keys(this.sounds).forEach( key => {
+            this.sounds[key].muted = this.muted;
+        });
     }
 
 }

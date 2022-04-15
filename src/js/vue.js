@@ -3,6 +3,7 @@ import hud from "./hud.js";
 import {game_level} from "./game_level.js";
 import level_1 from "./level_1.js";
 import level_2 from "./level_2.js";
+import level_3 from "./level_3.js";
 import main_menu from "./main_menu.js";
 
 class vue {
@@ -10,6 +11,8 @@ class vue {
 
     pause = false;
     is_fullscreen = false;
+
+    muted = false;
 
     post_process_render = true;
 
@@ -34,7 +37,7 @@ class vue {
 
         this.main_menu = new main_menu( this.scene, this.camera, this.hud );
         this.main_menu.win_callback = () => {
-            this.generate_lvl_1();
+            this.generate_lvl_3();
         }
         this.lvl_1 = new level_1( this.scene, this.camera, this.hud );
         this.lvl_1.win_callback = () => {
@@ -43,6 +46,10 @@ class vue {
         this.lvl_2 = new level_2( this.scene, this.camera, this.hud );
         this.lvl_2.win_callback = () => {
             this.generate_lvl_3();
+        }
+        this.lvl_3 = new level_3( this.scene, this.camera, this.hud );
+        this.lvl_3.win_callback = () => {
+            console.log("level_end");
         }
 
     }
@@ -85,12 +92,21 @@ class vue {
     generate_lvl_1() {
         this.clear_scene();
         this.model.player = this.lvl_1.build( this.model );
+        this.lvl_1.mute(this.muted);
         this.model.game_status.in_lvl = true;
     }
 
     generate_lvl_2() {
         this.clear_scene();
         this.model.player = this.lvl_2.build( this.model );
+        this.lvl_2.mute(this.muted);
+        this.model.game_status.in_lvl = true;
+    }
+
+    generate_lvl_3() {
+        this.clear_scene();
+        this.model.player = this.lvl_3.build( this.model );
+        this.lvl_3.mute(this.muted);
         this.model.game_status.in_lvl = true;
     }
 
@@ -186,6 +202,11 @@ class vue {
             }
         }
         this.resize();
+    }
+
+    mute() {
+        this.muted = !this.muted;
+        game_level.lvls[game_level.current_lvl].mute(this.muted);
     }
 }
 
