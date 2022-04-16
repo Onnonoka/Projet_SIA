@@ -2,6 +2,9 @@
 
 class hud {
 
+    
+    is_end_menu_open = false;
+
     constructor() {
         this.container = document.getElementById( "hud" );
         this.score_container = document.getElementById( "score" );
@@ -85,6 +88,35 @@ class hud {
         document.getElementById("life").classList.add("top-right-anim-scaleless");
         document.getElementById("bottom-left-bg").classList.add("bottom-left-anim");
         document.getElementById("bottom-right-bg").classList.add("bottom-right-anim");
+    }
+
+    display_end_game_menu(score, life) {
+        this.is_end_menu_open = true;
+        document.getElementById("end_game").style.display = "flex";
+        let heart_container = document.getElementById("heart");
+        for (let i = life; i > 0; i--) {
+            heart_container.innerHTML += `<img class="heart-empty" src="src/medias/images/heart-regular.svg"/>`;
+        }
+        document.getElementById("final_score").innerHTML = score;
+    }
+
+    clear_hud() {
+        this.help_visible = false;
+        this.help.style.display = 'none';
+        this.top_left.style.display = 'none';
+        this.top_right.style.display = 'none';
+        this.bottom_left.style.display = 'none';
+        this.bottom_right.style.display = 'none';
+        document.getElementById("end_game").style.display = "none";
+        document.getElementById("heart").innerHTML = "";
+        document.getElementById("final_score").innerHTML = "";
+        document.getElementById("top-left-bg").classList.remove("top-left-anim");
+        document.getElementById("score").classList.remove("top-left-anim");
+        document.getElementById("top-right-bg").classList.remove("top-right-anim");
+        document.getElementById("life").classList.remove("top-right-anim-scaleless");
+        document.getElementById("bottom-left-bg").classList.remove("bottom-left-anim");
+        document.getElementById("bottom-right-bg").classList.remove("bottom-right-anim");
+
     }
 
 }

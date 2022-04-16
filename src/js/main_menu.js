@@ -20,7 +20,7 @@ class main_menu extends game_level {
         // Added title
         const title = model.preloaded_mesh.title.clone();
         title.material = new THREE.MeshBasicMaterial().copy(title.material);
-        title.scale.set( 40, 40, 40 );
+        title.scale.set( 30, 30, 30 );
         title.position.y = 30;
         title.rotation.x = THREE.Math.degToRad( 90 );
         this.scene.add( title );
@@ -34,21 +34,7 @@ class main_menu extends game_level {
         directional_light.position.y = -15;
         this.scene.add( directional_light );
         this.scene.add( directional_light.target );
-        const point_light = new THREE.SpotLight( 0xffffff, 1, 200, THREE.Math.degToRad(20) );
-        point_light.position.set(0, 0, 90);
-        point_light.target.position.set(-100, 30, 0);
-        point_light.moving_left = false;
-        this.point_light = point_light;
-        //this.scene.add(point_light);
-        this.scene.add(point_light.target);
 
-        // Added the player
-       /* const player_mesh = model.preloaded_mesh.ship_14.clone();
-        player_mesh.rotation.x = THREE.Math.degToRad( 90 );
-        player_mesh.rotation.y = THREE.Math.degToRad( 180 );
-        const player = new ship( player_mesh );
-        model.player = player;
-        this.scene.add( player );*/ 
         const planete = model.preloaded_mesh.planete_1.clone();
         planete.scale.set(80, 80, 80);
         planete.position.set(-500, 0, -1200);
@@ -83,17 +69,6 @@ class main_menu extends game_level {
         super.update();
         this.planete.rotation.y += 0.0001;
         this.skybox.rotation.y += 0.00001
-        if (this.point_light.moving_left) {
-            this.point_light.target.position.x += 1;
-            if (this.point_light.target.position.x >= 100) {
-                this.point_light.moving_left = false;
-            }
-        } else {
-            this.point_light.target.position.x -= 1;
-            if (this.point_light.target.position.x <= -100) {
-                this.point_light.moving_left = true;
-            }
-        }
     }
 
     change_screen() {

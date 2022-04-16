@@ -4,6 +4,11 @@
     src: url("../medias/font/Super\ Retro\ M54.ttf");
 }
 
+@font-face {
+    font-family: "batmfa";
+    src: url("../medias/font/batmfa__.ttf");
+}
+
 html, body, #app {
     width: 100%;
     height: 100%;
@@ -32,6 +37,7 @@ body {
 }
 
 #message {
+    z-index: 1001;
     position: absolute;
     width: 100%;
     height: 100%;
@@ -51,13 +57,14 @@ body {
                 rgb(0, 0, 0) 0.437495px -4.98082px 0px, rgb(0, 0, 0) 1.41831px -4.79462px 0px, rgb(0, 0, 0) 2.34258px -4.41727px 0px, 
                 rgb(0, 0, 0) 3.17346px -3.86382px 0px, rgb(0, 0, 0) 3.87783px -3.15633px 0px, rgb(0, 0, 0) 4.4276px -2.32301px 0px, 
                 rgb(0, 0, 0) 4.80085px -1.39708px 0px, rgb(0, 0, 0) 4.98271px -0.415447px 0px;
-    font-family: "super retro";
+    font-family: "batmfa";
 }
 
 #score {
+    margin-top: 0.9%;
     margin-left: 10%;
-    font-family: "super retro";
-    color: hsl(32, 100%, 91%);
+    font-family: "batmfa";
+    color: hsl(108, 19%, 59%);
     font-size: 4vw;
     text-shadow: rgb(39, 39, 39) 5px 0px 0px, rgb(39, 39, 39) 4.90033px 0.993347px 0px, rgb(39, 39, 39) 4.60531px 1.94709px 0px, 
                 rgb(39, 39, 39) 4.12668px 2.82321px 0px, rgb(39, 39, 39) 3.48353px 3.58678px 0px, rgb(39, 39, 39) 2.70151px 4.20736px 0px, 
@@ -144,7 +151,7 @@ body {
 
 #action_request {
     color: rgb(255, 249, 242);
-    font-family: "super retro", italic;
+    font-family: "batmfa", italic;
     font-size: 2rem;
     position: absolute;
     bottom: 20%;
@@ -185,32 +192,6 @@ body {
     display: none;
 }
 
-#help_screen #content {
-    width: fit-content;
-    height: fit-content;
-    background-color: rgba(191, 226, 255, 0.829);
-    border: solid 10px white;
-    border-radius: 10px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-}
-
-#help_screen #content td:first-child {
-    padding: 2px;
-    padding-right: 20px;
-    color: blue;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-}
-
-#help_screen #content tr.border-fat td {
-    border-top: solid 2px black;
-}
-
 #life img {
     margin-top: 10%;
     width: 80%;
@@ -235,10 +216,55 @@ body {
 }
 
 .heart-full {
-    filter: invert(33%) sepia(80%) saturate(6151%) hue-rotate(344deg) brightness(102%) contrast(108%);
+    filter: invert(19%) sepia(75%) saturate(1889%) hue-rotate(327deg) brightness(100%) contrast(94%);
 }
 .heart-empty {
-    filter: invert(16%) sepia(92%) saturate(2610%) hue-rotate(9deg) brightness(92%) contrast(105%);
+    filter: invert(13%) sepia(16%) saturate(6794%) hue-rotate(324deg) brightness(106%) contrast(98%);
+}
+
+#help_screen img {
+    height: 100%;
+    margin-left: 7%;
+}
+
+#end_game {
+    position: absolute;
+    pointer-events: none;
+    z-index: 90;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 4%;
+    margin-top: 5%;
+    display: none;
+}
+
+#end_game img {
+    width: 100%;
+}
+#end_game #final_score {
+    color: #91d2d6;
+    position: absolute;
+    font-size: 5vw;
+    left: 23.5vw;
+    top: 50%;
+    font-family: "batmfa";
+}
+#end_game #heart {
+    position: absolute;
+    left: 23.5vw;
+    top: 22%;
+}
+#end_game #heart img {
+    width: 10%;
+    filter: invert(92%) sepia(6%) saturate(1946%) hue-rotate(138deg) brightness(89%) contrast(88%);
 }
 
 

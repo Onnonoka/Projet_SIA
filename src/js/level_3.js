@@ -4,6 +4,7 @@ import power_up from "./object3D/power_up.js";
 import fade_animation from "./animations/fade_animation.js";
 import start_lvl_animation from "./animations/start_lvl_animation.js";
 import end_lvl_animation from "./animations/end_lvl_animation.js";
+import text_animations from "./animations/text_animations.js";
 import enemie_ship from "./object3D/enemie_ship.js";
 
 class level_3 extends game_level {
@@ -43,9 +44,6 @@ class level_3 extends game_level {
             this.scene.add( meteor_object );
         }
 
-        const enemie = new enemie_ship(player);
-        this.scene.add(enemie);
-
         // Place the camera
         this.camera.position.set( 0, 0, 110 );
         this.hud.set_life(this.player.life);
@@ -67,7 +65,11 @@ class level_3 extends game_level {
             this.animations.fade.reset();
             this.animations.fade.start();
         }
-        this.animations.fade.start();
+        this.animations.next = new text_animations(this);
+        this.animations.next.callback = () => {
+            this.animations.fade.start();
+        }
+        this.animations.next.start();
 
         game_level.current_lvl = this.index;
 
@@ -87,6 +89,10 @@ class level_3 extends game_level {
         if (this.time % (60*30) === 0) {
             const bonus = this.spawn_power_up();
             this.scene.add(bonus);
+        }
+        if (this.time % (60*60) === 0) {
+            const enemie = this.spawn_enemie();
+            this.scene.add(enemie);
         }
     }
     
@@ -115,13 +121,31 @@ class level_3 extends game_level {
     }
 
     handle_win() {
-        if (!this.animations.end.is_started) {
+        if (!this.animations.end.is_started && !this.hud.is_end_menu_open) {
             this.animations.end.reset();
-            this.animations.fade.callback = () => {
+            this.animations.end.callback = () => {
                 super.handle_win();
             }
             this.animations.end.start();
         }
+    }
+
+    spawn_enemie() {
+        const enemie = new enemie_ship(this.player);
+        const horinzontal_fov = 2 * THREE.Math.radToDeg( Math.atan( Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.aspect ) );
+        // compute the width and the height at z = 0
+        const width = Math.tan( THREE.Math.degToRad( horinzontal_fov ) / 2 ) * this.camera.position.z * 2;
+        const height = Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.position.z * 2;
+        let posx, posy;
+        if (Math.round(Math.random()) === 1) {
+            posx = Math.floor( Math.random() * width );
+            posy = height / 2;
+        } else {
+            posx = width / 2;
+            posy = Math.floor( Math.random() * height );
+        }
+        enemie.position.set(posx,  posy, 0);
+        this.scene.add(enemie);
     }
 
 }

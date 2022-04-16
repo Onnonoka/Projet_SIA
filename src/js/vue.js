@@ -37,10 +37,11 @@ class vue {
 
         this.main_menu = new main_menu( this.scene, this.camera, this.hud );
         this.main_menu.win_callback = () => {
-            this.generate_lvl_3();
+            this.generate_lvl_1();
         }
         this.lvl_1 = new level_1( this.scene, this.camera, this.hud );
         this.lvl_1.win_callback = () => {
+            console.log("build");
             this.generate_lvl_2();
         }
         this.lvl_2 = new level_2( this.scene, this.camera, this.hud );
@@ -49,7 +50,20 @@ class vue {
         }
         this.lvl_3 = new level_3( this.scene, this.camera, this.hud );
         this.lvl_3.win_callback = () => {
-            console.log("level_end");
+            this.model.game_status.is_loose = true;
+            this.hud.display_end_game_menu(this.lvl_3.score, this.lvl_3.player.life);
+        }
+        this.lvl_1.loose_callback = () => {
+            this.model.game_status.is_loose = true;
+            this.hud.display_end_game_menu(this.lvl_1.score, 0);
+        }
+        this.lvl_2.loose_callback = () => {
+            this.model.game_status.is_loose = true;
+            this.hud.display_end_game_menu(this.lvl_2.score, 0);
+        }
+        this.lvl_3.loose_callback = () => {
+            this.model.game_status.is_loose = true;
+            this.hud.display_end_game_menu(this.lvl_3.score, 0);
         }
 
     }
@@ -97,15 +111,22 @@ class vue {
     }
 
     generate_lvl_2() {
+        const old_lvl = game_level.lvls[game_level.current_lvl];
+        console.log(old_lvl);
         this.clear_scene();
         this.model.player = this.lvl_2.build( this.model );
+        this.lvl_2.player.life = old_lvl.player.life;
+        this.lvl_2.score = old_lvl.score;
         this.lvl_2.mute(this.muted);
         this.model.game_status.in_lvl = true;
     }
 
     generate_lvl_3() {
+        const old_lvl = game_level.lvls[game_level.current_lvl];
         this.clear_scene();
         this.model.player = this.lvl_3.build( this.model );
+        this.lvl_3.player.life = old_lvl.player.life;
+        this.lvl_3.score = old_lvl.score;
         this.lvl_3.mute(this.muted);
         this.model.game_status.in_lvl = true;
     }

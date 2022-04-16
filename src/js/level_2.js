@@ -6,6 +6,7 @@ import fade_animation from "./animations/fade_animation.js";
 import light_reduce_animation from "./animations/light_reduce_animation.js";
 import start_lvl_animation from "./animations/start_lvl_animation.js";
 import end_lvl_animation from "./animations/end_lvl_animation.js";
+import text_animations from "./animations/text_animations.js";
 
 class level_2 extends game_level {
 
@@ -78,7 +79,11 @@ class level_2 extends game_level {
             this.animations.fade.reset();
             this.animations.fade.start();
         }
-        this.animations.fade.start();
+        this.animations.next = new text_animations(this);
+        this.animations.next.callback = () => {
+            this.animations.fade.start();
+        }
+        this.animations.next.start();
 
         this.sounds.sound1 = new Audio("src/medias/sounds/radar_1.mp3");
         this.sounds.sound2 = new Audio("src/medias/sounds/bgm_lvl2_1.mp3");

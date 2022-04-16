@@ -18,6 +18,8 @@ class controler {
         this.model = model;
         this.vue = vue;
 
+        this.can_press = true;
+
         // going to be deleted
         //-------------------------------------------------------------------------------------------------
         /*this.controls = new THREE.TrackballControls( this.vue.camera, this.model.render_config.container );
@@ -80,6 +82,12 @@ class controler {
                     this.vue.mute();
                 } else if (e.key === "p") {
                     window.print();
+                } else if (e.key === " " && this.model.game_status.is_loose) {
+                    this.model.game_status.is_loose = false;
+                    this.vue.hud.clear_hud();
+                    this.vue.generate_menu();
+                    this.can_press = false;
+                    setTimeout( () => {this.can_press = true}, 1000 );
                 }
             }
         };
@@ -114,7 +122,7 @@ class controler {
     handle_key() {
         // Handle key press in the menu
         if ( this.model.game_status.in_start_menu ) {
-            if ( this.model.key_press[ " " ] ) {
+            if ( this.model.key_press[ " " ] && this.can_press) {
                 if (game_level.lvls[game_level.current_lvl]?.change_screen) {
                     game_level.lvls[game_level.current_lvl].change_screen();
                 }

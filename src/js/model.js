@@ -28,6 +28,7 @@ class model {
         in_lvl: false,
         current_lvl: 0,
         in_animation: false,
+        is_loose: false,
 
         detect_collision: false,
         camera_follow_player: false,
@@ -75,9 +76,10 @@ class model {
             this.load_mesh( "earth_cloud", "earth_cloud" ),
             this.load_mesh( "earth_ground", "earth_6" ),
             this.load_mesh( "planete_1", "planete_1" ),
-            this.load_mesh( "title", "title" ),
+            this.load_mesh( "title", "title_2" ),
             this.load_mesh( "ship_14", "ship_14" ),
             this.load_mesh( "rock_3", "rock_3" ),
+            this.load_mesh( "burning_rock", "burning_rock" ),
             this.load_mesh( "rock_4", "rock_4" )
         ]).then( () => {
             this.preloaded_mesh.is_loaded = true;

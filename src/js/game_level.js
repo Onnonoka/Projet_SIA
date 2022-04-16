@@ -24,6 +24,8 @@ class game_level {
     score = 0;
     player = {};
 
+    materials = {};
+
     constructor( scene, camera, hud ) {
         this.scene = scene;
         this.camera = camera;
@@ -43,7 +45,7 @@ class game_level {
             }
         });
         this.screen_exit_detection();
-        this.update_camera();
+        //this.update_camera();
         this.detect_collision();
         this.remove_dead_object();
         this.hud.set_score( this.score );
@@ -214,6 +216,7 @@ class game_level {
     handle_win() {
         if (this.win_callback) {
             this.win_callback();
+        } else {
         }
     }
 
