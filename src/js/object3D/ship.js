@@ -148,7 +148,7 @@ class ship extends movable_mesh {
         this.sounds.sound.volume = 0.1 * this.booster.scale.y;
         if (this.on_cooldown) {
             this.time++;
-            if (this.time === this.fire_rate) {
+            if (this.time >= this.fire_rate) {
                 this.on_cooldown = false;
                 this.time = 0;
             }
@@ -162,6 +162,7 @@ class ship extends movable_mesh {
      * Spawn a bullet on the player ship position and direction
      */
     shoot() {
+        console.log(this.fire_rate, this.on_cooldown);
         if ( !this.on_cooldown && this.visible && !this.is_lock ) {
             const mesh_size = new THREE.Vector3();
             this.BB.getSize( mesh_size );
@@ -188,7 +189,7 @@ class ship extends movable_mesh {
     }
 
     handle_collision( target ) {
-        if ( ( target.type === "bullet" && target.source !== this || target.type === "meteor" ) && this.visible && !this.is_immune && !this.is_protected ) {
+        if ( ( target.type === "bullet" && target.source !== this || target.type === "meteor" || target.type === "burning_meteor" ) && this.visible && !this.is_immune && !this.is_protected ) {
             this.life--;
             this.speed.set( 0, 0, 0 );
             Object.keys(this.animations).forEach(key => {

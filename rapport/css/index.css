@@ -1,0 +1,73 @@
+@font-face {
+    font-family: "batmfa";
+    src: url("../../src/medias/font/batmfa__.ttf");
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: rgb(14, 14, 14);
+    color: white;
+    font-family: "Lucida Console";
+    font-size: 1.5rem;
+}
+
+#img-bg {
+    display: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+#body-content {
+    -margin: 2%;
+    border: #91d2d6 5px solid;
+    box-shadow: inset 0vw 0 100vw #91d2d6;
+}
+
+h1, h2, h3 {
+    font-family: "batmfa";
+    color: #91d2d6;
+}
+
+.title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.section {
+    margin-left: 8%;
+    margin-right: 8%;
+}
+
+.section:first-child {
+    margin-top: 8%;
+}
+
+.section:last-child {
+    margin-bottom: 8%;
+}
+
+.section h2 {
+    border-bottom: 2px solid #91d2d6;
+    width: fit-content;
+}
+
+.section img {
+    max-width: 50%;
+}
+
+.img-list, .audio-lsit   {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.img-list img {
+    width: 30%;
+}
+
+.filter-blue {
+    filter: invert(92%) sepia(6%) saturate(1946%) hue-rotate(138deg) brightness(89%) contrast(88%);
+}

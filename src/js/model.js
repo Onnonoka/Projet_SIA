@@ -78,6 +78,7 @@ class model {
             this.load_mesh( "planete_1", "planete_1" ),
             this.load_mesh( "title", "title_2" ),
             this.load_mesh( "ship_14", "ship_14" ),
+            this.load_mesh( "enemie_ship", "enemie_ship" ),
             this.load_mesh( "rock_3", "rock_3" ),
             this.load_mesh( "burning_rock", "burning_rock" ),
             this.load_mesh( "rock_4", "rock_4" )

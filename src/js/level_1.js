@@ -45,10 +45,6 @@ class level_1 extends game_level {
         this.camera.position.set( 0, 0, 110 );
         this.hud.set_life(this.player.life);
 
-        const gridHelper = new THREE.GridHelper( 10000, 1000 );
-        gridHelper.rotation.x = THREE.Math.degToRad( 90 );
-        this.scene.add( gridHelper );
-
         this.animations.start = new start_lvl_animation(this);
         this.animations.fade = new fade_animation(this);
         this.animations.fade.reverse = true;
@@ -56,6 +52,7 @@ class level_1 extends game_level {
         this.animations.fade.callback = () => {
             this.animations.start.start();
             this.hud.start_hud_anim();
+            this.sounds.bgm.play();
         }
         this.animations.end = new end_lvl_animation(this);
         this.animations.end.callback = () => {
@@ -63,6 +60,15 @@ class level_1 extends game_level {
             this.animations.fade.start();
         }
         this.animations.fade.start();
+
+        this.sounds.bgm = new Audio("src/medias/sounds/bgm_lvl1.mp3");
+        this.sounds.bgm.volume = 0.1;
+        this.sounds.bgm.muted = this.muted;
+        this.soundLoopInterval = setInterval(() => {
+            if (this.sounds.bgm.currentTime >= this.sounds.bgm.duration - 1) {
+                this.sounds.sound2.currentTime = 48;
+            }
+        }, 0);
 
         game_level.current_lvl = this.index;
 
@@ -115,11 +121,12 @@ class level_1 extends game_level {
         if (!this.animations.end.is_started) {
             this.animations.end.reset();
             this.animations.fade.callback = () => {
+                this.stopAudio();
                 super.handle_win();
             }
             this.animations.end.start();
         }
-    }
+    }   
 
 }
 

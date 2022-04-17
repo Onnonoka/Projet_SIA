@@ -3,6 +3,7 @@ import ship from "./object3D/ship.js";
 import fade_animation from "./animations/fade_animation.js";
 import power_up from "./object3D/power_up.js";
 import neon_animation from "./animations/neon_animation.js";
+import danger_area from "./object3D/danger_area.js";
 
 class main_menu extends game_level {
     
@@ -13,9 +14,10 @@ class main_menu extends game_level {
     build(model) {
         // Creation of the skybox
         const skybox_material = [ ...model.preloaded_materials.skybox_3 ];
-        const skybox = new THREE.Mesh( new THREE.BoxGeometry( 1000, 1000, 1000 ), skybox_material );
+        const skybox = new THREE.Mesh( new THREE.BoxGeometry( 3000, 3000, 3000 ), skybox_material );
         this.skybox = skybox;
         this.scene.add( skybox );
+        console.log(skybox);
 
         // Added title
         const title = model.preloaded_mesh.title.clone();

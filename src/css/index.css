@@ -42,21 +42,10 @@ body {
     width: 100%;
     height: 100%;
     font-size: 5rem;
-    color: rgb(255, 249, 242);
+    color: #91d2d6;
     display: flex;
     align-items: center;
     justify-content: center;
-    text-shadow: rgb(0, 0, 0) 5px 0px 0px, rgb(0, 0, 0) 4.90033px 0.993347px 0px, rgb(0, 0, 0) 4.60531px 1.94709px 0px, 
-                rgb(0, 0, 0) 4.12668px 2.82321px 0px, rgb(0, 0, 0) 3.48353px 3.58678px 0px, rgb(0, 0, 0) 2.70151px 4.20736px 0px, 
-                rgb(0, 0, 0) 1.81179px 4.6602px 0px, rgb(0, 0, 0) 0.849836px 4.92725px 0px, rgb(0, 0, 0) -0.145998px 4.99787px 0px, 
-                rgb(0, 0, 0) -1.13601px 4.86924px 0px, rgb(0, 0, 0) -2.08073px 4.54649px 0px, rgb(0, 0, 0) -2.94251px 4.04248px 0px, 
-                rgb(0, 0, 0) -3.68697px 3.37732px 0px, rgb(0, 0, 0) -4.28444px 2.57751px 0px, rgb(0, 0, 0) -4.71111px 1.67494px 0px, 
-                rgb(0, 0, 0) -4.94996px 0.7056px 0px, rgb(0, 0, 0) -4.99147px -0.291871px 0px, rgb(0, 0, 0) -4.83399px -1.27771px 0px, 
-                rgb(0, 0, 0) -4.48379px -2.2126px 0px, rgb(0, 0, 0) -3.95484px -3.05929px 0px, rgb(0, 0, 0) -3.26822px -3.78401px 0px, 
-                rgb(0, 0, 0) -2.4513px -4.35788px 0px, rgb(0, 0, 0) -1.53666px -4.75801px 0px, rgb(0, 0, 0) -0.560763px -4.96845px 0px, 
-                rgb(0, 0, 0) 0.437495px -4.98082px 0px, rgb(0, 0, 0) 1.41831px -4.79462px 0px, rgb(0, 0, 0) 2.34258px -4.41727px 0px, 
-                rgb(0, 0, 0) 3.17346px -3.86382px 0px, rgb(0, 0, 0) 3.87783px -3.15633px 0px, rgb(0, 0, 0) 4.4276px -2.32301px 0px, 
-                rgb(0, 0, 0) 4.80085px -1.39708px 0px, rgb(0, 0, 0) 4.98271px -0.415447px 0px;
     font-family: "batmfa";
 }
 
@@ -64,19 +53,8 @@ body {
     margin-top: 0.9%;
     margin-left: 10%;
     font-family: "batmfa";
-    color: hsl(108, 19%, 59%);
+    color: #c8f7fa;
     font-size: 4vw;
-    text-shadow: rgb(39, 39, 39) 5px 0px 0px, rgb(39, 39, 39) 4.90033px 0.993347px 0px, rgb(39, 39, 39) 4.60531px 1.94709px 0px, 
-                rgb(39, 39, 39) 4.12668px 2.82321px 0px, rgb(39, 39, 39) 3.48353px 3.58678px 0px, rgb(39, 39, 39) 2.70151px 4.20736px 0px, 
-                rgb(39, 39, 39) 1.81179px 4.6602px 0px, rgb(39, 39, 39) 0.849836px 4.92725px 0px, rgb(39, 39, 39) -0.145998px 4.99787px 0px, 
-                rgb(39, 39, 39) -1.13601px 4.86924px 0px, rgb(39, 39, 39) -2.08073px 4.54649px 0px, rgb(39, 39, 39) -2.94251px 4.04248px 0px, 
-                rgb(39, 39, 39) -3.68697px 3.37732px 0px, rgb(39, 39, 39) -4.28444px 2.57751px 0px, rgb(39, 39, 39) -4.71111px 1.67494px 0px, 
-                rgb(39, 39, 39) -4.94996px 0.7056px 0px, rgb(39, 39, 39) -4.99147px -0.291871px 0px, rgb(39, 39, 39) -4.83399px -1.27771px 0px, 
-                rgb(39, 39, 39) -4.48379px -2.2126px 0px, rgb(39, 39, 39) -3.95484px -3.05929px 0px, rgb(39, 39, 39) -3.26822px -3.78401px 0px, 
-                rgb(39, 39, 39) -2.4513px -4.35788px 0px, rgb(39, 39, 39) -1.53666px -4.75801px 0px, rgb(39, 39, 39) -0.560763px -4.96845px 0px, 
-                rgb(39, 39, 39) 0.437495px -4.98082px 0px, rgb(39, 39, 39) 1.41831px -4.79462px 0px, rgb(39, 39, 39) 2.34258px -4.41727px 0px, 
-                rgb(39, 39, 39) 3.17346px -3.86382px 0px, rgb(39, 39, 39) 3.87783px -3.15633px 0px, rgb(39, 39, 39) 4.4276px -2.32301px 0px, 
-                rgb(39, 39, 39) 4.80085px -1.39708px 0px, rgb(39, 39, 39) 4.98271px -0.415447px 0px;
 
 }
 
@@ -216,10 +194,10 @@ body {
 }
 
 .heart-full {
-    filter: invert(19%) sepia(75%) saturate(1889%) hue-rotate(327deg) brightness(100%) contrast(94%);
+    filter: invert(99%) sepia(88%) saturate(449%) hue-rotate(120deg) brightness(105%) contrast(96%);
 }
 .heart-empty {
-    filter: invert(13%) sepia(16%) saturate(6794%) hue-rotate(324deg) brightness(106%) contrast(98%);
+    filter: invert(46%) sepia(25%) saturate(520%) hue-rotate(135deg) brightness(92%) contrast(88%);
 }
 
 #help_screen img {
@@ -242,25 +220,27 @@ body {
     align-items: center;
     justify-content: center;
     margin-left: 4%;
-    margin-top: 5%;
+    margin-top: 8%;
     display: none;
+    transform: scale(0.8, 0.8);
 }
 
 #end_game img {
     width: 100%;
+    margin-right: 3%;
 }
 #end_game #final_score {
     color: #91d2d6;
     position: absolute;
     font-size: 5vw;
     left: 23.5vw;
-    top: 50%;
+    top: 52%;
     font-family: "batmfa";
 }
 #end_game #heart {
     position: absolute;
     left: 23.5vw;
-    top: 22%;
+    top: 20%;
 }
 #end_game #heart img {
     width: 10%;

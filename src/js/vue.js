@@ -18,8 +18,6 @@ class vue {
 
     stored_mat = {};
 
-    darkMat = new THREE.MeshBasicMaterial( { color: 'black' } );
-
     /**
      * Constructor
      * @param {object} model 
@@ -143,12 +141,6 @@ class vue {
         }
     }
 
-    set_phong_materials() {
-        const player_mat = this.model.scene_object.foreground.player.mesh.material;
-        const phong_mat = new THREE.MeshStandardMaterial().copy(player_mat);
-        this.model.scene_object.foreground.player.mesh.material = phong_mat;
-    }
-
     /**
      * Clear the scene
      */
@@ -184,11 +176,8 @@ class vue {
         }
     }
 
-    store_mat(obj) {
-        if (obj.isMesh && obj.layers.mask !== 3) {
-            this.stored_mat[ obj.uuid ] = obj.material;
-            obj.material = this.darkMat;
-        }
+    store_mat(uuid, mat) {
+        this.stored_mat[ uuid ] = mat;
     }
 
     restore_mat(obj) {
@@ -228,6 +217,27 @@ class vue {
     mute() {
         this.muted = !this.muted;
         game_level.lvls[game_level.current_lvl].mute(this.muted);
+    }
+
+    change_mat(scene) {
+        scene.children.forEach(child => {
+            if (child.isMesh) {
+                if (this.stored_mat[child.uuid]) {
+                    const child_mat = child.material;
+                    this.restore_mat(child);
+                    this.stored_mat[ child.uuid ] = child_mat;
+                } else {
+                    const child_mat = child.material;
+                    this.stored_mat[ child.uuid ] = child_mat;
+                    if (child_mat instanceof THREE.MeshPhongMaterial || child_mat instanceof THREE.MeshStandardMaterial) {
+                        child.material = new THREE.MeshBasicMaterial();
+                        THREE.MeshBasicMaterial.prototype.copy.call(child.material, child_mat);
+                    }
+                }   
+            } else if (child.children) {
+                this.change_mat(child);
+            }
+        });
     }
 }
 

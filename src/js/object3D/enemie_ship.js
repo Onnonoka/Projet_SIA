@@ -16,11 +16,9 @@ class enemie_ship extends movable_mesh {
     /**
      * Constructor
      */
-    constructor(target) {
+    constructor(mesh, target) {
         
-        const geometry = new THREE.ConeGeometry( 1, 2, 4 );
-        const material = new THREE.MeshPhongMaterial( { color: 0xff0000 } );
-        super( "enemie_ship", new THREE.Mesh( geometry, material ) );
+        super( "enemie_ship", mesh );
         this.target = target;
         const bullet_geometry = new THREE.CylinderGeometry( 5, 5, 20, 32 );
         const bullet_material = new THREE.MeshStandardMaterial( {

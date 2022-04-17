@@ -6,6 +6,8 @@ import start_lvl_animation from "./animations/start_lvl_animation.js";
 import end_lvl_animation from "./animations/end_lvl_animation.js";
 import text_animations from "./animations/text_animations.js";
 import enemie_ship from "./object3D/enemie_ship.js";
+import burning_meteor from "./object3D/burning_meteor.js";
+import danger_area from "./object3D/danger_area.js";
 
 class level_3 extends game_level {
 
@@ -43,16 +45,19 @@ class level_3 extends game_level {
             const meteor_object = this.spawn_meteor(model);
             this.scene.add( meteor_object );
         }
+        this.burning_rock = model.preloaded_mesh.burning_rock.clone();
+        this.enemie_ship = model.preloaded_mesh.enemie_ship.clone();
+        this.enemie_ship.rotation.x = THREE.Math.degToRad( 90 );
+        this.enemie_ship.rotation.y = THREE.Math.degToRad( 180 );
 
         // Place the camera
         this.camera.position.set( 0, 0, 110 );
         this.hud.set_life(this.player.life);
 
-        const gridHelper = new THREE.GridHelper( 10000, 1000 );
-        gridHelper.rotation.x = THREE.Math.degToRad( 90 );
-        this.scene.add( gridHelper );
-
         this.animations.start = new start_lvl_animation(this);
+        this.animations.start.callback = () => {
+            this.sounds.bgm.play();
+        }
         this.animations.fade = new fade_animation(this);
         this.animations.fade.reverse = true;
         this.animations.fade.go_to(this.animations.fade.animation_duration);
@@ -70,6 +75,18 @@ class level_3 extends game_level {
             this.animations.fade.start();
         }
         this.animations.next.start();
+        this.sounds.warning = new Audio("src/medias/sounds/warning.mp3");
+        this.sounds.warning.volume = 0.8;
+        this.sounds.warning.muted = this.muted;
+        this.sounds.bgm = new Audio("src/medias/sounds/bgm_lvl3.mp3");
+        this.sounds.bgm.volume = 0.1;
+        this.sounds.bgm.muted = this.muted;
+        this.soundLoopInterval = setInterval( () => {
+            if (this.sounds.bgm.currentTime >= this.sounds.bgm.duration - 1) {
+                console.log("looped");
+                this.sounds.bgm.currentTime = 48;
+            }
+        }, 0);
 
         game_level.current_lvl = this.index;
 
@@ -91,8 +108,11 @@ class level_3 extends game_level {
             this.scene.add(bonus);
         }
         if (this.time % (60*60) === 0) {
-            const enemie = this.spawn_enemie();
-            this.scene.add(enemie);
+            this.spawn_enemie();
+        }
+        if (this.time % (60*40) === 0) {
+            this.spawn_burning_rock();
+            this.sounds.warning.play();
         }
     }
     
@@ -124,6 +144,7 @@ class level_3 extends game_level {
         if (!this.animations.end.is_started && !this.hud.is_end_menu_open) {
             this.animations.end.reset();
             this.animations.end.callback = () => {
+                this.stopAudio();
                 super.handle_win();
             }
             this.animations.end.start();
@@ -131,7 +152,7 @@ class level_3 extends game_level {
     }
 
     spawn_enemie() {
-        const enemie = new enemie_ship(this.player);
+        const enemie = new enemie_ship(this.enemie_ship.clone(), this.player);
         const horinzontal_fov = 2 * THREE.Math.radToDeg( Math.atan( Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.aspect ) );
         // compute the width and the height at z = 0
         const width = Math.tan( THREE.Math.degToRad( horinzontal_fov ) / 2 ) * this.camera.position.z * 2;
@@ -146,6 +167,21 @@ class level_3 extends game_level {
         }
         enemie.position.set(posx,  posy, 0);
         this.scene.add(enemie);
+    }
+
+    spawn_burning_rock() {
+        const horinzontal_fov = 2 * THREE.Math.radToDeg( Math.atan( Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.aspect ) );
+        // compute the width and the height at z = 0
+        const width = Math.tan( THREE.Math.degToRad( horinzontal_fov ) / 2 ) * this.camera.position.z * 2;
+        const height = Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.position.z * 2;
+
+        const burning_rock = new burning_meteor(this.burning_rock.clone());
+        burning_rock.position.set(Math.floor( Math.random() * width ), Math.floor( Math.random() * height ), this.camera.position.z * 1.2);
+        this.scene.add(burning_rock);
+        const danger_zone = new danger_area(burning_rock.mesh.geometry.boundingSphere.radius * burning_rock.mesh.scale.x);
+        danger_zone.position.set(burning_rock.position.x, burning_rock.position.y, 0);
+        burning_rock.setDanger_zone(danger_zone);
+        this.scene.add(danger_zone);
     }
 
 }

@@ -22,6 +22,8 @@ class ship_explosion_animation extends animation {
         this.material = mat;
         this.context.add(this.torus);
         this.context.add(this.sphere);
+        this.sounds.sound = new Audio("src/medias/sounds/explosion_3.mp3");
+        this.sounds.sound.volume = 0.1;
     }
 
     step() {
@@ -42,6 +44,11 @@ class ship_explosion_animation extends animation {
         this.material.opacity = 0;
         this.torus.scale.set(1, 1, 1);
         this.sphere.scale.set(1, 1, 1);
+    }
+
+    start() {
+        super.start();
+        this.sounds.sound.play();
     }
 }
 

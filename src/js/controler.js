@@ -40,7 +40,7 @@ class controler {
                         this.vue.hud.set_message("");
                     }
                 } else if (e.key === "m") {
-                    this.vue.set_phong_materials();
+                    this.vue.change_mat(this.vue.scene);
                 } else if (e.key === "o") {
                     this.vue.post_process_render = !this.vue.post_process_render;
                 } else if (e.key === "0") {
@@ -66,6 +66,7 @@ class controler {
                         this.model.scene.add(game_level.lvls[game_level.current_lvl].spawn_power_up());
                     }
                 } else if (e.key === "k") {
+                    console.log("k");
                     if (game_level.lvls[game_level.current_lvl]?.cheat_code_clear_meteor) {
                         game_level.lvls[game_level.current_lvl].cheat_code_clear_meteor();
                     }
@@ -84,6 +85,7 @@ class controler {
                     window.print();
                 } else if (e.key === " " && this.model.game_status.is_loose) {
                     this.model.game_status.is_loose = false;
+                    game_level.lvls[game_level.current_lvl].stopAudio();
                     this.vue.hud.clear_hud();
                     this.vue.generate_menu();
                     this.can_press = false;

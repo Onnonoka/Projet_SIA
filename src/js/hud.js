@@ -95,7 +95,7 @@ class hud {
         document.getElementById("end_game").style.display = "flex";
         let heart_container = document.getElementById("heart");
         for (let i = life; i > 0; i--) {
-            heart_container.innerHTML += `<img class="heart-empty" src="src/medias/images/heart-regular.svg"/>`;
+            heart_container.innerHTML += `<img class="heart-empty" src="src/medias/images/heart-solid.svg"/>`;
         }
         document.getElementById("final_score").innerHTML = score;
     }

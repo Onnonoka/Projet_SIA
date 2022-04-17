@@ -57,10 +57,6 @@ class level_2 extends game_level {
         // Place the camera
         this.camera.position.set( 0, 0, 110 );
 
-        const gridHelper = new THREE.GridHelper( 10000, 1000 );
-        gridHelper.rotation.x = THREE.Math.degToRad( 90 );
-        this.scene.add( gridHelper );
-
         game_level.current_lvl = this.index;
 
         this.animations.global_light = new light_reduce_animation(this);
@@ -189,13 +185,13 @@ class level_2 extends game_level {
         if (!this.animations.end.is_started) {
             this.animations.end.reset();
             this.animations.fade.callback = () => {
+                this.stopAudio();
                 super.handle_win();
-                clearInterval(this.soundInterval);
-                this.sounds.sound2.pause();
             }
             this.animations.end.start();
         }
     }
+
 }
 
 export default level_2;

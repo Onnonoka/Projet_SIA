@@ -1,15 +1,15 @@
-# Blender MTL File: 'None'
+# Blender MTL File: 'burning_rock.blend'
 # Material Count: 1
 
 newmtl Matériau
-Ns 225.000000
+Ns 20.000000
 Ka 1.000000 1.000000 1.000000
-Kd 0.800000 0.800000 0.800000
+Kd 4.000000 4.000000 4.000000
 Ks 0.500000 0.500000 0.500000
 Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
-illum 2
-norm ..\\images\\textures\\burning_rock\\Export_normal.tif
-map_Kd ..\\images\\textures\\burning_rock\\Export_baseColor.tif
-refl ..\\images\\textures\\burning_rock\\Export_metallic.tif
+illum 5
+norm ..\\images\\textures\\burning_rock\\Export_normal.png
+map_Kd ..\\images\\textures\\burning_rock\\Export_baseColor.png
+refl ..\\images\\textures\\burning_rock\\Export_metallic.png

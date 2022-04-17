@@ -40,12 +40,12 @@ class game_level {
     update() {
         // Update scene object
         this.scene.children.forEach( obj => {
-            if ( obj.is_collidable_object && !obj.is_dead || obj.is_collidable_object === false) {
-                obj.update( this.time );
+            if ( obj.update) {
+                obj.update();
             }
         });
         this.screen_exit_detection();
-        //this.update_camera();
+        this.update_camera();
         this.detect_collision();
         this.remove_dead_object();
         this.hud.set_score( this.score );
@@ -216,7 +216,6 @@ class game_level {
     handle_win() {
         if (this.win_callback) {
             this.win_callback();
-        } else {
         }
     }
 
@@ -288,6 +287,12 @@ class game_level {
             if (child.mute) {
                 child.mute(this.muted);
             }
+        });
+    }
+
+    stopAudio() {
+        Object.keys(this.sounds).forEach( key => {
+            this.sounds[key].pause();
         });
     }
 
