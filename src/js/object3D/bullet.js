@@ -20,7 +20,7 @@ class bullet extends movable_mesh {
         this.mesh.scale.set( 0.075, 0.1, 0.075 );
         this.is_affected_by_physics = false;
         this.sounds.sound = new Audio("src/medias/sounds/laser_2.mp3");
-        this.sounds.sound.volume = 0.01;
+        this.sounds.sound.volume = 0.001;
         this.sounds.sound.play();
 
     }

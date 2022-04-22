@@ -34,7 +34,8 @@
             <h2>Introduction :</h2>
             <div class="content">
                 <p>
-                    Le projet noté de SIA consiste à développer un clone 3D du jeu Asteroid. Le jeu devra tourner dans un navigateur Web et sera constitué de primitives graphiques 3D animées.
+                    
+                    L'objectif de ce projet consiste à développer un clone 3D du jeu Asteroid. Le jeu doit tourner dans un navigateur Web et devra etre constitué de primitives graphiques 3D animées.
                     La principale contrainte logicielle est de s'appuyer sur la bibliothèque <a href="https://threejs.org">Three.js</a>.
                 </p>
             </div>
@@ -44,28 +45,39 @@
             <div class="content">
                 <h3 id="1">Déroulement du jeu :</h3>
                 <p>
-                    Dans Asteroid_3D, traversé un large ensemble de 3 niveaux aux particularités différentes et de plus en plus difficiles afin de mettre au defi vos compétences de pilote ! Passer d'un niveau au cœur des zones les plus sombres de l'espace aux endroits les plus meurtriers où il vous faudra adresse et concentration afin d'en ressortir vivant. En cas d'échec, n'abandonnez pas ! Il vous sera facilement possible de recommencer une partie. Attention, les objets ne seront pas au même endroit.
+                    Dans Asteroid_3D, traversez un ensemble de 3 niveaux aux particularités différentes et de plus en plus difficiles afin de mettre au défi vos compétences 
+                    de pilote ! Passer d'un niveau au cœur des zones les plus sombres de l'espace aux endroits les plus meurtriers où il vous faudra adresse et concentration
+                    afin d'en ressortir vivant. En cas d'echec, n'abandonnez pas ! Il vous sera facilement possible de recommencer une partie en appuyant sur la touche "espace". 
+                    Attention, les asteroïds et bonus n'apparaîtront pas au même endroit. 
                     <br/> <br/>
                     <div class  ="img-list">
                         <img src="./rapport/images/lvl1.png" />
                         <img src="./rapport/images/lvl2.png" />
+                        <img src="./rapport/images/lvl3.png" />
                     </div>
                 </p>
                 <h3 id="2">Technologie logicielles :</h3>
                 <p>
-                    L'utilisation de <a href="https://threejs.org">Three.js</a> offre des possibilités diverses afin d'offrir une experience fluide et esthétique dans les innovants niveaux du jeu. 
+                    L'utilisation de <a href="https://threejs.org">Three.js</a> et des primitives 3D proposées ont permis la création d'objets animés comme par exemple 
+                    la planète de l'ecran d'accueil ou encore les bonus qui apparaitront tout au long du jeu. Aucune autre bibliothèque n'a été utilisée dans ce projet 
+                    afin d'avoir un rendu le plus authentique possible.
                 </p>
                 <h3 id="3">Fenetre graphique 3D :</h3>
                 <p>
-                    Un mode plein écran vous est proposé avec la touche "f", pour une immersion totale ainsi qu'un mode capture d'écran avec la touche "p" afin de sauvegarder vos exploits. Il vous est fourni une adaptation dynamique automatique de l'écran à tous les formats.
+                    Un mode plein écran vous est proposé avec la touche "f", pour une immersion totale ainsi qu'un mode capture d'écran avec la touche "p" afin de 
+                    sauvegarder vos exploits. Il a été implémenté une adaptation dynamique de l'écran afin qu'il soit modulable à tous les formats.
                 </p>
                 <h3 id="4">Architecture logicielle :</h3>
                 <p>
-                    L'implémentation à l'aide du modèle MVC (modèle vue contrôler) propose un code lisible et simple à embellir avec de nouvelles fonctionnalités, ce qui a permis dès le début du projet d'avoir une simplicité d'implémentation des différents aspects techniques du jeu et à permis de moins se concentrer sur l'aspect architecture et de fournir plus d'effort sur le gameplay.
+                    Un modèle MVC (Modèle Vue Contrôleur) a été initialement utilisé pour la conception du logiciel de par son aspect lisible et simple à enrichir avec 
+                    de nouvelles fonctionnalités. En pratique, je n'ai pas su tirer profits de ces atouts, notamment concernant l'implémentation de 3 niveaux différents.
+                    Il serait intéressant par la suite d'essayer d'autres méthodes d'organisation.
                 </p>
                 <h3 id="5">Graphisme :</h3>
                 <p>
-                    L'utilisation de modèles 3D riches et détaillés au format ".obj" et ".mtl" on permit d'avoir un contrôle précis sur les différentes propriétés des textures de plus un travaille sur le postprocessing permet une intégration réaliste dans l'environnement 3D afin de vous proposer une expérience visuelle et animée à coupé le souffle.
+                    L'utilisation de modèles 3D et de textures riches et détaillés au format ".obj" et ".mtl" ont permis d'avoir un contrôle précis sur les différentes 
+                    propriétés des textures. Un travail sur le postprocessing permet une intégration réaliste dans l'environnement 3D afin de vous proposer une expérience 
+                    visuelle et animée. Il vous est possible d'appréhender ce travail en désactivant la lueur sur les objets à l'aide de la touche "o" de votre clavier.
                     <div class  ="img-list">
                         <img src="./rapport/images/planete.png" />
                         <img src="./rapport/images/ship.png" />
@@ -73,7 +85,11 @@
                 </p>
                 <h3 id="6">Dialogues avec l'utilisateur :</h3>
                 <p>
-                    Vous aurez une interface dynamique et esthétique respectant les codes du genre pour une prise en main rapide et un design se mariant au jeu. La puissance du langage "css" a permit une intégration simple et rapide des différents éléments de l'interface tout en apportant une possibilité d'implémenté tout un tas d'animations varié. Les messages visuels sont accompagnés de message audio afin de ne louper aucune information ! Malgré tout cela, vous êtes perdu ? Ne vous en fait pas ! L'appui sur la touche "h" vous offre un récapitulatifs des différentes commandes du jeu !
+                    Vous saurez appréçier une interface dynamique et dans une esthétique rétro-futuriste rappelant le design d'un tableau de bord. La 
+                    puissance du langage "css" a permis une intégration simple et rapide des différents éléments de l'interface tout en apportant une possibilité 
+                    d'implémenter des animations. Les messages visuels sont accompagnés de la voix d'une intelligence artificiel provenant 
+                    du tableau de bord de votre vaisseau. Malgré tout cela, vous êtes perdu ? Ne vous en fait pas ! L'appui sur la touche "h" vous offre un 
+                    récapitulatif des différentes commandes du jeu !
                     <div class  ="img-list">
                         <img src="./rapport/images/help.png" />
                         <img src="./rapport/images/menu.png" />
@@ -82,19 +98,26 @@
                 </p>
                 <h3 id="7">Points de vue caméra :</h3>
                 <p>
-                    Trois points de vue de la camera vous seront disponible. Un fixe, et 2 suiveuses que vous pourrez changer à chaque instant sur les touches "0", "1" et "2"!
+                    Trois points de vue de caméra vous seront disponibles. Un fixe, et 2 suiveurs que vous pourrez changer à chaque instant à l'aide des touches "0", "1" et "2"!
                 </p>
                 <h3 id="8">Gestion des collisions :</h3>
                 <p>
-                    Un système de collision basé sur la physique du monde réel adapté au besoin du jeu tel que la conservation de la vitesse et de la rotation offre une expérience de jeux plus intéressante. Le calcul des collisions est fait à l'aide de bounding box et de bounding sphère donne une précision suffisante pour le jeu.
+                    Le système de collision est basé sur un modèle simplifié des règles de la physique du monde réel. La conservation de la vitesse et de la non prise en compte de la 
+                    rotation offre une meilleure expérience de jeu. Le calcul des collisions est fait à l'aide de bounding box et de bounding sphère qui donnent une précision parfaite 
+                    pour ce jeu.
                 </p>
                 <h3 id="9">Dynamique :</h3>
                 <p>
-                    Chaque objet en plus des propriétés de base tel que la rotation, la position et l'echele possèdent une propriété en plus, la vitesse. Elle permet à chaque objet de s'orienter sans affecter sa vitesse ni la direction où il se dirige. Le plateau de jeu étant periodique un objet sortant du champ de vision de la camera se retrouve téléporté à l'opposé en fonction de l'axe du bord qu'il a dépassé. Il a été décidé d'améliorer l'idée de l'augmentation de la vitesse des astéroïdes et des missiles ennemies par une difficulté croissante dans le niveau.
+                    Chaque objet en plus de posséder des propriétés de base tel que la rotation, la position et l'echelle, possèdent une propriété en plus : la vitesse. Elle permet à 
+                    chaque objet de s'orienter sans affecter sa vitesse ni la direction vers lequel il se dirige. Le plateau de jeu étant périodique, un objet sortant du champ de 
+                    vision de la caméra se retrouve téléporté à l'opposé en fonction du bord qu'il a dépassé. Une difficulté croissante dans le niveau de par un nombre plus important 
+                    d'asteroïdes a été préféré à une augmentation de la vitesse des astéroïdes et des missiles ennemies : en pratique, des missiles ennemis plus rapides auraient été 
+                    impossibles à éviter.
                 </p>
                 <h3 id="10">Jokers :</h3>
                 <p>
-                    Afin de vous aider dans votre périple, il vous sera possible d'attraper des jokers apparaissant au fur et à mesure du niveau, mais attention, ils disparaissent rapidement. Les différents bonus disponibles sont :
+                    Afin de vous aider pendant votre aventure, il vous sera possible d'attraper des bonus apparaissant au fur et à mesure du niveau. Mais attention, ils 
+                    disparaissent rapidement. Les différents bonus disponibles sont :
                     <ul>
                         <li>Vie supplémentaire,</li>
                         <li>Tir rapide,</li>
@@ -108,7 +131,8 @@
                 </p>
                 <h3 id="11">Musique et sons :</h3>
                 <p>
-                    Asteroid_3D possède des thèmes musicaux et des effets sonore unique conçus spécialement pour ce jeu et réalisé par une étudiante dans le domaine de la musique.
+                    Asteroid_3D possède des thèmes musicaux et des effets sonores uniques conçus spécialement pour ce jeu et réalisés par une étudiante dans le domaine de la 
+                    musique. 
                     <br/>
                     <div class="audio-lsit">
                         <audio controls>
@@ -131,11 +155,15 @@
                 </p>
                 <h3 id="12">Triche :</h3>
                 <p>
-                    Un système de triche vous est proposé dans le cadre de test la touche "i" pour devenir invincible, la touche "j" pour faire apparaître un joker et la touche "k" afin de terminer le niveau.
+                    Un système de triche vous est proposé dans le cadre de test. La touche "i" pour devenir invincible, la touche "j" pour faire apparaître un bonus et la 
+                    touche "k" afin de terminer le niveau. Vous retrouverez ces indications dans le menu Aide.
                 </p>
                 <h3 id="13">Les petits plus :</h3>
                 <p>
-                    Revivez les moments forts du jeu vidéo avec ce classique revisité avec des graphismes et des technologies modernes. Parcourez les différents niveaux au péril de votre vie. Ce titre vous offrira le challenge des jeux rétro, mais vous offrira une diversité nouvelle et innovante. Les thèmes musicaux revus pour ce titre vous entraîneront dans son univers.
+                    Revivez les moments forts du jeu vidéo avec Asteroid_3D, un jeu qui offre du challenge à ceux qui en demandent (les autres on s'en fou), qui propose des 
+                    idées originales de gameplay comme la pluie d'asteroïdes enflamés dans le niveau 3 ou encore l'évolution dans l'obscurité du niveau 2. Le design est unique 
+                    de par l'utilisation de modèles 3D et la création d'une interface exclusive à l'aide du logiciel Photoshop. Il en est de même pour les sons et les thêmes
+                    musicaux, qui sont personnalisés. L'immersion du joueur à été au coeur de la réflexion autour de ce projet.
                 </p>
             </div>
         </div>

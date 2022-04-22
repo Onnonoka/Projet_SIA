@@ -45,7 +45,7 @@ class main_menu extends game_level {
         this.scene.add(planete);
 
         // Set the hud
-        this.hud.set_action_request( "Press start" );
+        this.hud.set_action_request( "Press space" );
 
         // Place the camera
         this.camera.position.set( 0, 0, 90 );

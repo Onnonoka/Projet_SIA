@@ -50,18 +50,22 @@ class vue {
         this.lvl_3.win_callback = () => {
             this.model.game_status.is_loose = true;
             this.hud.display_end_game_menu(this.lvl_3.score, this.lvl_3.player.life);
+            this.hud.set_action_request( "Press space" );
         }
         this.lvl_1.loose_callback = () => {
             this.model.game_status.is_loose = true;
             this.hud.display_end_game_menu(this.lvl_1.score, 0);
+            this.hud.set_action_request( "Press space" );
         }
         this.lvl_2.loose_callback = () => {
             this.model.game_status.is_loose = true;
             this.hud.display_end_game_menu(this.lvl_2.score, 0);
+            this.hud.set_action_request( "Press space" );
         }
         this.lvl_3.loose_callback = () => {
             this.model.game_status.is_loose = true;
             this.hud.display_end_game_menu(this.lvl_3.score, 0);
+            this.hud.set_action_request( "Press space" );
         }
 
     }

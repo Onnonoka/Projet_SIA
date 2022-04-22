@@ -1,5 +1,6 @@
 
 import animation from "./animation.js";
+import { CAMERA } from "../game_level.js";
 
 class end_lvl_animation extends animation {
 
@@ -42,6 +43,7 @@ class end_lvl_animation extends animation {
                 this.context.player.booster.position.set(0, -size.x / 2 - 6.5 * this.context.player.booster.scale.y, 0.7);
                 this.y_start = this.context.player.position.y;
             } else if (this.animation_time <= 60*3) {
+                this.context.camera_status = CAMERA.CAMERA_FIX;
                 const y_dist = height * 2 - this.y_start;
                 this.context.player.position.set(this.context.player.position.x, this.context.player.position.y + (y_dist / 30) , this.context.player.position.z);
                 this.context.player.scale.set(1, 1 + ((5 - 1) / 30) * (this.animation_time - 90), 1);

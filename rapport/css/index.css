@@ -7,7 +7,7 @@ body {
     margin: 0;
     padding: 0;
     background-color: rgb(14, 14, 14);
-    color: white;
+    color: rgb(226, 226, 226);
     font-family: "Lucida Console";
     font-size: 1.5rem;
 }
@@ -22,7 +22,7 @@ body {
 #body-content {
     -margin: 2%;
     border: #91d2d6 5px solid;
-    box-shadow: inset 0vw 0 100vw #91d2d6;
+    box-shadow: inset 0vw 0 5vw #91d2d6;
 }
 
 h1, h2, h3 {

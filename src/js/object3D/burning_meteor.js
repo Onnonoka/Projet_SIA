@@ -15,7 +15,7 @@ class burning_meteor extends movable_mesh {
         super( "burning_meteor", mesh );
 
         const burning_rock_light = new THREE.PointLight(0xE7A503, 1, 100);
-        this.mesh.scale.set(20, 20, 20);
+        this.mesh.scale.set(80, 80, 80);
         this.add(burning_rock_light);
         this.speed.set(0, 0, -0.5);
         this.is_affected_by_physics = false;

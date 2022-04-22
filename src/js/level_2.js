@@ -88,6 +88,8 @@ class level_2 extends game_level {
 
         this.player = player;
 
+        this.score = 0;
+        
         return player;
     }
 

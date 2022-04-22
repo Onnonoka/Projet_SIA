@@ -88,6 +88,8 @@ class level_3 extends game_level {
             }
         }, 0);
 
+        this.score = 0;
+
         game_level.current_lvl = this.index;
 
         return player;
