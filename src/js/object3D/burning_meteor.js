@@ -39,8 +39,10 @@ class burning_meteor extends movable_mesh {
         if (this.position.z < -5000) {
             this.is_dead = true;
         }
-        if (this.position.z <= 0 && this.danger_zone) {
-            this.danger_zone.is_dead = true;
+        if (this.position.z <= 0) {
+            if (this.danger_zone) {
+                this.danger_zone.is_dead = true;
+            }
         }
     }
 

@@ -56,10 +56,10 @@ class controler {
                         game_level.lvls[game_level.current_lvl].camera_status = CAMERA.CAMERA_FIX_PLAYER_FIX;
                     }
                 } else if (e.key === "i") {
-                    if (this.model.player.is_immune) {
-                        this.model.player.active_dematerialize(false, 1);
+                    if (!this.model.player.is_immune) {
+                        this.model.player.active_dematerialize(true, 1*60);
                     } else {
-                        this.model.player.active_dematerialize(true, 60*3);
+                        this.model.player.animations.dematerialize.callback();
                     }
                 } else if (e.key === "j") {
                     if (game_level.lvls[game_level.current_lvl]?.spawn_power_up) {

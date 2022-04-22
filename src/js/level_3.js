@@ -178,7 +178,7 @@ class level_3 extends game_level {
         const height = Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.position.z * 2;
 
         const burning_rock = new burning_meteor(this.burning_rock.clone());
-        burning_rock.position.set(Math.floor( Math.random() * width ), Math.floor( Math.random() * height ), this.camera.position.z * 1.2);
+        burning_rock.position.set(Math.floor( Math.random() * width ), Math.floor( Math.random() * height ), this.camera.position.z * 1.5);
         this.scene.add(burning_rock);
         const danger_zone = new danger_area(burning_rock.mesh.geometry.boundingSphere.radius * burning_rock.mesh.scale.x);
         danger_zone.position.set(burning_rock.position.x, burning_rock.position.y, 0);

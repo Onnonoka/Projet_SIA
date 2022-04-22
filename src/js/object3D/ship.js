@@ -73,7 +73,6 @@ class ship extends movable_mesh {
             this.is_immune = false;
             this.is_affected_by_physics = true;
         }
-        this.animations.dematerialize.breakpoint_callback = this.animations.dematerialize.callback;
         this.animations.shield = new shield_animation(this);
         this.animations.shield.callback = () => {
             this.animations.shield.reset();
@@ -234,15 +233,13 @@ class ship extends movable_mesh {
         this.is_immune = true;
         this.is_affected_by_physics = false;
         this.animations.dematerialize.reset();
-        if (loop) {
-            this.animations.dematerialize.loop = true;
-        } else if (!loop) {
-            this.animations.dematerialize.loop = false;
-        }
+        this.animations.dematerialize.loop = loop? loop : false;
         if (breakpoint) {
+            console.log(breakpoint, "OK");
             this.animations.dematerialize.set_breakpoint(breakpoint);
         }
         this.animations.dematerialize.start();
+        console.log(this.animations.dematerialize);
     }
 
     active_shield(duration) {

@@ -64,7 +64,9 @@ class animation {
         }
         if (this.is_finished || this.is_stoped) {
             if (this.loop) {
-                this.reset();
+                this.is_started = false;
+                this.is_finished = false;
+                this.go_to(0);
                 this.is_started = true;
             }
         }
@@ -92,7 +94,8 @@ class animation {
         }
         if (this.is_finished || this.is_stoped) {
             if (this.loop) {
-                this.reset();
+                this.is_started = false;
+                this.is_finished = false;
                 this.go_to(this.animation_duration);
                 this.is_started = true;
             }
@@ -109,7 +112,9 @@ class animation {
     }
 
     set_breakpoint(duration) {
+        console.log(duration, "OK2");
         this.breakpoint = duration;
+        console.log(this.breakpoint, "OK3");
     }
 
     go_to(duration) {
