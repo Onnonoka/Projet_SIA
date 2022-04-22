@@ -33,13 +33,15 @@ class vue {
         // Create the hud
         this.hud = new hud();
 
+        const audio = new Audio("src/medias/sounds/game_over.mp3");
+        audio.volume = 0.2;
+
         this.main_menu = new main_menu( this.scene, this.camera, this.hud );
         this.main_menu.win_callback = () => {
             this.generate_lvl_1();
         }
         this.lvl_1 = new level_1( this.scene, this.camera, this.hud );
         this.lvl_1.win_callback = () => {
-            console.log("build");
             this.generate_lvl_2();
         }
         this.lvl_2 = new level_2( this.scene, this.camera, this.hud );
@@ -51,21 +53,25 @@ class vue {
             this.model.game_status.is_loose = true;
             this.hud.display_end_game_menu(this.lvl_3.score, this.lvl_3.player.life);
             this.hud.set_action_request( "Press space" );
+            audio.play();
         }
         this.lvl_1.loose_callback = () => {
             this.model.game_status.is_loose = true;
             this.hud.display_end_game_menu(this.lvl_1.score, 0);
             this.hud.set_action_request( "Press space" );
+            audio.play();
         }
         this.lvl_2.loose_callback = () => {
             this.model.game_status.is_loose = true;
             this.hud.display_end_game_menu(this.lvl_2.score, 0);
             this.hud.set_action_request( "Press space" );
+            audio.play();
         }
         this.lvl_3.loose_callback = () => {
             this.model.game_status.is_loose = true;
             this.hud.display_end_game_menu(this.lvl_3.score, 0);
             this.hud.set_action_request( "Press space" );
+            audio.play();
         }
 
     }
@@ -114,7 +120,6 @@ class vue {
 
     generate_lvl_2() {
         const old_lvl = game_level.lvls[game_level.current_lvl];
-        console.log(old_lvl);
         this.clear_scene();
         this.model.player = this.lvl_2.build( this.model );
         this.lvl_2.player.life = old_lvl.player.life;
@@ -193,7 +198,6 @@ class vue {
 
     fullscreen() {
         var elem = document.getElementById("game");
-        console.log(elem.requestFullscreen);
         if (this.is_fullscreen) {
             if (elem.exitFullscreen) {
                 elem.exitFullscreen();

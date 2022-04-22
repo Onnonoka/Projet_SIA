@@ -66,7 +66,6 @@ class controler {
                         this.model.scene.add(game_level.lvls[game_level.current_lvl].spawn_power_up());
                     }
                 } else if (e.key === "k") {
-                    console.log("k");
                     if (game_level.lvls[game_level.current_lvl]?.cheat_code_clear_meteor) {
                         game_level.lvls[game_level.current_lvl].cheat_code_clear_meteor();
                     }

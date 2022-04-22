@@ -78,17 +78,20 @@ class level_3 extends game_level {
         this.sounds.warning = new Audio("src/medias/sounds/warning.mp3");
         this.sounds.warning.volume = 0.8;
         this.sounds.warning.muted = this.muted;
+        this.sounds.passage_sound = new Audio("src/medias/sounds/burning_meteor.mp3");
+        this.sounds.passage_sound.volume = 0.1;
+        this.sounds.passage_sound.muted = this.muted;
         this.sounds.bgm = new Audio("src/medias/sounds/bgm_lvl3.mp3");
         this.sounds.bgm.volume = 0.1;
         this.sounds.bgm.muted = this.muted;
         this.soundLoopInterval = setInterval( () => {
             if (this.sounds.bgm.currentTime >= this.sounds.bgm.duration - 1) {
-                console.log("looped");
                 this.sounds.bgm.currentTime = 48;
             }
         }, 0);
 
         this.score = 0;
+        this.is_level_end = false;
 
         game_level.current_lvl = this.index;
 
@@ -115,6 +118,7 @@ class level_3 extends game_level {
         if (this.time % (60*40) === 0) {
             this.spawn_burning_rock();
             this.sounds.warning.play();
+            this.sounds.passage_sound.play();
         }
     }
     

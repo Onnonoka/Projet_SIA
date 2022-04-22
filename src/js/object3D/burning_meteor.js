@@ -36,12 +36,15 @@ class burning_meteor extends movable_mesh {
         this.mouve_axies( this.speed.x, this.speed.y, this.speed.z );
         this.rotation.x += 0.001;
         this.rotation.y += 0.001;
-        if (this.position.z < -5000) {
-            this.is_dead = true;
-        }
         if (this.position.z <= 0) {
             if (this.danger_zone) {
                 this.danger_zone.is_dead = true;
+            }
+            this.scale.x -= 0.001;
+            this.scale.y -= 0.001;
+            this.scale.z -= 0.001;
+            if (this.scale.x <= 0) {
+                this.is_dead = true;
             }
         }
     }

@@ -6,6 +6,7 @@ class fade_animation extends animation {
         super(60 * 2);
         this.context = context;
         this.sounds.next = new Audio("src/medias/sounds/next_level.mp3");
+        this.sounds.next.volume = 0.7;
     }
 
     step() {

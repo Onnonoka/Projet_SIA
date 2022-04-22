@@ -1,4 +1,5 @@
 import movable_mesh from "./movable_mesh.js";
+import ship_explosion_animation from "../animations/ship_explosion_animation.js";
 
 class meteor extends movable_mesh {
 
@@ -25,11 +26,19 @@ class meteor extends movable_mesh {
         this.speed.set( speed_x, speed_y, 0 );
         this.speed.setLength( 0.3 / size );
         this.mouve_axies( pos_x, pos_y, 0 );
+        this.animations.explosion = new ship_explosion_animation(this, 3, 0.02, 0x2e2e2e);
+        this.animations.explosion.callback = () => {
+            this.animations.explosion.reset();
+            this.is_dead = true;
+        }
     }
 
     update( time ) {
         this.rotate_mesh( THREE.Math.radToDeg( Math.random() / 100 ) * (4 - this.size), THREE.Math.radToDeg(  Math.random() / 100 ) * (4 - this.size), 0 );
         this.mouve_axies( this.speed.x, this.speed.y, this.speed.z);
+        Object.keys(this.animations).forEach(key => {
+            this.animations[key].update();
+        });
     }
 
     handle_collision( target ) {
@@ -41,7 +50,12 @@ class meteor extends movable_mesh {
                 this.parent.add( new meteor( this.mesh.clone(), -speed.y, speed.x, pos.x, pos.y, this.size - 1 ) );
                 this.parent.add( new meteor( this.mesh.clone(), speed.y, -speed.x, pos.x, pos.y, this.size - 1 ) );
             }
-            this.is_dead = true;
+            this.mesh.visible = false;
+            this.scale.set(1, 1, 1);
+            this.speed.set(0, 0, 0);
+            this.animations.explosion.start();
+            this.is_affected_by_physics = false;
+            this.is_collidable_object = false;
         } 
     }
 }

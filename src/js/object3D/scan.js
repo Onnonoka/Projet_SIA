@@ -33,7 +33,6 @@ class scan extends movable_mesh {
         if (target.type === "meteor" && target.is_collidable_object && !this.already_scan.find( e => e === target )) {
             const wireframe_target = new wireframe_object(target);
             this.parent.add(wireframe_target);
-            //console.log(wireframe_target);
             this.already_scan.push(target);
         }
     }

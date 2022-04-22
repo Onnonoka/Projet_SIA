@@ -93,7 +93,7 @@ class ship extends movable_mesh {
             this.animations.rapide_fire.reset();
             this.fire_rate *= 2;
         }
-        this.animations.explosion = new ship_explosion_animation(this);
+        this.animations.explosion = new ship_explosion_animation(this, 6, 0.1, 0xffffff);
         this.animations.explosion.callback = () => {
             this.animations.explosion.reset();
         }
@@ -161,30 +161,29 @@ class ship extends movable_mesh {
      * Spawn a bullet on the player ship position and direction
      */
     shoot() {
-        console.log(this.fire_rate, this.on_cooldown);
-            if ( !this.on_cooldown && this.visible && !this.is_lock ) {
-                const mesh_size = new THREE.Vector3();
-                this.BB.getSize( mesh_size );
-                let bullet_x = Math.sin( THREE.Math.degToRad( 90 - THREE.Math.radToDeg(this.rotation.z) )  ) *  (mesh_size.x / 2 - 0.4);
-                let bullet_y = Math.cos( THREE.Math.degToRad( 90 - THREE.Math.radToDeg(this.rotation.z) )  ) *  (mesh_size.x / 2 - 0.4);
-                const ammo = new bullet( this.bullet_mesh.clone(), this.bullet_light.clone() );
-                ammo.mute(this.muted);
-                if ( this.shoot_left ) {
-                    bullet_x -= Math.cos( THREE.Math.degToRad( 90 - THREE.Math.radToDeg(this.rotation.z) )  ) * -2.5;
-                    bullet_y += Math.sin( THREE.Math.degToRad( 90 - THREE.Math.radToDeg(this.rotation.z) )  ) * -2.5;
-                    ammo.position.set( this.position.x - bullet_x, this.position.y - bullet_y, 0 );
-                } else {
-                    bullet_x -= Math.cos( THREE.Math.degToRad( 90 - THREE.Math.radToDeg(this.rotation.z) )  ) * 2.5;
-                    bullet_y += Math.sin( THREE.Math.degToRad( 90 - THREE.Math.radToDeg(this.rotation.z) )  ) * 2.5;
-                    ammo.position.set( this.position.x + bullet_x, this.position.y + bullet_y, 0 );
-                }
-                ammo.rotation.set( 0, 0, this.rotation.z );
-                ammo.source = this;
-                ammo.speed.set( -2 * Math.sin( this.rotation.z ), 2 * Math.cos( this.rotation.z ), 0 );
-                this.shoot_left = !this.shoot_left;
-                this.parent.add( ammo );
-                this.on_cooldown = true;
+        if ( !this.on_cooldown && this.visible && !this.is_lock ) {
+            const mesh_size = new THREE.Vector3();
+            this.BB.getSize( mesh_size );
+            let bullet_x = Math.sin( THREE.Math.degToRad( 90 - THREE.Math.radToDeg(this.rotation.z) )  ) *  (mesh_size.x / 2 - 0.4);
+            let bullet_y = Math.cos( THREE.Math.degToRad( 90 - THREE.Math.radToDeg(this.rotation.z) )  ) *  (mesh_size.x / 2 - 0.4);
+            const ammo = new bullet( this.bullet_mesh.clone(), this.bullet_light.clone() );
+            ammo.mute(this.muted);
+            if ( this.shoot_left ) {
+                bullet_x -= Math.cos( THREE.Math.degToRad( 90 - THREE.Math.radToDeg(this.rotation.z) )  ) * -2.5;
+                bullet_y += Math.sin( THREE.Math.degToRad( 90 - THREE.Math.radToDeg(this.rotation.z) )  ) * -2.5;
+                ammo.position.set( this.position.x - bullet_x, this.position.y - bullet_y, 0 );
+            } else {
+                bullet_x -= Math.cos( THREE.Math.degToRad( 90 - THREE.Math.radToDeg(this.rotation.z) )  ) * 2.5;
+                bullet_y += Math.sin( THREE.Math.degToRad( 90 - THREE.Math.radToDeg(this.rotation.z) )  ) * 2.5;
+                ammo.position.set( this.position.x + bullet_x, this.position.y + bullet_y, 0 );
             }
+            ammo.rotation.set( 0, 0, this.rotation.z );
+            ammo.source = this;
+            ammo.speed.set( -2 * Math.sin( this.rotation.z ), 2 * Math.cos( this.rotation.z ), 0 );
+            this.shoot_left = !this.shoot_left;
+            this.parent.add( ammo );
+            this.on_cooldown = true;
+        }
     }
 
     handle_collision( target ) {
@@ -211,7 +210,6 @@ class ship extends movable_mesh {
             this.animations.death.start();
             this.animations.explosion.start();
         } else if ( target.type === "power_up" && this.visible ) {
-            console.log(target.action);
             switch(target.action) {
                 case "dematerialize" : 
                     this.active_dematerialize();
@@ -235,11 +233,9 @@ class ship extends movable_mesh {
         this.animations.dematerialize.reset();
         this.animations.dematerialize.loop = loop? loop : false;
         if (breakpoint) {
-            console.log(breakpoint, "OK");
             this.animations.dematerialize.set_breakpoint(breakpoint);
         }
         this.animations.dematerialize.start();
-        console.log(this.animations.dematerialize);
     }
 
     active_shield(duration) {

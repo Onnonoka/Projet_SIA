@@ -89,6 +89,7 @@ class level_2 extends game_level {
         this.player = player;
 
         this.score = 0;
+        this.is_level_end = false;
         
         return player;
     }
@@ -134,7 +135,6 @@ class level_2 extends game_level {
                 this.sounds.sound2.play();
                 this.soundLoopInterval = setInterval(() => {
                     if (this.sounds.sound2.currentTime >= this.sounds.sound2.duration - 1) {
-                        console.log("looped");
                         this.sounds.sound2.currentTime = 13.71;
                     }
                 }, 0);

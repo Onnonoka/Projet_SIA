@@ -112,9 +112,7 @@ class animation {
     }
 
     set_breakpoint(duration) {
-        console.log(duration, "OK2");
         this.breakpoint = duration;
-        console.log(this.breakpoint, "OK3");
     }
 
     go_to(duration) {

@@ -26,6 +26,8 @@ class game_level {
 
     materials = {};
 
+    is_level_end = false;
+
     constructor( scene, camera, hud ) {
         this.scene = scene;
         this.camera = camera;
@@ -138,7 +140,6 @@ class game_level {
         dead_object.forEach( obj => {
             if ( obj.type === "meteor" ) {
                 this.score += 100;
-                console.log( obj.type, "removed" );
             }
             this.dispose( obj );
         });
@@ -214,13 +215,15 @@ class game_level {
     }
 
     handle_win() {
-        if (this.win_callback) {
+        if (this.win_callback && !this.is_level_end) {
+            this.is_level_end = true;
             this.win_callback();
         }
     }
 
     handle_loose() {
-        if (this.loose_callback) {
+        if (this.loose_callback  && !this.is_level_end) {
+            this.is_level_end = true;
             this.loose_callback();
         }
     }

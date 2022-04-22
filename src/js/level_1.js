@@ -75,6 +75,7 @@ class level_1 extends game_level {
         this.player = player;
 
         this.score = 0;
+        this.is_level_end = false;
         
         return player;
     }

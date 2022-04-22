@@ -240,7 +240,7 @@ body {
 #end_game #heart {
     position: absolute;
     left: 23.5vw;
-    top: 20%;
+    top: calc(50% - 16vw)  ;
 }
 #end_game #heart img {
     width: 10%;

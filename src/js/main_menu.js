@@ -17,7 +17,6 @@ class main_menu extends game_level {
         const skybox = new THREE.Mesh( new THREE.BoxGeometry( 3000, 3000, 3000 ), skybox_material );
         this.skybox = skybox;
         this.scene.add( skybox );
-        console.log(skybox);
 
         // Added title
         const title = model.preloaded_mesh.title.clone();
@@ -63,6 +62,7 @@ class main_menu extends game_level {
         this.animations.title_neon_effect = new neon_animation(title);
 
         this.sounds.sound.play();
+        this.is_level_end = false;
         
         game_level.current_lvl = this.index;
     }
