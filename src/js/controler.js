@@ -1,6 +1,4 @@
-import * as THREE from 'three';
-import { degToRad } from 'three/src/math/Mathutils';
-import { radToDeg } from 'three/src/math/Mathutils';
+import { radToDeg } from 'three/src/math/mathutils';
 
 import {game_level, CAMERA} from "./game_level.js";
 

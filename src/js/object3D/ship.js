@@ -1,6 +1,6 @@
 import * as THREE from 'three';
-import { degToRad } from 'three/src/math/Mathutils';
-import { radToDeg } from 'three/src/math/Mathutils';
+import { degToRad } from 'three/src/math/mathutils';
+import { radToDeg } from 'three/src/math/mathutils';
 
 import movable_mesh from "./movable_mesh.js";
 import bullet from "./bullet.js";
