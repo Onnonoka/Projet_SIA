@@ -1,3 +1,7 @@
+import * as THREE from 'three';
+import { degToRad } from 'three/src/math/Mathutils';
+import { radToDeg } from 'three/src/math/Mathutils';
+
 import {game_level} from "./game_level.js";
 import ship from "./object3D/ship.js";
 import power_up from "./object3D/power_up.js";
@@ -33,8 +37,8 @@ class level_3 extends game_level {
 
         // Added the player
         const player_mesh = model.preloaded_mesh.ship_14.clone();
-        player_mesh.rotation.x = THREE.Math.degToRad( 90 );
-        player_mesh.rotation.y = THREE.Math.degToRad( 180 );
+        player_mesh.rotation.x = degToRad( 90 );
+        player_mesh.rotation.y = degToRad( 180 );
         const player = new ship( player_mesh );
         player.position.set(0, 10000, player.position.z);
         player.is_lock = true;
@@ -47,8 +51,8 @@ class level_3 extends game_level {
         }
         this.burning_rock = model.preloaded_mesh.burning_rock.clone();
         this.enemie_ship = model.preloaded_mesh.enemie_ship.clone();
-        this.enemie_ship.rotation.x = THREE.Math.degToRad( 90 );
-        this.enemie_ship.rotation.y = THREE.Math.degToRad( 180 );
+        this.enemie_ship.rotation.x = degToRad( 90 );
+        this.enemie_ship.rotation.y = degToRad( 180 );
 
         // Place the camera
         this.camera.position.set( 0, 0, 110 );
@@ -123,10 +127,10 @@ class level_3 extends game_level {
     }
     
     spawn_power_up() {
-        const horinzontal_fov = 2 * THREE.Math.radToDeg( Math.atan( Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.aspect ) );
+        const horinzontal_fov = 2 * radToDeg( Math.atan( Math.tan( degToRad( this.camera.fov ) / 2 ) * this.camera.aspect ) );
         // compute the width and the height at z = 0
-        const width = Math.tan( THREE.Math.degToRad( horinzontal_fov ) / 2 ) * this.camera.position.z * 2;
-        const height = Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.position.z * 2;
+        const width = Math.tan( degToRad( horinzontal_fov ) / 2 ) * this.camera.position.z * 2;
+        const height = Math.tan( degToRad( this.camera.fov ) / 2 ) * this.camera.position.z * 2;
         let bonus;
         switch(Math.floor(Math.random() * 4)) {
             case 0 :
@@ -159,10 +163,10 @@ class level_3 extends game_level {
 
     spawn_enemie() {
         const enemie = new enemie_ship(this.enemie_ship.clone(), this.player);
-        const horinzontal_fov = 2 * THREE.Math.radToDeg( Math.atan( Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.aspect ) );
+        const horinzontal_fov = 2 * radToDeg( Math.atan( Math.tan( degToRad( this.camera.fov ) / 2 ) * this.camera.aspect ) );
         // compute the width and the height at z = 0
-        const width = Math.tan( THREE.Math.degToRad( horinzontal_fov ) / 2 ) * this.camera.position.z * 2;
-        const height = Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.position.z * 2;
+        const width = Math.tan( degToRad( horinzontal_fov ) / 2 ) * this.camera.position.z * 2;
+        const height = Math.tan( degToRad( this.camera.fov ) / 2 ) * this.camera.position.z * 2;
         let posx, posy;
         if (Math.round(Math.random()) === 1) {
             posx = Math.floor( Math.random() * width );
@@ -176,10 +180,10 @@ class level_3 extends game_level {
     }
 
     spawn_burning_rock() {
-        const horinzontal_fov = 2 * THREE.Math.radToDeg( Math.atan( Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.aspect ) );
+        const horinzontal_fov = 2 * radToDeg( Math.atan( Math.tan( degToRad( this.camera.fov ) / 2 ) * this.camera.aspect ) );
         // compute the width and the height at z = 0
-        const width = Math.tan( THREE.Math.degToRad( horinzontal_fov ) / 2 ) * this.camera.position.z * 2;
-        const height = Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.position.z * 2;
+        const width = Math.tan( degToRad( horinzontal_fov ) / 2 ) * this.camera.position.z * 2;
+        const height = Math.tan( degToRad( this.camera.fov ) / 2 ) * this.camera.position.z * 2;
 
         const burning_rock = new burning_meteor(this.burning_rock.clone());
         burning_rock.position.set(Math.floor( Math.random() * width ), Math.floor( Math.random() * height ), this.camera.position.z * 1.5);

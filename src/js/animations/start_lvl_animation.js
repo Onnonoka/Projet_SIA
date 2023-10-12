@@ -1,3 +1,6 @@
+import * as THREE from 'three';
+import { degToRad } from 'three/src/math/mathutils';
+import { radToDeg } from 'three/src/math/mathutils';
 
 import animation from "./animation.js";
 
@@ -14,10 +17,10 @@ class start_lvl_animation extends animation {
     step() {
         super.step();
         if (this.is_started) {
-            const horinzontal_fov = 2 * THREE.Math.radToDeg( Math.atan( Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.aspect ) );
+            const horinzontal_fov = 2 * radToDeg( Math.atan( Math.tan( degToRad( this.camera.fov ) / 2 ) * this.camera.aspect ) );
             // compute the width and the height at z = 0
-            const width = Math.tan( THREE.Math.degToRad( horinzontal_fov ) / 2 ) * this.camera.position.z * 2;
-            const height = Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.position.z * 2;
+            const width = Math.tan( degToRad( horinzontal_fov ) / 2 ) * this.camera.position.z * 2;
+            const height = Math.tan( degToRad( this.camera.fov ) / 2 ) * this.camera.position.z * 2;
             const size = new THREE.Vector3();
             this.context.player.mesh.geometry.boundingBox.getSize(size);
             this.context.player.is_lock = true;

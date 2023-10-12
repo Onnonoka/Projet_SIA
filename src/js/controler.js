@@ -1,3 +1,7 @@
+import * as THREE from 'three';
+import { degToRad } from 'three/src/math/Mathutils';
+import { radToDeg } from 'three/src/math/Mathutils';
+
 import {game_level, CAMERA} from "./game_level.js";
 
 
@@ -137,11 +141,11 @@ class controler {
                 }
                 // key left
                 if ( this.model.key_press[ "ArrowLeft" ] ) {
-                    this.model.player.rotate_axies( 0, 0, THREE.Math.radToDeg( 0.05 ) );
+                    this.model.player.rotate_axies( 0, 0, radToDeg( 0.05 ) );
                 }
                 // key right
                 if ( this.model.key_press[ "ArrowRight" ] ) {
-                    this.model.player.rotate_axies( 0, 0, THREE.Math.radToDeg( -0.05 ) );
+                    this.model.player.rotate_axies( 0, 0, radToDeg( -0.05 ) );
                 }
                 // key up
                 if ( this.model.key_press[ "ArrowUp" ] ) {

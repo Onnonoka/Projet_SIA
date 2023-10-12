@@ -1,3 +1,7 @@
+import * as THREE from 'three';
+import { degToRad } from 'three/src/math/Mathutils';
+import { radToDeg } from 'three/src/math/Mathutils';
+
 import movable_mesh from "./movable_mesh.js";
 import bullet from "./bullet.js";
 import dematerialize_animation from "../animations/dematerialize_animation.js";
@@ -45,7 +49,7 @@ class ship extends movable_mesh {
             emissiveIntensity: 5
         } );
         this.booster = new THREE.Mesh(booster_geometry, booster_material);
-        this.booster.rotation.set(0, 0, THREE.Math.degToRad(180));
+        this.booster.rotation.set(0, 0, degToRad(180));
         this.booster.position.set(0, -size.x / 2 - 6.5, 0.7);
         this.booster.scale.set(0, 0, 0);
         this.booster_light = new THREE.PointLight( 0x2ba0ff, 5, 15 );
@@ -164,17 +168,17 @@ class ship extends movable_mesh {
         if ( !this.on_cooldown && this.visible && !this.is_lock ) {
             const mesh_size = new THREE.Vector3();
             this.BB.getSize( mesh_size );
-            let bullet_x = Math.sin( THREE.Math.degToRad( 90 - THREE.Math.radToDeg(this.rotation.z) )  ) *  (mesh_size.x / 2 - 0.4);
-            let bullet_y = Math.cos( THREE.Math.degToRad( 90 - THREE.Math.radToDeg(this.rotation.z) )  ) *  (mesh_size.x / 2 - 0.4);
+            let bullet_x = Math.sin( degToRad( 90 - radToDeg(this.rotation.z) )  ) *  (mesh_size.x / 2 - 0.4);
+            let bullet_y = Math.cos( degToRad( 90 - radToDeg(this.rotation.z) )  ) *  (mesh_size.x / 2 - 0.4);
             const ammo = new bullet( this.bullet_mesh.clone(), this.bullet_light.clone() );
             ammo.mute(this.muted);
             if ( this.shoot_left ) {
-                bullet_x -= Math.cos( THREE.Math.degToRad( 90 - THREE.Math.radToDeg(this.rotation.z) )  ) * -2.5;
-                bullet_y += Math.sin( THREE.Math.degToRad( 90 - THREE.Math.radToDeg(this.rotation.z) )  ) * -2.5;
+                bullet_x -= Math.cos( degToRad( 90 - radToDeg(this.rotation.z) )  ) * -2.5;
+                bullet_y += Math.sin( degToRad( 90 - radToDeg(this.rotation.z) )  ) * -2.5;
                 ammo.position.set( this.position.x - bullet_x, this.position.y - bullet_y, 0 );
             } else {
-                bullet_x -= Math.cos( THREE.Math.degToRad( 90 - THREE.Math.radToDeg(this.rotation.z) )  ) * 2.5;
-                bullet_y += Math.sin( THREE.Math.degToRad( 90 - THREE.Math.radToDeg(this.rotation.z) )  ) * 2.5;
+                bullet_x -= Math.cos( degToRad( 90 - radToDeg(this.rotation.z) )  ) * 2.5;
+                bullet_y += Math.sin( degToRad( 90 - radToDeg(this.rotation.z) )  ) * 2.5;
                 ammo.position.set( this.position.x + bullet_x, this.position.y + bullet_y, 0 );
             }
             ammo.rotation.set( 0, 0, this.rotation.z );

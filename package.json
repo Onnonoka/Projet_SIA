@@ -2,5 +2,23 @@
   "dependencies": {
     "three": "^0.157.0",
     "vite": "^4.4.11"
-  }
+  },
+  "name": "projet_sia",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "start": "npx vite --base asteroid_3d.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Onnonoka/Projet_SIA.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Onnonoka/Projet_SIA/issues"
+  },
+  "homepage": "https://github.com/Onnonoka/Projet_SIA#readme",
+  "description": ""
 }

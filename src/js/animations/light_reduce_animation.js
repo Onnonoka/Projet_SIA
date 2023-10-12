@@ -1,3 +1,5 @@
+import { degToRad } from 'three/src/math/mathutils';
+
 import animation from "./animation.js";
 
 class light_reduce_animation extends animation {
@@ -10,7 +12,7 @@ class light_reduce_animation extends animation {
     step() {
         super.step();
         if (this.is_started) {
-            this.context.player_spot_light.angle = THREE.Math.degToRad(90 - ((90 - 20) / 600) * this.animation_time);
+            this.context.player_spot_light.angle = degToRad(90 - ((90 - 20) / 600) * this.animation_time);
         }
     }
 }

@@ -1,3 +1,4 @@
+import * as THREE from 'three';
 
 import hud from "./hud.js";
 import {game_level} from "./game_level.js";

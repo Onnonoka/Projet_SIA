@@ -1,3 +1,6 @@
+import * as THREE from 'three';
+import { degToRad } from 'three/src/math/Mathutils';
+
 import movable_mesh from "./movable_mesh.js";
 import bullet from "./bullet.js";
 import ship_explosion_animation from "../animations/ship_explosion_animation.js";
@@ -38,7 +41,7 @@ class enemie_ship extends movable_mesh {
             emissiveIntensity: 5
         } );
         this.booster = new THREE.Mesh(booster_geometry, booster_material);
-        this.booster.rotation.set(0, 0, THREE.Math.degToRad(180));
+        this.booster.rotation.set(0, 0, degToRad(180));
         this.booster.position.set(0, -size.x / 2 - 6.5, 0.7);
         this.booster.scale.set(0, 0, 0);
         this.booster_light = new THREE.PointLight( 0x2ba0ff, 5, 15 );
@@ -70,7 +73,7 @@ class enemie_ship extends movable_mesh {
             } else if (d_target.x < 0) {
                 this.rotation.z = (this.rotation.z + 0.01) % (Math.PI * 2);
             }
-            if (d_target.angleTo(new THREE.Vector3(0, 1, 0)) < THREE.Math.degToRad(5)) {
+            if (d_target.angleTo(new THREE.Vector3(0, 1, 0)) < degToRad(5)) {
                 this.shoot();
             }
             if (this.position.distanceTo(this.target.position) > 25) {

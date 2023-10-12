@@ -1,3 +1,6 @@
+import * as THREE from 'three';
+import { degToRad } from 'three/src/math/Mathutils';
+import { radToDeg } from 'three/src/math/Mathutils';
 
 import meteor from "./object3D/meteor.js";
 
@@ -150,10 +153,10 @@ class game_level {
      */
     screen_exit_detection() {
         // compute the horizontal field of view
-        const horinzontal_fov = 2 * THREE.Math.radToDeg( Math.atan( Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.aspect ) );
+        const horinzontal_fov = 2 * radToDeg( Math.atan( Math.tan( degToRad( this.camera.fov ) / 2 ) * this.camera.aspect ) );
         // compute the width and the height at z = 0
-        const width = Math.tan( THREE.Math.degToRad( horinzontal_fov ) / 2 ) * this.camera.position.z * 2;
-        const height = Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.position.z * 2;
+        const width = Math.tan( degToRad( horinzontal_fov ) / 2 ) * this.camera.position.z * 2;
+        const height = Math.tan( degToRad( this.camera.fov ) / 2 ) * this.camera.position.z * 2;
         for ( let obj of this.scene.children ) {
             if ( obj.is_collidable_object ) {
                 // x axies
@@ -241,10 +244,10 @@ class game_level {
     }
 
     spawn_meteor(model) {
-        const horinzontal_fov = 2 * THREE.Math.radToDeg( Math.atan( Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.aspect ) );
+        const horinzontal_fov = 2 * radToDeg( Math.atan( Math.tan( degToRad( this.camera.fov ) / 2 ) * this.camera.aspect ) );
         // compute the width and the height at z = 0
-        const width = Math.tan( THREE.Math.degToRad( horinzontal_fov ) / 2 ) * this.camera.position.z * 2;
-        const height = Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.position.z * 2;
+        const width = Math.tan( degToRad( horinzontal_fov ) / 2 ) * this.camera.position.z * 2;
+        const height = Math.tan( degToRad( this.camera.fov ) / 2 ) * this.camera.position.z * 2;
         let mesh;
         switch(Math.floor(Math.random() * 2)) {
             case 0 :

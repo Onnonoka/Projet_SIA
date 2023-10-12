@@ -1,3 +1,6 @@
+import * as THREE from 'three';
+import { degToRad } from 'three/src/math/mathutils';
+
 import {game_level} from "./game_level.js";
 import ship from "./object3D/ship.js";
 import fade_animation from "./animations/fade_animation.js";
@@ -23,7 +26,7 @@ class main_menu extends game_level {
         title.material = new THREE.MeshBasicMaterial().copy(title.material);
         title.scale.set( 30, 30, 30 );
         title.position.y = 30;
-        title.rotation.x = THREE.Math.degToRad( 90 );
+        title.rotation.x = degToRad( 90 );
         this.scene.add( title );
 
         // Added stage lights

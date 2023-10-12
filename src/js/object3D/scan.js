@@ -1,3 +1,4 @@
+import * as THREE from 'three';
 
 import movable_mesh from "./movable_mesh.js";
 import wireframe_object from "./wireframe_object.js";

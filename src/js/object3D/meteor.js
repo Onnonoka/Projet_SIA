@@ -1,3 +1,7 @@
+import * as THREE from 'three';
+import { degToRad } from 'three/src/math/Mathutils';
+import { radToDeg } from 'three/src/math/Mathutils';
+
 import movable_mesh from "./movable_mesh.js";
 import ship_explosion_animation from "../animations/ship_explosion_animation.js";
 
@@ -34,7 +38,7 @@ class meteor extends movable_mesh {
     }
 
     update( time ) {
-        this.rotate_mesh( THREE.Math.radToDeg( Math.random() / 100 ) * (4 - this.size), THREE.Math.radToDeg(  Math.random() / 100 ) * (4 - this.size), 0 );
+        this.rotate_mesh( radToDeg( Math.random() / 100 ) * (4 - this.size), radToDeg(  Math.random() / 100 ) * (4 - this.size), 0 );
         this.mouve_axies( this.speed.x, this.speed.y, this.speed.z);
         Object.keys(this.animations).forEach(key => {
             this.animations[key].update();

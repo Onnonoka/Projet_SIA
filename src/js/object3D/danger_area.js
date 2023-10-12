@@ -1,3 +1,5 @@
+import * as THREE from 'three';
+
 import movable_mesh from "./movable_mesh.js";
 
 class danger_area extends movable_mesh {

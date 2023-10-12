@@ -1,3 +1,7 @@
+import * as THREE from 'three';
+import { degToRad } from 'three/src/math/Mathutils';
+import { radToDeg } from 'three/src/math/Mathutils';
+
 import {game_level} from "./game_level.js";
 import ship from "./object3D/ship.js";
 import power_up from "./object3D/power_up.js";
@@ -29,8 +33,8 @@ class level_1 extends game_level {
 
         // Added the player
         const player_mesh = model.preloaded_mesh.ship_14.clone();
-        player_mesh.rotation.x = THREE.Math.degToRad( 90 );
-        player_mesh.rotation.y = THREE.Math.degToRad( 180 );
+        player_mesh.rotation.x = degToRad( 90 );
+        player_mesh.rotation.y = degToRad( 180 );
         const player = new ship( player_mesh );
         player.position.set(0, 10000, player.position.z);
         player.is_lock = true;
@@ -97,10 +101,10 @@ class level_1 extends game_level {
     }
     
     spawn_power_up() {
-        const horinzontal_fov = 2 * THREE.Math.radToDeg( Math.atan( Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.aspect ) );
+        const horinzontal_fov = 2 * radToDeg( Math.atan( Math.tan( degToRad( this.camera.fov ) / 2 ) * this.camera.aspect ) );
         // compute the width and the height at z = 0
-        const width = Math.tan( THREE.Math.degToRad( horinzontal_fov ) / 2 ) * this.camera.position.z * 2;
-        const height = Math.tan( THREE.Math.degToRad( this.camera.fov ) / 2 ) * this.camera.position.z * 2;
+        const width = Math.tan( degToRad( horinzontal_fov ) / 2 ) * this.camera.position.z * 2;
+        const height = Math.tan( degToRad( this.camera.fov ) / 2 ) * this.camera.position.z * 2;
         let bonus;
         switch(Math.floor(Math.random() * 4)) {
             case 0 :

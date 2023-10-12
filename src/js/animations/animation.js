@@ -1,5 +1,4 @@
 
-
 class animation {
     animation_time = 0;
     animation_duration = 0;

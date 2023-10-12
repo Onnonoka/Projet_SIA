@@ -1,4 +1,9 @@
-
+import * as THREE from 'three';
+import {RenderPass} from 'three/examples/jsm/postprocessing/RenderPass';
+import {UnrealBloomPass} from 'three/examples/jsm/postprocessing/UnrealBloomPass';
+import {EffectComposer} from 'three/examples/jsm/postprocessing/EffectComposer';
+import {MTLLoader} from 'three/examples/jsm/loaders/MTLLoader';
+import {OBJLoader} from 'three/examples/jsm/loaders/OBJLoader';
 
 class model {
     type = "model";
@@ -58,11 +63,11 @@ class model {
         // Create the camera
         this.camera = new THREE.PerspectiveCamera( 70, this.render_config.w / this.render_config.h, 1, 10000 );
         
-        const render_pass = new THREE.RenderPass( this.scene, this.camera );
-        const bloom_pass = new THREE.UnrealBloomPass({x: 1024, y: 1024}, 1, 0.0, 0.5);
+        const render_pass = new RenderPass( this.scene, this.camera );
+        const bloom_pass = new UnrealBloomPass({x: 1024, y: 1024}, 1, 0.0, 0.5);
 
-        const bloom_composer = new THREE.EffectComposer( this.renderer );
-        const final_composer = new THREE.EffectComposer( this.renderer );
+        const bloom_composer = new EffectComposer( this.renderer );
+        const final_composer = new EffectComposer( this.renderer );
 
         bloom_composer.renderToScreen = true;
         bloom_composer.addPass(render_pass);
@@ -104,8 +109,8 @@ class model {
      * @returns Promise, resolve when the load is complete
      */
     load_mesh( name, path ) {
-        const mtlLoader = new THREE.MTLLoader();
-        const objLoader = new THREE.OBJLoader();
+        const mtlLoader = new MTLLoader();
+        const objLoader = new OBJLoader();
         return new Promise( (resolve) => {
             // Load mtl file
             mtlLoader.setPath( "src/medias/models/" );

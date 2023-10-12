@@ -1,3 +1,5 @@
+import * as THREE from 'three';
+
 import mouvable_mesh from "./movable_mesh.js";
 
 class power_up extends mouvable_mesh {

@@ -1,3 +1,4 @@
+import * as THREE from 'three';
 
 /**
  * Abstract class to define element in the scene

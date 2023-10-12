@@ -1,3 +1,5 @@
+import * as THREE from 'three';
+
 import animation from "./animation.js";
 
 class ship_explosion_animation extends animation {

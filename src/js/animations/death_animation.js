@@ -1,3 +1,5 @@
+import * as THREE from 'three';
+
 import animation from "./animation.js";
 
 class death_animation extends animation {
