@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html lang="fr" xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Asteroid 3D</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+		<link href="./src/css/index.css" rel="stylesheet" type="text/css" />
+		<link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet"> 
+	</head>
+<body id="game">
+
+	<div id="app"><!-- La 3D insérée ici --></div>
+	<div id="fade_screen"></div>
+	<div id="help_screen">
+		<img src="src/medias/images/help_menu.png" />
+	</div>
+	<div id="hud">
+		<div id="top-left">
+			<img id="top-left-bg" src="src/medias/images/border_ui.png">
+			<div id="score"></div>
+		</div>
+		<div id="top-right">
+			<img id="top-right-bg" src="src/medias/images/border_ui.png">
+			<div id="life"></div>
+		</div>
+		<div id="bottom-left">
+			<img id="bottom-left-bg" src="src/medias/images/border_ui.png">
+		</div>
+		<div id="bottom-right">
+			<img id="bottom-right-bg" src="src/medias/images/border_ui.png">
+		</div>
+		<div id="message"></div>
+		<div id="action_request"></div>
+	</div>
+	<div id ="end_game" >
+		<img src="src/medias/images/end_game_menu.png" ><img>
+		<div id="heart"></div>
+		<div id="final_score"></div>
+	</div>
+
+    <!-- Three.js library
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r124/three.js"></script>
+	Three.js loader library
+	<script src="http://threejs.org/examples/js/loaders/MTLLoader.js"></script>
+	<script src="http://threejs.org/examples/js/loaders/OBJLoader.js"></script>
+	Three.js post processing library
+	<script src="http://threejs.org/examples/js/controls/TrackballControls.js"></script>
+	<script src="http://threejs.org/examples/js/postprocessing/EffectComposer.js"></script>
+	<script src="http://threejs.org/examples/js/postprocessing/RenderPass.js"></script>
+	<script src="http://threejs.org/examples/js/shaders/CopyShader.js"></script>
+	<script src="http://threejs.org/examples/js/postprocessing/ShaderPass.js"></script>
+	<script src="http://threejs.org/examples/js/postprocessing/UnrealBloomPass.js"></script>
+	<script src="http://threejs.org/examples/js/shaders/LuminosityHighPassShader.js"></script>
+	<script src="http://threejs.org/examples/js/shaders/ConvolutionShader.js"></script> -->
+
+    <!-- Code personnel -->
+    <script type="module" src="src/js/index.js"></script>
+
+</body>
+</html>
